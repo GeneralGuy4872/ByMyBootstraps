@@ -12,13 +12,13 @@
 //such as counters and allocators:
 //ninja, pirate, wizard, elf, valkyrie
 
-const double \u03C0 = M_PI;
+const double \317\200 = M_PI;
 //unicode symbol for pi, or should be
-const double \u212f = M_E;
+const double \342\204\257 = M_E;
 //unicode symbol for e, or should be
-const float _Imaginary \u2148 = _Imaginary_I;
+const float _Imaginary \342\205\210 = _Imaginary_I;
 //unicode symbol for i, or should be
-const float \u221e = INFINITY;
+const float \342\210\236 = INFINITY;
 //unicode symbol for infinity, or should be
 const char* myinput[MAXBUFFER];
 const 
