@@ -596,7 +596,7 @@ datatypes are otherwise implemented in Pascal.
 the adressing symbols are implemented as C objects.
 a garbage collector is a HIGH PRIORETY to-do, see bug#1.
 
-A modern byte-addressable B would make everything A LOT EASIER.
+A modern byte-addressable B linked to compiled APL would make everything A LOT EASIER.
 
 PARSING (CONTINUED)
 -------------------
