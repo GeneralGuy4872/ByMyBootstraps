@@ -1,4 +1,4 @@
-My Language V0.1.16a 0000000 00-00-0000
+My Language V0.1.17 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -441,6 +441,7 @@ Primary functions
 A primary function is a function that is included in the first step of the bootstrapping process. CPP Macros don't count.
 Any built-in function that is not a function that is not a primary function is called a "secondary function", and can be implemented with primary functions.
 This language standard does not mandate that the functions are implemented in the languages specified; Ideally, they could all be reduced to a single language.
+Starting at iteration 3, I plan to implement both a Static Compiler and an APL transpiler.
 Here is a list of how I implement built-ins in the first 2 iterations:
 
 function: 1st iteration , 2nd iteration
@@ -595,8 +596,6 @@ NULLDEV is implemented by the 2nd ineration parser, and
 datatypes are otherwise implemented in Pascal.
 the adressing symbols are implemented as C objects.
 a garbage collector is a HIGH PRIORETY to-do, see bug#1.
-
-A modern byte-addressable B linked to compiled APL would make everything A LOT EASIER.
 
 PARSING (CONTINUED)
 -------------------
