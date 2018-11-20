@@ -659,7 +659,8 @@ Mathtypes, Math error returns tied to C/Pascal standards.
 {
 Write assembly routines for each primitive function on each different size input...	lolnope
 Forth subroutines for math functions...	the fourth compiler I (and most prospect endusers) have cannot link to C	IF NOT THEN
-It would seem a standards compliant FORTRAN 77 compiler MUST have 8-bit capabilities....	Should work perfectly if fortran compiler is compliant. cast unsigned types up by 1 size, call C for floats, and always call minisize() when done.
+It would seem a standards compliant FORTRAN 77 compiler MUST have 8-bit capabilities....	Should work perfectly if fortran compiler is compliant. cast unsigned types up by 1 size, call C for floats, and always call minisize() when done.	IN NOT THEN
+APL would be the logical choice, but I don't have the complete docs.
 }&{
 String handling is a pascal-types issue. Can easily be handled with some typechecks in the second stage of bootstrap...	Partialy Depricated
 0.1.16 outlines the plans for the "Volley" type lexer, thus migrating a large portion, if not all, of the relavent code for the above string issue back to C. Will have to wait and see how this changes things	[waiting]
