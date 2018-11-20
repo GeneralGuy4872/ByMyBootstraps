@@ -1,0 +1,673 @@
+My Language V0.1.16a 0000000 00-00-0000
+Prealpha
+======================================
+
+Caution: early versions will probably be about as stable as a house of cards built atop of jenga towers sitting on a card table.
+Code accordingly.
+
+FUNCTIONS
+---------
+
+as a general rule:
+- a function in ALL CAPS is a binary operator, which returns it's result, or a control function, which doesn't return.
+- infix symbols are binary operators as above
+- prefix symbols change how the thing they are attatched to is interpreted
+- postfix symbols change a variable in place
+- a function in lowercase needs it's arguments in (parenthases), and has it's return specified
+- a symbol is a binary operator or a unary operator, and returns it's result
+any returned array will be 1 dimensional.
+
+My language will have the following functions:
+
+wait(foo) : wait for foo milliseconds, returns void
+time() : returns the current real time, timtyp
+clock() : return the current program time, clktyp
+beep() : print \a, returns void
+donothing() : does nothing, optimised out
+
+IF (foo) {} : if foo is true, do the function enclosed in {}.
+ELSE {} : if the function if fails, do the function enclosed in {}.
+WHILE (foo) {} : loop the function enclosed in {} until foo is false.
+BREAK : immediately exit the current loop
+GOTO (foo) : go to label foo. NOTE: there is no return function. putting a goto inside a function declaration can screw up your control flow.
+DOTIMES (foo) {} : do whatever is in {} foo times. if foo is a float, rounds down. if foo is infinity, you're trying too hard.
+MAP (foo, bar) {} : for array or linked list foo, do whatever is in {} where bar is the local variable
+¶foo : a label called foo. Please don't put these INSIDE loops unless you know what you're doing.
+
+printf(...) : print a formatted value to stdout, as in C. returns as in C. Formats as in C.
+sprintf(...) : print a formatted value to variable, as in C. returns as in C. Formats as in C.
+fprintf(...) : append a formatted value to file, as in C. returns as in C. Formats as in C.
+scanf(...) : get a value matching format from stdin, as in C. returns as in C. Formats as in C.
+sscanf(...) : get a value matching format from a string, as in C. returns as in C. Formats as in C.
+fscanf(...) : get a value matching format from file, as in C. returns as in C. Formats as in C.
+fflush(...) : flush an output file, as in C. returns as in C. Formats as in C.
+fopen(...) : open a file as a stream, as in C. returns as in C. Formats as in C.
+fclose(...) : close a stream, as in C. returns as in C. Formats as in C.
+fseek(...) : go to an offset in a file, as in C. returns as in C. Formats as in C.
+ftell(...) : get the current offset in a file, as in C. returns as in C. Formats as in C.
+rewind(...) : go to the beginning of a file, as in C. returns as in C. Formats as in C.
+
+write(...) : write to a file, as in Pascal. returns as in Pascal. Formats as in Pascal.
+writeln(...) : write to a file, as in Pascal. returns as in Pascal. Formats as in Pascal.
+read(...) : write to a file, as in Pascal. returns as in Pascal. Formats as in Pascal.
+readln(...) : write to a file, as in Pascal. returns as in Pascal. Formats as in Pascal.
+
+FUNCTION foo(...) {...} : define a function foo. () contains an exaustive list of the internal names of arguments, {} contains the function itself.
+VARIADIC foo(bar) {...} : define a function foo. bar is an array of arguments, {} contains the function itself.
+EXTERN foo(...) : define an external function that takes standard linkage.
+TYPE FOO bar : define a datatype FOO, whereas FOO is a literal string of case insensitive letters or underscores and bar is number between 0 and CPU maximum (assumed to be 64) specifying bit width which may be prefixed by a U or S to indicate signing, and may be followed by a * to denote repeating units
+FOO bar, quux, xyzzy : where FOO is a valid datatype, make variables bar, quux, and xyzzy that type
+UNDECLARE bar, quux, xyzzy : unlink the names bar, quux, and xyzzy from the address they point to. the values can still be retrieved with direct addressing methods.
+ARRAY foo[bar] {...} : make an array foo of size bar. More square brackets can be added as quux[xyzzy][plugh][waldo] to define a multi dimensional array.
+foo[bar][quux] : the quux-th element of the bar-th column of array foo
+STRUCT FOO {...} : create a structured datatype FOO with the keys named in {}.
+foo.bar : the field bar from the variable foo, where foo is a structure. foo.bar is not a valid variable name otherwise because of this syntax, use foo_bar.
+LLIST foo {...} : create a linked list of nodes with .data fields containing the values in {} in reverse order
+
+#include "/path/to/foo" : add the entire file foo here.
+#define foo bar : replace all regex foo with regex bar
+and so on as in the C preprocessor
+
+; : equivilant to new line
+EXIT : close the program immidiately
+
+math types noted below
+foo + bar : foo plus bar
+foo - bar : foo minus bar
+-foo : foo times -1
+foo * bar , foo × bar : foo times bar
+foo / bar , foo ÷ bar : foo over bar
+foo ^ bar , foo ** bar , foo ⋆ bar : foo to the power of bar
+foo ^^ bar : tertiation, foo raised to foo bar times
+foo % bar : foo modulus bar
+foo LOG bar , foo ⍟ bar : logarithem of bar to base foo
+foo ROOT bar , foo √ bar : foo root bar
+!foo : foo factorial
+¡foo : foo derangement
+foo nCr bar : combinations of foo elements from bar items
+foo nPr bar : permutations of foo elements from bar items
+
+elog(foo) : the natural logarithem of foo
+abs(foo) : absolute value of number foo. returns according to mathtypes
+cabs(foo) : the complex absolute value of foo.
+floor(foo) : floor of number foo, returns shortest int format possible
+ceiling(foo) : ceiling of number foo, returns shortest int format possible
+div(foo, bar) : divide int over bar. returns divtyp.
+elog(foo) : natural logarithem of foo
+sqrt(foo) : the square root of foo
+cbrt(foo) : the cube root of foo
+
+max(foo, bar...) : return the greatest value of numbers foo and bar. returns that number.
+min(foo, bar...) : return the least value of numbers foo and bar. returns that number.
+mean(foo, bar...) : find the adverage of numbers foo and bar. returns according to mathtypes
+median(foo, bar...) : find the median of a list of values. returns according to mathtypes
+mode(foo, bar) : find the mode of a list of values. returns according to mathtypes
+
+sin(foo) : the sine of foo, returns float
+cos(foo) : the cosine of foo, returns float
+tan(foo) : the tangent of foo, returns float
+cot(foo) : the cotangent of foo, returns float
+sec(foo) : the secant of foo, returns float
+csc(foo) : the cosecant of foo, returns float
+arcsin(foo) : the arcsine of foo, returns float
+arccos(foo) : the arccosine of foo, returns float
+arctan(foo) : the arctangent of foo, returns float
+arccot(foo) : the arccotangent of foo, returns float
+arcsec(foo) : the arcsecant of foo, returns float
+arccsc(foo) : the arccosecant of foo, returns float
+
+foo++ : foo + 1
+foo-- : foo - 1
+foo>> : barrel shift foo to the right by one (left on big endian systems)
+foo<< : barrel shift foo to the left by one (right on big endian systems)
+foo-> : shift foo to the right by one, drop excess (left on big endian systems)
+foo<- : shift foo to the left by one, drop excess (right on big endian systems)
+
+`foo : bitwise inverse of foo, returns result
+foo ∧ bar , foo AND bar , foo & bar : bitwise foo AND bar, returns result
+foo ∨ bar , foo OR bar , foo | bar : bitwise foo OR bar, returns result
+foo ⍲ bar , foo NAND bar : bitwise foo NAND bar, returns result
+foo ⍱ bar , foo NOR bar : bitwise foo NOR bar, returns result
+foo ⊕ bar , foo XOR bar : bitwise foo XOR bar, returns result
+foo ↔ bar , foo XNOR bar : bitwise foo XNOR bar, returns result
+foo >> bar , foo » bar : barrel shift foo to the right by bar (left on big endian systems), returns result
+foo << bar , foo « bar : barrel shift foo to the left by bar (right on big endian systems), returns result
+foo -> bar , foo → bar : shift foo to the right by bar, drop excess (left on big endian systems), returns result
+foo <- bar , foo ← bar : shift foo to the left by bar, drop excess (right on big endian systems), returns result
+
+¬foo , ~foo : logical NOT foo
+=foo : logical value of foo
+foo && bar : logical foo AND bar
+foo || bar : logical foo OR bar
+foo ~&& bar , foo ¬&& bar , foo !&& bar : logical foo NAND bar
+foo ~|| bar , foo ¬|| bar , foo !&& bar : logical foo NOR bar
+foo ~= bar , foo ¬= bar , foo != bar : logical foo XOR bar
+foo ⇔ bar , foo <> bar , foo IFF bar : logical foo XNOR bar
+
+foo ∈ bar , foo ELEMENT bar : test if array or linked list bar contains element foo, returns bool result
+foo ∪ bar , foo UNION bar : 1-dimensional union of arrays or linked list foo and bar, returns array
+foo ∩ bar , foo INTRSECT bar : 1-dimensional intersection of arrays or linked lists foo and bar, returns array
+foo ⊂ bar , foo SUBSET bar : test if array or linked list foo is a subset of bar, returns bool result
+foo ⊖ bar , foo DIFF bar : 1 dimensional symetric difference of arrays or linked lists foo and bar, returns array
+
+foo < bar , foo LT bar : test if foo is less than bar, returns bool result
+foo > bar , foo GT bar : test if foo is greater than bar, returns bool result
+foo ≤ bar , foo LE bar : test if foo is less than or equal to bar, returns bool result
+foo ≥ bar , foo GE bar : test if foo is greater than or equal to bar, returns bool result
+foo ≠ bar , foo NE bar : test if foo is not equal to bar, returns bool result
+foo = bar , foo EQ bar : test if foo is equal to bar, returns bool result
+foo ≈ bar , foo APROX bar : test if floor or ceiling of foo is equal to the floor or ceiling of bar
+foo ≡ bar , foo == bar : test bitwise foo matches bar, returns bool
+
+foo ¢ bar , foo CON bar : concatinate the anythings foo and bar, returns the resulting anything. may be an invalid type.
+
+strtok(foo, bar) : replace the character bar in string foo with a null character, return pointer to current position.
+regex(foo) : compile the regex foo and return the pattern
+match(foo, bar) : match all foo in string or array of strings bar, return output as a string or an array of strings
+substitute(foo, bar, quux) : substitute all foo for bar in quux, but return output
+NOTE: regular expression functions subject to change to make them more like Perl, Awk, and sed than C and C++
+
+rand(foo) : number between 0 and foo, returns number
+roll(foo, bar) : roll <foo>d<bar>, returns sum of sides
+deal(foo, bar) : deal bar sequential elements from array or linked list foo, returns array
+choose(foo) : choose 1 random element from array foo and return it
+shuffle(foo) : randomize array foo, return array.
+sort(foo) : sort array foo, return array.
+
+RETURN foo : make the containing function return foo. If you need return to evaluate something, put it in () like FOR, such as RETURN (foo + bar)
+RETURN void : does nothing, optimized out
+
+lambda(...) {...} : an anonymous function.
+
+type(foo) : returns the type of foo
+sizeof(foo) : returns the number of bits in anything foo
+isnumber(foo) : checks if foo is a number, returns bool
+float(foo) : convert int foo to a float
+dfloat(foo) : convert int or float foo to a double
+NOTE if you want a floating point number to be converted to an int type, you want the function floor(). remember this by the silly image of the float literaly floating, and you need it to be pulled down to the floor.
+
+tonumber(foo) : converts string foo to number by mathtypes
+atof(foo) : convert string foo to a double
+atoi(foo) : convert string foo to a word
+atol(foo) : convert string foo to a long
+
+tostring(printf_format, foo) : converts foo to a string
+toupper(foo) : convert the string foo to UPPERCASE
+tolower(foo) : convert the string foo to lowercase
+confuseables(foo) : remove all confuseables from string foo, according to the official confuseables.txt
+
+add(foo, bar, quux) : add foo to linked list bar at position quux
+remove(foo, bar) : remove node bar from linked list foo
+
+moveb(foo, bar) : move 1 byte from address bar to address foo and return the value moved. foo and bar can be an interger or an & adress
+movew(foo, bar) : move 2 bytes from address bar to address foo and return the value moved. foo and bar can be an interger or an & adress
+movel(foo, bar) : move 4 bytes from address bar to address foo and return the value moved. foo and bar can be an interger or an & adress
+zerofill(foo) : double the width of int foo by buffering it with zeros. return result. fails if sizeof(foo) is not a power of 2 greater than 8 and less than 33
+signfill(foo) : double the width of int foo by buffering it with signed fill. return result. fails if sizeof(foo) is not a power of 2 greater than 8 and less than 33
+assembly functions included for writing memory management functions that can be implementation independent.
+Final implementation will group non-byte datatypes into byte sized blocks.
+(i.e. 8 bools will grouped together to make a byte)
+(C can't do this, but this language as written, with disregard to back end, should be able to implement a compiler to do it.)
+
+functions for transfinites, base-60 numbers, and graphics deferred.
+
+Parseing
+--------
+comments, ?, and \ have the absolute highest priority.
+the double angle bracket quotes are the higest priority symbol besides comments. they, however, can override the default behavior of newlines and ; while those terminate a comment.
+quotes, single or double, come next.
+functions inside parenthases have the highest precedance of true operators
+prefix operators, in the order: number base sign, address signs, and then unary functions or -. a prefix of higher precedence cannot be placed after a prefix of lower precedence.
+structure dots are evaluated next
+normal functions (functions of the form foo() ) are next.
+infix mathmatical operators are next, then tests (set theory, then [in]equality, then bitwise, lastly logical);
+postfix operator assignments are evaluated next to last.
+assignments are evaluated last.
+
+functions such as return, {}, ;, newline, and control functions are evaluated differently. they control how other functions are evaluated.
+
+Mathmatical operators follow standard order of operations.
+logic and bitwise operators follow the order not, and, or, nand, nor, xor, xnor. not is actually considered a prefix or function.
+Operators other than assignments are evaluated left to right; assignment precedent is REVERSED OF THIS.
+
+SPECIAL VARIABLES
+-----------------
+
+OUTPUT : immediately print a string or datatype upon assignment, followed by newline.
+INPUT : gets an entire line from input.
+NULLDEV : a null device or bitbucket (not the type NULL or NIL). can be used in places where an address or pointer is expected. has the type NULL.
+ⅈ : √-1, for complex numbers
+ℯ : eulars number, double
+π : pi, double
+∞ : uncountable infinity. Implemented as part of floating point support currently, but could be implemented differently on systems without floating point support.
+true : bool of 1
+false : bool of 0
+
+OUTPUT and INPUT are inspired by Snobol4. They have their Pascal meanings in Pascal functions.
+
+formating
+---------
+
+§comment : if § occurs unescaped on a line, the rest of the line is ignored, or until ;
+
+numbers, where foo and bar are strings of digits 1234567890, as well as aAbBcCdDeEfF for hexadecimal
+foo : decimal
+$foo : hexadecimal
+%foo : binary
+-foo : negitive signed decimal
+@foo : octal
+foo.bar : float
+-foo.bar : negitive float
+
+there is no syntax defined for negitive binary, hexadecimal, or octal numbers
+
+Variable names should only consist of letters to prevent unexpected behavior.
+using high adress characters may cause an increse in application size
+
+The assignment operator is :=, as in algol or pascal
+
+"this is a string"
+
+'the raw value of the string'
+
+a newline or ; appearing before a string is closed will be interpreted as a literal newline or ; ,
+but will cause the parser to generate a warning about the virtues of escape sequences.
+a \ followed by whitespace or newline will tell you how to escape an escape character.
+
+?xxxx is the literal unicode character at hex address xxxx. can truncated or extended.
+
+FOR (foo) {this is a grouping}
+FOR (foo)
+{
+this is a multiline grouping
+}
+
+ARRAY foo[4] {this, is, an, array}
+
+ARRAY foo[2][3]
+{
+{this, is, a}
+{2, dimensional, array}
+}
+
+ARRAY foo[2][2][2]
+{
+{
+{this, is}
+{an, array}
+}
+{
+{that, contains}
+{three, dimensions}
+}
+}
+
+ARRAY foo[2][2] {{newlines, are}{not, required}}
+
+ARRAY foo[2][2][2] {neither, are, subgroupings, they, are, just, for, readability}
+
+escape character \
+special character shortcuts are as in C except as noted above.
+
+adressing
+---------
+
+&foo : the adress of foo
+¿foo : the AND mask of foo (in future implementations, a bool can be pointer acessed by =(*foo & ¿foo) )
+*foo : pointer to foo
+£foo : expand an array or linked list as a comma seperated list here (recursively).
+using & or * on a decimal, hexidecimal, binary, or octal interger will read the address as an unsigned number
+
+DATATYPES
+---------
+
+BOOL : 1 bit
+BYTE : 8 bits unspecified sign
+WORD : 16 bits unspecified sign
+LONG : 32 bits unspecified sign
+QUAD : 64 bits unspecified sign
+S_[BYTE|WORD|LONG|QUAD] : signed versions of above
+U_[BYTE|WORD|LONG|QUAD] : unsigned versions of above
+STRING : utf8 ansi-style string. multibyte characters are stored internaly as multiple characters.
+FLOAT : single precision float
+DOUBLE : double precision float
+ARRAY : array of anythings, can be multidimensional if rectangular/cuboid/hypercuboid. The zeroth element of an array is hidden, contains the size of the array in the smallest unsigned format, and is not included in the size declaration.
+LLIST : a doubly-linked list. implemented as a collection of nodes.
+NODE : a structure consisting of a pointer .prev, an anything .data, and a pointer .next
+TIMTYP : a structure for holding C style real times.
+CLKTYP : an int type for storing the elapsed time. for portability.
+DIVTYP : the result of div. a struct with fields numer and denom.
+PATTRN : a compiled regex
+D_TYPE : a utf-8 string 6 characters wide
+VOID : a nothing 0 bits wide
+NULL : a null type. Only used for compatibility, pointers default to (U_)BYTE $0.
+
+"detonation" in this document refers to a fatal crash
+int in this document refers to a byte, word, or long either signed or unsigned
+number in this document refers to an int, a float, or a double
+
+assigning a negitive or overflowing number to an int will not affect it, since the format is unspecified, so long as the number is within range
+assigning a negitive number to an unsigned int will detonate
+assigning a number to any int that is outside the range supported by that format will detonate
+assigning a value to a pointer should never fail, but may cause strange behavior
+
+math typing: int FOO single = single, [int | single] FOO double = double
+math typeing in current versions also does C-style interger promotions, and is spotty at best for parenthases functions. THIS IS A BUG (bug#0).
+operations dealing with bytes SHOULD not return a word or long unless the value overflows a byte.
+operations dealing in signed values SHOULD return a signed value unless the returned value is positive and too large to hold.
+all math functions should return the smallest length type possible, and use this type for calculation unless architecture makes this impractical.
+Strings and NULL SHOULD evaluate to Quiet_NaN in math fuctions. Strings refuse. this is also bug#0
+
+While the language may be initialy written for i686 and x86_64, it was concieved for the 68000.
+A backport for 680x0 will be made avalible for the first system whos calling conventions can be located and demystifyed.
+
+for now, datatype names are stored in a format that is restricted to 6 characters of the 1 byte subset of UTF-8.
+They will eventually be stored in a non-utf encoding to save space, such as PDP-11 RADIX 50
+
+C error strings should all be converted to a more consistant string of "NULL".
+
+DEFINEING FUNCTIONS
+-------------------
+
+a function can be defined as follows:
+
+FUNCTION foo(bar, quux)
+	{
+	if(bar < quux) {return bar}
+	else {return quux}
+	}
+
+this will make a function that returns the lesser of two numbers, bar and quux.
+Note there is no checking to see if bar or quux are numbers.
+If bar or quux are not numbers, the function will detonate.
+a function can return more than one type, hence it is not necessary to say what it's return type is like in C
+
+
+EXAMPLES
+--------
+mandatory hello world program.
+Unlike C, but like older languages and modern interpreted languages,
+there is no main function required. one could define a main function
+and call it at the end of the program, but this is unneccisary.
+It is recommended to have things defined before you use them, however. The compiler doesn't read that far ahead.
+
+Example 1:
+printf("Hello, World!\n")
+
+Example 2:
+OUTPUT := "Hello, World!"
+
+Note that all examples are only 1 line of code.
+note the second example also resembles Snobol4 code; this was the intent.
+
+BUILDING
+--------
+The source for the first alpha version is projected to need:
+- a POSIX shell
+- a Make utility
+- a Pascal compiler compatible with ISO Pascal
+- a C compiler, compatible with C89, C99, AND C11
+- a Fortran compiler compatible with FORTRAN 77
+- a C++ compiler, compatible with C++98 AND C++11
+- an Assembler
+- a Linker
+- a C preprocessor
+- Plex and Pyacc
+- flex|lex and yacc|bison
+- wget or curl (to ensure the most current unicode files)
+- an Awk interpreter (for processing the unicode files)
+
+To implement both the C and Pascal sides of the file, The current implementation is to "Volley" the file back and fourth between flex/lex and plex until no tokens remain.
+This is done by having both lexers switch to outputting a second source file that contains the functions destined for the other, while at the same time only returning an extern function token for their own language.
+This can be done recursively.
+
+future rewrites may also require
+- a lua interpreter/compiler
+- a Common Lisp compiler
+- a Perl Compiler
+- an M4 macro processor
+- Nonstandard libraries, such as Allegro, nCurses, or PortAudio
+
+
+Yes, this first alpha version is expected to be huge in size and have dozens of intermidiate object files. I expect it to get bigger, not smaller, as there is a 1:1 corraspondance between primary functions and object files.
+This is because the alpha version will be only the first and second step in a bootstrapping process, and the first revision of them at that.
+I do expect the final version of the bootstrapping process to gradually get smaller after the third iteration as external object files are rolled into a single file and optimized. I'm probably wrong.
+The use of the C preprocessor is not expected to change. It does everything I need it to.
+I don't forsee needing any other languages for the commands I've included, but I can forsee complications which may arise that could call for the ones in the second list. the two lists taken together covers most of my useful programming skills. amoungst the languages that I will definately NOT be including is Cobol.
+This language is designed for POSIX-compliant enviroments. Barring a signifigant change in policy by Microsoft, Windows support is unlikely to be feasible, but may be possible by extra-ordinary mesures (like compleatly reimplimenting everything about how unicode is implemented internaly).
+
+Primary functions
+-----------------
+A primary function is a function that is included in the first step of the bootstrapping process. CPP Macros don't count.
+Any built-in function that is not a function that is not a primary function is called a "secondary function", and can be implemented with primary functions.
+This language standard does not mandate that the functions are implemented in the languages specified; Ideally, they could all be reduced to a single language.
+Here is a list of how I implement built-ins in the first 2 iterations:
+
+function: 1st iteration , 2nd iteration
+
+wait() : ~ , native implementation
+time() : C  , native calling object
+clock() : C , native calling object
+IF (foo) {} : C , native calling object
+ELSE {} : C , native calling object
+WHILE (foo) {} : C , native calling object
+DOTIMES (foo) {} : C , native reimplimentation
+BREAK : parser , native parser
+GOTO (foo) : parser , native parser
+MAP (foo, bar) {} : C , native calling object
+¶foo : parser , native parser
+printf(...) : C , native calling object
+sprintf(...) : C , native calling object
+fprintf(...) : C , native calling object
+scanf(...) : C , native calling object
+sscanf(...) : C , native calling object
+fscanf(...) : C , native calling object
+fflush(...) : C , native calling object
+fopen(...) : C , native calling object
+fclose(...) : C , native calling object
+fseek(...) : C , native calling object
+ftell(...) : C , native calling object
+rewind(...) : C , native calling object
+write(...) : Pascal , native calling object
+writeln(...) : Pascal , native calling object
+read(...) : Pascal , native calling object
+readln(...) : Pascal , native calling object
+FUNCTION foo() {...} : C , native calling object
+VARIADIC foo(bar) {...} : C , native calling object
+EXTERN foo() : C , native calling object
+TYPE FOO bar : Pascal OR C , native calling object
+FOO bar, quux, xyzzy : C OR Pascal , native calling object
+UNDECLARE bar, quux, xyzzy : C , native calling object
+foo[bar][quux] : C , native calling object
+STRUCT FOO {...} : C , native calling object
+foo.bar : C , native calling object
+LLIST foo {...} : Pascal , native calling object
+EXIT : C , native calling object
+foo + bar : C , native calling object OR Fortran
+foo - bar : C , native calling object OR Fortran
+-foo : C , native calling object OR Fortran
+foo * bar , foo × bar : C , native calling object OR Fortran
+foo / bar , foo ÷ bar : C , native calling object OR Fortran
+foo ^ bar , foo ** bar , foo ⋆ bar : C , native calling object OR Fortran
+foo ^^ bar : C , native calling object OR Fortran
+foo % bar : C , native calling object OR Fortran
+foo LOG bar , foo ⍟ bar : C , native calling object OR Fortran
+foo ROOT bar , foo √ bar : C , native calling object OR Fortran
+!foo : C , native calling object OR Fortran
+¡foo : C , native calling object OR Fortran
+foo nCr bar : C , native calling object OR Fortran
+foo nPr bar : C , native calling object OR Fortran
+elog(foo) : C , native calling object OR Fortran
+abs(foo) : C , native calling object OR Fortran
+cabs(foo) : C , native calling object OR Fortran
+floor(foo) : C , native calling object OR Fortran
+ceiling(foo) : C , native calling object OR Fortran
+div(foo, bar) : C , native calling object OR Fortran
+sqrt(foo) : Pascal , native calling object OR Fortran
+cbrt(foo) : Pascal , native calling object OR Fortran
+max(foo, bar...) : C , native calling object OR Fortran
+min(foo, bar...) : C , native calling object OR Fortran
+mean(foo, bar...) : C , native calling object OR Fortran
+median(foo, bar...) : Pascal , native reimplimentation
+mode(foo, bar) : Pascal , native reimplimentation
+sin(foo) : C , native calling object OR Fortran
+cos(foo) : C , native calling object OR Fortran
+tan(foo) : C , native calling object OR Fortran
+cot(foo) : C , native calling object OR Fortran
+sec(foo) : C , native calling object OR Fortran
+csc(foo) : C , native calling object OR Fortran
+arcsin(foo) : C , native calling object OR Fortran
+arccos(foo) : C , native calling object OR Fortran
+arctan(foo) : C , native calling object OR Fortran
+arccot(foo) : C , native calling object OR Fortran
+arcsec(foo) : C , native calling object OR Fortran
+arccsc(foo) : C , native calling object OR Fortran
+foo++ : C calling Asm , native calling object
+foo-- : C calling Asm , native calling object
+foo>> : C calling Asm , native calling object
+foo<< : C calling Asm , native calling object
+foo-> : C calling Asm , native calling object
+foo<- : C calling Asm , native calling object
+`foo : C calling Asm , native calling object
+foo ∧ bar , foo AND bar , foo & bar : C , Native calling object or Asm
+foo ∨ bar , foo OR bar , foo | bar : C , Native calling object or Asm
+foo ⍲ bar , foo NAND bar : C , Native calling object or Asm
+foo ⍱ bar , foo NOR bar : C , Native calling object or Asm
+foo ⊕ bar , foo XOR bar : C , Native calling object or Asm
+foo ↔ bar , foo XNOR bar : C , Native calling object or Asm
+foo >> bar , foo » bar : C , Native calling object or Asm
+foo << bar , foo « bar : C , Native calling object or Asm
+foo -> bar , foo → bar : C , Native calling object or Asm
+foo <- bar , foo ← bar : C , Native calling object or Asm
+¬foo , ~foo : Pascal , Native calling object
+=foo : Pascal , Native calling object
+foo && bar : Pascal , Native calling object
+foo || bar : Pascal , Native calling object
+foo ~&& bar , foo ¬&& bar , foo !&& bar : Pascal , Native calling object
+foo ~|| bar , foo ¬|| bar , foo !&& bar : Pascal , Native calling object
+foo ~= bar , foo ¬= bar , foo != bar : Pascal , Native calling object
+foo ⇔ bar , foo <> bar , foo IFF bar : Pascal , Native calling object
+foo ∈ bar , foo ELEMENT bar : Pascal OR C , Native calling object
+foo ∪ bar , foo UNION bar : Pascal OR C , Native calling object
+foo ∩ bar , foo INTRSECT bar : Pascal OR C , Native calling object
+foo ⊂ bar , foo SUBSET bar : Pascal OR C , Native calling object
+foo ⊖ bar , foo DIFF bar : Pascal OR C , Native calling object
+foo < bar , foo LT bar : C , Native calling object
+foo > bar , foo GT bar : C , Native calling object
+foo ≤ bar , foo LE bar : C , Native calling object
+foo ≥ bar , foo GE bar : C , Native calling object
+foo ≠ bar , foo NE bar : C , Native calling object
+foo = bar , foo EQ bar : C , Native calling object
+foo ≈ bar , foo APROX bar : C , Native calling object
+foo ≡ bar , foo == bar : C , Native calling object
+foo ¢ bar , foo CON bar : C++ , Native calling object
+strtok(foo, bar) : C , native calling object
+regex(foo) : C++ , Native calling object
+match(foo, bar) : C++ , Native calling object
+substitute(foo, bar, quux) : C++ , Native calling object
+rand(foo) : C , Native calling object
+deal(foo, bar) : Pascal , native reimplementation
+shuffle(foo) : Pascal , native calling object
+sort(foo) : Pascal , native calling object
+RETURN foo : Kind of happens??? , native 	NOTE: fudging the returns is what un-types the language.
+lambda (...) {...} : C , native calling object
+type(foo) : C++ , native calling object
+sizeof(foo) : C , native calling object
+float(foo) : C , native calling object
+dfloat(foo) : C , native calling object
+minisize(foo) : Pascal calling C++ , native calling object
+atof(foo) : C , native calling object
+atoi(foo) : C , native calling object
+atol(foo) : C , native calling object
+tostring(printf_format, foo) : C , native calling object
+add(foo, bar, quux) : Pascal , native calling object
+remove(foo, bar) : Pascal , native calling object
+moveb(foo, bar) : Asm , native calling object
+movew(foo, bar) : Asm , native calling object
+movel(foo, bar) : Asm , native calling object
+zerofill(foo) : C calling Asm , native calling object
+signfill(foo) : C calling Asm , native calling object
+
+OUTPUT is implemented as a Pascal object using assignment to a file object and put.
+INPUT is implemented in a C object using fgets and sscanf.
+NULLDEV is implemented by the 2nd ineration parser, and 
+£foo is a very complicated parser macro that uses function prototype lookup to look up <arguments> number of array pointers.
+datatypes are otherwise implemented in Pascal.
+the adressing symbols are implemented as C objects.
+a garbage collector is a HIGH PRIORETY to-do, see bug#1.
+
+A modern byte-addressable B would make everything A LOT EASIER.
+
+PARSING (CONTINUED)
+-------------------
+
+a variable name may not contain any technical symbol. these include:
+' " ; [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + = ¶ × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡
+» « → ← ¬ ⇔ ∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ␣
+
+a variable name may not contain a number as the first character
+0 1 2 3 4 5 6 7 8 9
+
+a variable name may not overlap exactly with a special variable.
+OUTPUT INPUT NULLDEV ⅈ ℯ  π ∞ true false
+
+a variable name may not overlap with a function name.
+[set of all built-in functions]
+
+a function or variable in the first level of the bootstrapper may not have the form
+volly_[c|pascal]_########()
+The first level of the bootstrapper PRODUCES NO WARNINGS.
+
+a variable name may not contain an unprintable character [some stand-ins iterated]
+␀ ␁ ␂ ␃ ␄ ␅ ␆ ␇ ␈ ␉ ␊ ␋ ␌ ␍ ␎ ␏ ␐ ␑ ␒ ␓ ␔ ␕ ␖ ␗ ␘ ␙ ␚ ␛ ␜ ␝ ␞ ␟ ␠ ␡
+
+forbidden symbols will NEVER include:
+_ : ¦ · • ♠ ♡ ♢ ♣ ♤ ♥ ♦ ♧ ♔ ♕ ♖ ♗ ♘ ♙ ♚ ♛ ♜ ♝ ♞ ♟ [set of all unicode letters]
+
+Tokens are seperated by Whitespace. Whitespace can be specified manually at metacompilation time. By default, this includes:
+␠ ␉ ␣
+
+VERSION NUMBERS
+---------------
+major version : a number that represents the full version number
+minor version : the number of minor revisions since the last time the version number was changed
+revision : tiny revisions since last minor version
+documentation version : the version of the documentation for the minor version. appears as a letter (starting at a) following the full version number when the previous documentation for the same version was errornous, ommited otherwise.
+testbuild number : the sequential testbuild number
+testbuild date : the date of the testbuild
+
+format: Ver.major.minor[doc] #NUMBER DD-MM-YYYY
+
+BUG REPORTS
+-----------
+Number	Reporter	version			Status		Priority
+Description
+{
+Actions taken/planned				Result?		"IF NOT THEN"
+.						[waiting]	"IF NOT THEN"
+.						[waiting]	"IF NOT THEN"
+.						[waiting]	"IF NOT THEN"
+LAST RESORT mediocore solution			[waiting]
+ -or-
+HOTFIX	mediocore solution			[waiting]	"UNTIL"
+LONGFIX extraodinary measures			[waiting]
+}&{
+Actions for next part of issue.....
+
+bug#0	Author		0.1.10 0000000 00-00-0000	Deferred to alpha	Medium
+Mathtypes, Math error returns tied to C/Pascal standards.
+{
+Write assembly routines for each primitive function on each different size input...	lolnope
+Forth subroutines for math functions...	the fourth compiler I (and most prospect endusers) have cannot link to C	IF NOT THEN
+It would seem a standards compliant FORTRAN 77 compiler MUST have 8-bit capabilities....	Should work perfectly if fortran compiler is compliant. cast unsigned types up by 1 size, call C for floats, and always call minisize() when done.
+}&{
+String handling is a pascal-types issue. Can easily be handled with some typechecks in the second stage of bootstrap...	Partialy Depricated
+0.1.16 outlines the plans for the "Volley" type lexer, thus migrating a large portion, if not all, of the relavent code for the above string issue back to C. Will have to wait and see how this changes things	[waiting]
+}
+
+bug#1	Author		0.1.14 0000000 00-00-0000	Unconfirmed		CRITICAL
+Possible memory leak, Input buffers defined in C-side backing but not derefed after string is sent to Pascal-side.
+{
+It's too big and too spidery to know for sure...	[waiting]	IF NOT THEN
+rewrite C-side buffer allocating...	[waiting]
+}
