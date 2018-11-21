@@ -1,4 +1,4 @@
-My Language V0.1.19 0000000 00-00-0000
+My Language V0.1.20 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -49,14 +49,16 @@ fseek(...) : go to an offset in a file, as in C. returns as in C. Formats as in 
 ftell(...) : get the current offset in a file, as in C. returns as in C. Formats as in C.
 rewind(...) : go to the beginning of a file, as in C. returns as in C. Formats as in C.
 
+assign(foo, "/path/to/bar") : assign foo the real file bar
 write(...) : write to a file, as in Pascal. returns as in Pascal. Formats as in Pascal.
 writeln(...) : write to a file, as in Pascal. returns as in Pascal. Formats as in Pascal.
 read(...) : write to a file, as in Pascal. returns as in Pascal. Formats as in Pascal.
 readln(...) : write to a file, as in Pascal. returns as in Pascal. Formats as in Pascal.
-rewrite(...) : creates a file, as in Pascal. returns as in Pascal. Formats as in Pascal.
-reset(...) : opens a file at the beginning, as in Pascal. returns as in Pascal. Formats as in Pascal.
-append(...) : opens a file at the end, as in Pascal. returns as in Pascal. Formats as in Pascal.
-C files and Pascal files are not compatible. INPUT and OUTPUT have their pascal meanins as Stdin and Stdout inside pascal functions.
+rewrite(...) : create a file, as in Pascal. returns as in Pascal. Formats as in Pascal.
+reset(...) : open a file at the beginning, as in Pascal. returns as in Pascal. Formats as in Pascal.
+append(...) : open a file at the end, as in Pascal. returns as in Pascal. Formats as in Pascal.
+close(...) : close a file, as in Pascal. returns as in Pascal. Formats as in Pascal.
+INPUT and OUTPUT have their pascal meanings as Stdin and Stdout inside pascal functions.
 
 FUNCTION foo(...) {...} : define a function foo. () contains an exaustive list of the internal names of arguments, {} contains the function itself.
 VARIADIC foo(bar) {...} : define a function foo. bar is an array of arguments, {} contains the function itself.
@@ -338,6 +340,7 @@ STRING : utf8 ansi-style string. multibyte characters are stored internaly as mu
 FLOAT : single precision float
 DOUBLE : double precision float
 ARRAY : array of anythings, can be multidimensional if rectangular/cuboid/hypercuboid. The zeroth element of an array is hidden, contains the size of the array in the smallest unsigned format, and is not included in the size declaration.
+PFILE : a virtual Pascal-style file.
 LLIST : a doubly-linked list. implemented as a collection of nodes.
 NODE : a structure consisting of a pointer .prev, an anything .data, and a pointer .next
 TIMTYP : a structure for holding C style real times.
@@ -439,6 +442,9 @@ support for awk, sed, or perl style regexs
 Support for EBCDIC-APL, MAC-ROMAN, ISO-8859-1, SIXBIT, RADIX-50, and Baudot-Murrey
 
 a true interpreter (would not replace APL transpiler, but be a third implementation)
+full parody of file IO functions for APL transpiler
+runtime bytecode compatibility amoungst both|all implimentations
+the actual APL transpiler
 
 cross compilation and assembly-only implementation for Z80 embedded system design
 
@@ -512,10 +518,15 @@ fclose(...) : C , native calling object
 fseek(...) : C , native calling object
 ftell(...) : C , native calling object
 rewind(...) : C , native calling object
+assign(...) : Pascal , native calling object
 write(...) : Pascal , native calling object
 writeln(...) : Pascal , native calling object
 read(...) : Pascal , native calling object
 readln(...) : Pascal , native calling object
+rewrite(...) : Pascal , native calling object
+reset(...) : Pascal , native calling object
+append(...) : Pascal , native calling object
+close(...) : Pascal , native calling object
 FUNCTION foo() {...} : ~ , native parser calling native and C
 VARIADIC foo(bar) {...} : C , native calling object
 EXTERN foo() : C , native calling object
