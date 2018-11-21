@@ -664,7 +664,7 @@ a name may not contain a number as the first character
 0 1 2 3 4 5 6 7 8 9
 
 a name may not overlap exactly with a special variable.
-OUTPUT INPUT NOWHERE ⅈ ℯ  π ∞ true false
+OUTPUT INPUT NOWHERE ⅈ ℯ π ∞ true false
 
 a variable name and function name may not overlap.
 
