@@ -1,4 +1,4 @@
-My Language V0.1.20b 0000000 00-00-0000
+My Language V0.1.21 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -173,7 +173,6 @@ strtok(foo, bar) : replace the character bar in string foo with a null character
 regex(foo) : compile the regex foo and return the pattern
 match(foo, bar) : match all foo in string or array of strings bar, return output as a string or an array of strings
 substitute(foo, bar, quux) : substitute all foo for bar in quux, but return output
-NOTE: regular expression functions subject to change to make them more like Perl, Awk, and sed than C and C++
 
 rand(foo) : number between 0 and foo, returns number
 roll(foo, bar) : roll <foo>d<bar>, returns sum of sides
@@ -187,7 +186,7 @@ RETURN void : does nothing, optimized out
 
 lambda(...) {...} : an anonymous function.
 
-type(foo) : returns the type of foo. Usually uses the C++ name.
+typeof(foo) : returns the type of foo.
 sizeof(foo) : returns the number of bits in anything foo
 isnumber(foo) : checks if foo is a number, returns bool
 float(foo) : convert int foo to a float
@@ -337,17 +336,18 @@ QUAD : 64 bits unspecified sign
 S_[BYTE|WORD|LONG|QUAD] : signed versions of above
 U_[BYTE|WORD|LONG|QUAD] : unsigned versions of above
 STRING : utf8 ansi-style string. multibyte characters are stored internaly as multiple characters.
+RADIX : a PDP-11 Radix-50 string.
 FLOAT : single precision float
 DOUBLE : double precision float
-ARRAY : array of anythings, can be multidimensional if rectangular/cuboid/hypercuboid. The zeroth element of an array is hidden, contains the size of the array in the smallest unsigned format, and is not included in the size declaration.
+ARRAY : array of anythings, can be multidimensional if rectangular/cuboid/hypercuboid.
 P_FILE : a Pascal-style textfile
 C_FILE : a C-style file
 LLIST : a doubly-linked list. implemented as a collection of nodes.
 NODE : a structure consisting of a pointer .prev, an anything .data, and a pointer .next
-ENUMER : an enumerated type
 TIMTYP : a structure for holding C style real times.
 CLKTYP : an number type for storing the C-style elapsed time.
 DIVTYP : the result of div. a struct with fields numer and denom.
+TYPTYP : an enumerated type of all the basic types. 
 PATTRN : a compiled regex
 VOID : a nothing 0 bits wide
 
@@ -454,12 +454,12 @@ The source for the first alpha version is projected to need:
 - a Pascal compiler compatible with ISO Pascal
 - a C compiler, compatible with C89, C99, AND C11
 - a Fortran compiler compatible with FORTRAN 77
-- a C++ compiler, compatible with C++98 AND C++11
 - an Assembler
 - a Linker
 - a C preprocessor
 - Plex and Pyacc
 - flex|lex and yacc|bison
+- PCRE library
 - wget or curl (to ensure the most current unicode files)
 - an Awk interpreter (for processing the unicode files)
 
@@ -472,7 +472,6 @@ future rewrites may also require
 - a Common Lisp compiler
 - a Perl Compiler
 - an M4 macro processor
-- Nonstandard libraries, such as Allegro, nCurses, or PortAudio
 
 
 Yes, this first alpha version is expected to be huge in size and have dozens of intermidiate object files. I expect it to get bigger, not smaller, as there is a 1:1 corraspondance between primary functions and object files.
@@ -487,7 +486,7 @@ Primary functions
 A primary function is a function that is included in the first step of the bootstrapping process. CPP Macros don't count.
 Any built-in function that is not a function that is not a primary function is called a "secondary function", and can be implemented with primary functions.
 This language standard does not mandate that the functions are implemented in the languages specified; Ideally, they could all be reduced to a single language.
-Starting at iteration 3, I plan to implement both a Static Compiler and an APL transpiler.
+Starting at iteration 3, I plan to implement both a Static Compiler and an APL transpiler. Iteration 3 is also the first iteration to have all the built-ins.
 Here is a list of how I implement built-ins in the first 2 iterations:
 
 function: 1st iteration , 2nd iteration
@@ -588,10 +587,10 @@ foo ⍲ bar , foo NAND bar : C , Native calling object or Asm
 foo ⍱ bar , foo NOR bar : C , Native calling object or Asm
 foo ⊕ bar , foo XOR bar : C , Native calling object or Asm
 foo ↔ bar , foo XNOR bar : C , Native calling object or Asm
-foo >> bar , foo » bar : C , Native calling object or Asm
-foo << bar , foo « bar : C , Native calling object or Asm
-foo -> bar , foo → bar : C , Native calling object or Asm
-foo <- bar , foo ← bar : C , Native calling object or Asm
+foo >> bar , foo » bar : C , Native calling Asm
+foo << bar , foo « bar : C , Native calling Asm
+foo -> bar , foo → bar : C , Native calling Asm
+foo <- bar , foo ← bar : C , Native calling Asm
 ¬foo , ~foo : Pascal , Native calling object
 =foo : Pascal , Native calling object
 foo && bar : Pascal , Native calling object
@@ -634,6 +633,9 @@ atof(foo) : C , native calling object
 atoi(foo) : C , native calling object
 atol(foo) : C , native calling object
 tostring(printf_format, foo) : C , native
+toupper(foo) : ~ , native using UnicodeData.txt
+tolower(foo) : ~ , native using UnicodeData.txt
+confuseables(foo) : ~ , native using Confuseables.txt
 add(foo, bar, quux) : C , native calling object
 remove(foo, bar) : C , native calling object
 moveb(foo, bar) : Asm , native calling object
@@ -642,9 +644,42 @@ movel(foo, bar) : Asm , native calling object
 zerofill(foo) : C calling Asm , native calling object
 signfill(foo) : C calling Asm , native calling object
 
+Type implementation
+TYPE : C , Pascal [, Fortran]
+
+BOOL : char , boolean
+BYTE : unsigned char , byte
+WORD : unsigned short int , word
+LONG : unsigned long , longword
+QUAD : unsigned long long , qword
+S_BYTE : signed char , shortint , INTERGER*1
+S_WORD : short , smallint , INTERGER*2
+S_LONG : long , longint , INTERGER*4
+S_QUAD : long long , int64 , INTERGER*8
+BOOL : char , boolean
+BYTE : unsigned char , byte
+WORD : unsigned short int , word
+LONG : unsigned long , longword
+QUAD : unsigned long long , qword
+STRING : char * , string
+FLOAT : float , single
+DOUBLE : double , double
+ARRAY : void * , ~
+P_FILE : ~ , textfile
+C_FILE : FILE * , ~
+LLIST : <node structure> * , ~
+NODE : struct , record
+TIMTYP : time_t , record
+CLKTYP : clock_t , interger
+DIVTYP : div_t , record
+TYPTYP : unsigned long , ~
+PATTRN : ~ , ~ , ~ , basic_regex
+VOID : void , ~
+
+NOWHERE : NULL , nil , NULL
+
 OUTPUT is implemented as a Pascal call using the Output file and put. the put token is added by the C parser at the end of the line.
 INPUT is implemented in a C object using fgets and sscanf.
-NOWHERE is implemented in the first and second generation parsers by passing a bitbucket object, such as null C or nil pascal.
 *foo and &foo are C function calls
 £foo is a very complicated second iteration parser macro that uses function prototype lookup to get <arguments> number of array pointers.
 datatypes are otherwise implemented in Pascal.
@@ -664,7 +699,7 @@ a name may not contain a number as the first character
 0 1 2 3 4 5 6 7 8 9
 
 a name may not overlap exactly with a special variable.
-OUTPUT INPUT NOWHERE ⅈ ℯ π ∞ true false
+OUTPUT INPUT NOWHERE ⅈ ℯ  π ∞ true false
 
 a variable name and function name may not overlap.
 
@@ -746,10 +781,4 @@ bug#4	Author		0.1.18 0000000 00-00-0000	FIXED		High
 parser is going to choack on ELSE IF
 {
 Make a command ELSEIF
-}
-
-bug#5	Author		0.1.20 0000000 00-00-0000	Deferred	Low
-Type will return the C++ name of a type internaly
-{
-well, crap.
 }
