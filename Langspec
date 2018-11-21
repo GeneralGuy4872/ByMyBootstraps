@@ -1,4 +1,4 @@
-My Language V0.1.20 0000000 00-00-0000
+My Language V0.1.20a 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -187,7 +187,7 @@ RETURN void : does nothing, optimized out
 
 lambda(...) {...} : an anonymous function.
 
-type(foo) : returns the type of foo
+type(foo) : returns the type of foo. Usually uses the C++ name.
 sizeof(foo) : returns the number of bits in anything foo
 isnumber(foo) : checks if foo is a number, returns bool
 float(foo) : convert int foo to a float
@@ -243,7 +243,7 @@ SPECIAL VARIABLES
 
 OUTPUT : immediately print a string or datatype upon assignment, followed by newline.
 INPUT : gets an entire line from input.
-NOWHERE : a null device or bitbucket, implemented as a null pointer. can be used in places where an address or pointer is expected. has the type NULL.
+NOWHERE : a null device or bitbucket, implemented as a null pointer. can be used in places where an address or pointer is expected.
 ⅈ : √-1, for complex numbers
 ℯ : eulars number, double
 π : pi, double
@@ -340,21 +340,19 @@ STRING : utf8 ansi-style string. multibyte characters are stored internaly as mu
 FLOAT : single precision float
 DOUBLE : double precision float
 ARRAY : array of anythings, can be multidimensional if rectangular/cuboid/hypercuboid. The zeroth element of an array is hidden, contains the size of the array in the smallest unsigned format, and is not included in the size declaration.
-PFILE : a virtual Pascal-style file.
+P_FILE : a Pascal-style textfile
+C_FILE : a C-style file
 LLIST : a doubly-linked list. implemented as a collection of nodes.
 NODE : a structure consisting of a pointer .prev, an anything .data, and a pointer .next
 TIMTYP : a structure for holding C style real times.
-CLKTYP : an int type for storing the elapsed time. for portability.
+CLKTYP : an number type for storing the C-style elapsed time.
 DIVTYP : the result of div. a struct with fields numer and denom.
 PATTRN : a compiled regex
-D_TYPE : a utf-8 string 6 characters wide
 VOID : a nothing 0 bits wide
 
-the type of nowhere (the null/nil pointer) is BOOL, and it is false
-
 "detonation" in this document refers to a fatal crash
-int in this document refers to a byte, word, or long either signed or unsigned
-number in this document refers to an int, a float, or a double
+int in this document refers to a byte, word, long, or quad (either signed or unsigned), or clktyp
+number in this document refers to an int, a float, or double
 
 assigning a negitive or overflowing number to an int will not affect it, since the format is unspecified, so long as the number is within range
 assigning a negitive number to an unsigned int will detonate
@@ -366,15 +364,14 @@ math typeing in current versions also does C-style interger promotions, and is s
 operations dealing with bytes SHOULD not return a word or long unless the value overflows a byte.
 operations dealing in signed values SHOULD return a signed value unless the returned value is positive and too large to hold.
 all math functions should return the smallest length type possible, and use this type for calculation unless architecture makes this impractical.
-Strings and NULL SHOULD evaluate to Quiet_NaN in math fuctions. Strings refuse. this is also bug#0
+Strings and NOWHERE evaluate to Quiet_NaN in math fuctions.
+Non-empty strings evaluate as true if taken with =foo in logic functions. =NOWHERE evaluates as false.
 
-While the language may be initialy written for i686 and x86_64, it was concieved for the 68000.
+While the language may be initialy written for i686 and x86_64, it was concieved for the 68020+68881.
 A backport for 680x0 will be made avalible for the first system whos calling conventions can be located and demystifyed.
+a barebones embedded Z80 implementation for system design is also planned
 
-for now, datatype names are stored in a format that is restricted to 6 characters of the 1 byte subset of UTF-8.
-They will eventually be stored in a non-utf encoding to save space, such as PDP-11 RADIX 50
-
-C error strings should all be converted to a more consistant string of "NULL".
+Error strings should all be converted to a more consistant string of "NULL".
 
 DEFINEING FUNCTIONS
 -------------------
@@ -728,7 +725,7 @@ It's too big and too spidery to know for sure...	[waiting]	IF NOT THEN
 rewrite C-side buffer allocating...	[waiting]
 }
 
-bug#2	Author		0.1.17 0000000 00-00-0000	Working on it		CRITICAL
+bug#2	Author		0.1.17 0000000 00-00-0000	PATCHED		CRITICAL
 Functions are defined by a call. Niether C nor Pascal allow for multi-typed returns, and AFAIK niether do C++ or Fortran
 {
 Always have custom functions return void, and use a global variable to fake it...	see above about memory leaks
@@ -747,4 +744,10 @@ bug#4	Author		0.1.18 0000000 00-00-0000	FIXED		High
 parser is going to choack on ELSE IF
 {
 Make a command ELSEIF
+}
+
+bug#5	Author		0.1.20 0000000 00-00-0000	Deferred	Low
+Type will return the C++ name of a type internaly
+{
+well, crap.
 }
