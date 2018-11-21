@@ -1,4 +1,4 @@
-My Language V0.1.20a 0000000 00-00-0000
+My Language V0.1.20b 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -344,6 +344,7 @@ P_FILE : a Pascal-style textfile
 C_FILE : a C-style file
 LLIST : a doubly-linked list. implemented as a collection of nodes.
 NODE : a structure consisting of a pointer .prev, an anything .data, and a pointer .next
+ENUMER : an enumerated type
 TIMTYP : a structure for holding C style real times.
 CLKTYP : an number type for storing the C-style elapsed time.
 DIVTYP : the result of div. a struct with fields numer and denom.
@@ -533,7 +534,7 @@ UNDECLARE bar, quux, xyzzy : C , native calling object
 foo[bar][quux] : C , native calling object
 STRUCT FOO {...} : C , native calling object
 foo.bar : C , native calling object
-LLIST foo {...} : Pascal , native calling object
+LLIST foo {...} : C , native calling object
 EXIT : C , native calling object
 foo + bar : C , native calling object OR Fortran
 foo - bar : C , native calling object OR Fortran
@@ -560,8 +561,8 @@ cbrt(foo) : Pascal , native calling object OR Fortran
 max(foo, bar...) : C , native calling object OR Fortran
 min(foo, bar...) : C , native calling object OR Fortran
 mean(foo, bar...) : C , native calling object OR Fortran
-median(foo, bar...) : Pascal , native reimplimentation
-mode(foo, bar) : Pascal , native reimplimentation
+median(foo, bar...) : ~ , native
+mode(foo, bar) : ~ , native
 sin(foo) : C , native calling object OR Fortran
 cos(foo) : C , native calling object OR Fortran
 tan(foo) : C , native calling object OR Fortran
@@ -599,11 +600,11 @@ foo ~&& bar , foo ¬&& bar , foo !&& bar : Pascal , Native calling object
 foo ~|| bar , foo ¬|| bar , foo !&& bar : Pascal , Native calling object
 foo ~= bar , foo ¬= bar , foo != bar : Pascal , Native calling object
 foo ⇔ bar , foo <> bar , foo IFF bar : Pascal , Native calling object
-foo ∈ bar , foo ELEMENT bar : Pascal OR C , Native calling object
-foo ∪ bar , foo UNION bar : Pascal OR C , Native calling object
-foo ∩ bar , foo INTRSECT bar : Pascal OR C , Native calling object
-foo ⊂ bar , foo SUBSET bar : Pascal OR C , Native calling object
-foo ⊖ bar , foo DIFF bar : Pascal OR C , Native calling object
+foo ∈ bar , foo ELEMENT bar : C , Native calling object
+foo ∪ bar , foo UNION bar : C , Native calling object
+foo ∩ bar , foo INTRSECT bar : C , Native calling object
+foo ⊂ bar , foo SUBSET bar : C , Native calling object
+foo ⊖ bar , foo DIFF bar : C , Native calling object
 foo < bar , foo LT bar : C , Native calling object
 foo > bar , foo GT bar : C , Native calling object
 foo ≤ bar , foo LE bar : C , Native calling object
@@ -618,9 +619,10 @@ regex(foo) : C++ , Native calling object
 match(foo, bar) : C++ , Native calling object
 substitute(foo, bar, quux) : C++ , Native calling object
 rand(foo) : C , Native calling object
-deal(foo, bar) : Pascal , native reimplementation
-shuffle(foo) : Pascal , native calling object
-sort(foo) : Pascal , native calling object
+roll(foo, bar) : ~ , Native
+deal(foo, bar) : C , native calling object
+shuffle(foo) : ~ , native
+sort(foo) : ~ , native
 RETURN foo : ~ , native parser calling native and C
 lambda (...) {...} : ~ , native
 type(foo) : C++ , native calling object
@@ -632,8 +634,8 @@ atof(foo) : C , native calling object
 atoi(foo) : C , native calling object
 atol(foo) : C , native calling object
 tostring(printf_format, foo) : C , native
-add(foo, bar, quux) : Pascal , native calling object
-remove(foo, bar) : Pascal , native calling object
+add(foo, bar, quux) : C , native calling object
+remove(foo, bar) : C , native calling object
 moveb(foo, bar) : Asm , native calling object
 movew(foo, bar) : Asm , native calling object
 movel(foo, bar) : Asm , native calling object
