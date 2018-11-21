@@ -446,6 +446,8 @@ the actual APL transpiler
 
 cross compilation and assembly-only implementation for Z80 embedded system design
 
+Compilation from C and C++ alone
+
 BUILDING
 --------
 The source for the first alpha version is projected to need:
@@ -688,8 +690,6 @@ a garbage collector is a HIGH PRIORETY to-do, see bug#1.
 
 PARSING (CONTINUED)
 -------------------
-
-The c return type of all custom functions in the first level parser is a void pointer. This is fixed in the second level parser.
 
 a name may not contain any technical symbol. these include:
 ' " ; [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + = ¶ × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡
