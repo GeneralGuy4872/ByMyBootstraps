@@ -1,4 +1,4 @@
-My Language V0.2.0 0000000 00-00-0000
+My Language V0.2.1 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -29,6 +29,7 @@ IF (foo) {} : if foo is true, do the function enclosed in {}.
 ELSE {} : if the function if fails, do the function enclosed in {}.
 ELSEIF (foo) {} : single-tier version of ELSE {IF (foo) {}}
 WHILE (foo) {} : loop the function enclosed in {} until foo is false.
+UNTIL (foo) {} : loop the function enclosed in {} until foo is true.
 BREAK : immediately exit the current loop
 GOTO (foo) : go to label foo. NOTE: there is no return function. putting a goto inside a function declaration can screw up your control flow.
 DOTIMES (foo) {} : do whatever is in {} foo times. if foo is a float, rounds down. if foo is infinity, you're trying too hard.
@@ -42,7 +43,6 @@ fprintf(...) : append a formatted value to file, as in C. returns as in C. Forma
 scanf(...) : get a value matching format from stdin, as in C. returns as in C. Formats as in C.
 sscanf(...) : get a value matching format from a string, as in C. returns as in C. Formats as in C.
 fscanf(...) : get a value matching format from file, as in C. returns as in C. Formats as in C.
-fgets(...) : get a line from a file, as in C. returns without the newline. Formats as in C.
 fflush(...) : flush an output file, as in C. returns as in C. Formats as in C.
 fopen(...) : open a file as a stream, as in C. returns as in C. Formats as in C.
 fclose(...) : close a stream, as in C. returns as in C. Formats as in C.
@@ -51,14 +51,15 @@ ftell(...) : get the current offset in a file, as in C. returns as in C. Formats
 rewind(...) : go to the beginning of a file, as in C. returns as in C. Formats as in C.
 write(foo, ...) : write the strings or variables to file foo, similar to Pascal. convert formats automaticaly.
 writeln(foo, ...) : write the strings or variables to file foo and append a newline, similar to Pascal. convert formats automaticaly.
-read(foo, ...) : read the next field from an istrem, similar to Pascal. foo is the file, subsequent arguments are variables.
-readln(foo, ...) : read a line from an istrem and assign fields in order, similar to Pascal. foo is a file, subsequent fields are variables.
+read(foo, ...) : read the next field from a file, similar to Pascal. foo is the file, subsequent arguments are variables.
+readln(foo, ...) : read a line from a file and assign fields in order, similar to Pascal. foo is a file, subsequent fields are variables.
 
 FUNCTION foo(...) {...} : define a function foo. () contains an exaustive list of the internal names of arguments, {} contains the function itself.
 VARIADIC foo(bar) {...} : define a function foo. bar is an array of arguments, {} contains the function itself.
 EXTERN foo(...) : define an external function that takes standard linkage.
 TYPE FOO bar : define a datatype FOO, whereas FOO is a literal string of case insensitive letters or underscores and bar is number between 0 and CPU maximum (assumed to be 64) specifying bit width which may be prefixed by a U or S to indicate signing, and may be followed by a * to denote repeating units
 FOO bar, quux, xyzzy : where FOO is a valid datatype, make variables bar, quux, and xyzzy that type
+GLOBAL FOO bar, quux, xyzzy : where FOO is a valid datatype, make global variables bar, quux, and xyzzy that type
 UNDECLARE bar, quux, xyzzy : unlink the names bar, quux, and xyzzy from the address they point to. the values can still be retrieved with direct addressing methods.
 ARRAY foo[bar] {...} : make an array foo of size bar. More square brackets can be added as quux[xyzzy][plugh][waldo] to define a multi dimensional array.
 foo[bar][quux] : the quux-th element of the bar-th column of array foo
@@ -70,7 +71,7 @@ LLIST foo {...} : create a linked list of nodes with .data fields containing the
 #define foo bar : replace all regex foo with regex bar
 and so on as in the C preprocessor
 
-; : equivilant to new line
+; , ⏎ : equivilant to new line
 EXIT : close the program immidiately
 
 math types noted below
@@ -180,7 +181,7 @@ RETURN void : does nothing, optimized out
 
 lambda(...) {...} : an anonymous function.
 
-typeof(foo) : returns the type of foo.
+typeid(foo) : returns the type of foo.
 sizeof(foo) : returns the number of bits in anything foo
 isnumber(foo) : checks if foo is a number, returns bool
 float(foo) : convert int foo to a float
@@ -240,12 +241,13 @@ cout : the C++-style output file
 cin : the C++-style input file
 cerr : the C++-style error file
 clog : the C++-style logging file
+endln : C++ newline
 NULL : a null file or bitbucket, implemented as a null pointer.
 ⅈ : √-1, for complex numbers
 ℯ : eulars number, double
 π : pi, double
-∞ : uncountable infinity. Implemented as part of floating point support currently, but could be implemented differently on systems without floating point support.
-� : Not a Number (quiet) (literal U+FFFD)
+∞ : infinity macro
+� : quiet Not a Number macro (literal U+FFFD)
 true : bool of 1
 false : bool of 0
 
@@ -277,11 +279,9 @@ An insertion operator, :<, and extraction operator, :>, are also avalible
 
 'the raw value of the string'
 
-a newline or ; appearing before a string is closed will be interpreted as a literal newline or ; ,
+a newline, ; or ⏎ appearing before a string is closed will be interpreted as a newline,
 but will cause the parser to generate a warning about the virtues of escape sequences.
-a \ followed by whitespace or newline will tell you how to escape an escape character.
-
-?xxxx is the literal unicode character at hex address xxxx. can truncated or extended.
+a \ followed by whitespace or newline will generate a warning telling you how to properly escape an escape character.
 
 FOR (foo) {this is a grouping}
 FOR (foo)
@@ -320,15 +320,16 @@ adressing
 ---------
 
 &foo : the adress of foo
-¿foo : the AND mask of foo (in future implementations, a bool can be pointer acessed by =(*foo & ¿foo) )
 *foo : pointer to foo
+?foo : a pointer that indicates the type of foo
+¿foo : the recursive definition of foo
 £foo : expand an array or linked list as a comma seperated list here (recursively).
 using & or * on a decimal, hexidecimal, binary, or octal interger will read the address as an unsigned number
 
 DATATYPES
 ---------
 
-BOOL : 1 bit
+BOOL : 1 bit <currently implementation dependent>
 BYTE : 8 bits unspecified sign
 WORD : 16 bits unspecified sign
 LONG : 32 bits unspecified sign
@@ -404,10 +405,12 @@ Example 1:
 printf("Hello, World!\n")
 
 Example 2:
-OUTPUT := "Hello, World!"
+cout :< "Hello, World!" ¢ endln
+
+Example 3:
+writeln(cout, "Hello, World!")
 
 Note that all examples are only 1 line of code.
-note the second example also resembles Snobol4 code; this was the intent.
 
 Deferred fetures
 ----------------
@@ -438,7 +441,8 @@ Support for Octal pairs and the ability to store 4 of them in 3 byte groups
 
 support for awk, sed, or perl style regexs
 
-Support for EBCDIC-APL, MAC-ROMAN, ISO-8859-1, SIXBIT, RADIX-50, and Baudot-Murrey
+Support for Q8.8, Q16.16, and Q32.32 numbers
+Support for EBCDIC-APL, MAC-ROMAN, ISO-8859-1
 
 a true interpreter (would not replace APL transpiler, but be a third implementation)
 full parody of file IO functions for APL transpiler
@@ -457,7 +461,6 @@ The source for the first alpha version is projected to need:
 - a Linker
 - a C preprocessor
 - flex|lex and yacc|bison
-- PCRE library
 - wget or curl (to ensure the most current unicode files)
 - an Awk interpreter (for processing the unicode files)
 
@@ -493,6 +496,7 @@ IF (foo) {} : C , native calling object
 ELSE {} : C , native calling object
 ELSEIF (foo) {} : C , native calling object
 WHILE (foo) {} : C , native calling object
+UNTIL (foo) {} : C , native calling object
 DOTIMES (foo) {} : C , native reimplimentation
 BREAK : parser , native parser
 GOTO (foo) : parser , native parser
@@ -519,7 +523,8 @@ FUNCTION foo() {...} : ~ , native parser calling native and C
 VARIADIC foo(bar) {...} : C , native calling object
 EXTERN foo() : C , native calling object
 TYPE FOO bar : C , native calling object
-FOO bar, quux, xyzzy : C OR Pascal , native calling object
+FOO bar, quux, xyzzy : C , native calling object
+GLOBAL FOO bar, quux, xyzzy : C , native calling object
 UNDECLARE bar, quux, xyzzy : C , native calling object
 foo[bar][quux] : C , native calling object
 STRUCT FOO {...} : C , native calling object
@@ -603,7 +608,7 @@ foo ≠ bar , foo NE bar : C , Native calling object
 foo = bar , foo EQ bar : C , Native calling object
 foo ≈ bar , foo APROX bar : C , Native calling object
 foo ≡ bar , foo == bar : C , Native calling object
-foo ¢ bar , foo CON bar : C++ , Native calling object
+foo ¢ bar , foo CON bar : C , Native calling object
 strtok(foo, bar) : C , native calling object
 regex(foo) : C++ , Native calling object
 match(foo, bar) : C++ , Native calling object
@@ -615,7 +620,6 @@ shuffle(foo) : ~ , native
 sort(foo) : ~ , native
 RETURN foo : ~ , native parser calling native and C
 lambda (...) {...} : ~ , native
-type(foo) : C++ , native calling object
 sizeof(foo) : C , native calling object
 float(foo) : C , native calling object
 dfloat(foo) : C , native calling object
@@ -654,37 +658,40 @@ NULL : C , native calling object
 true : C calling asm , native calling asm
 false : C , native calling object
 
-BOOL : C
-BYTE : C
-WORD : C
-LONG : C
-QUAD : C
-S_BYTE : C
-S_WORD : C
-S_LONG : C
-S_QUAD : C
-U_BYTE : C
-U_WORD : C
-U_LONG : C
-U_QUAD : C
-STRING : C
-FLOAT : C/C++
-DOUBLE : C/C++
-ARRAY : C
-FILE : C
-ISTREM : C++
-OSTREM : C++
-LLIST : C
-NODE : C
-TIMTYP : C
-CLKTYP : C
-DIVTYP : C
-TYPTYP : C/C++ 
-PATTRN : C++
-VOID : C
-* : C
-& : C
-£ : Parser
+BOOL : C, char
+BYTE : C, unsigned char * [1]
+WORD : C, unsigned short * [1]
+LONG : C, unsigned long * [1]
+QUAD : C, unsigned long long * [1]
+S_BYTE : C, signed char
+S_WORD : C, short
+S_LONG : C, long
+S_QUAD : C, long long
+U_BYTE : C, unsigned char
+U_WORD : C, unsigned short
+U_LONG : C, unsigned long
+U_QUAD : C, unsigned long long
+STRING : C, char *
+FLOAT : C, float
+DOUBLE : C, double
+ARRAY : C, void * [][]...
+FILE : C, FILE
+ISTREM : C++, istream
+OSTREM : C++, ostream
+LLIST : C, struct * []
+NODE : C, struct {* struct, * void, * struct}
+TIMTYP : C, time_t
+CLKTYP : C, clock_t
+DIVTYP : C, div_t
+TYPTYP : C, struct {char[6], * struct}
+PATTRN : C++, basic_regex
+VOID : C, void
+
+* : C, *foo
+& : C, &foo
+£ : Parser, <to complicated to explain briefly>
+? : C, type_of_foo.typename
+¿ : C, UNTIL (type_of_foo.parent.typename ≡ type_of_foo.typename) {type_of_foo := type_of_foo
 
 a garbage collector is a HIGH PRIORETY to-do, see bug#1.
 
@@ -693,7 +700,7 @@ PARSING (CONTINUED)
 
 a name may not contain any technical symbol. these include:
 ' " ; [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + = ¶ × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡
-» « → ← ¬ ⇔ ∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ␣
+» « → ← ¬ ⇔ ∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ £ ¿ ⏎ ↹ ␣ ⍽ <all en spaces> <all em spaces>
 
 a name may not contain a number as the first character
 0 1 2 3 4 5 6 7 8 9
@@ -701,16 +708,26 @@ a name may not contain a number as the first character
 a name may not overlap exactly with a special variable.
 OUTPUT INPUT NOWHERE ⅈ ℯ  π ∞ true false
 
-a variable name and function name may not overlap.
+The compiler automatically generates a type tree and associated variables for each variable. They follow the form:
+type_of_[variablename]
+Be mindful of these when naming your variables, as collisions will screw up type checking
+these are always structures of typtyp
 
 a variable name may not contain an unprintable character [some stand-ins iterated]
 ␀ ␁ ␂ ␃ ␄ ␅ ␆ ␇ ␈ ␉ ␊ ␋ ␌ ␍ ␎ ␏ ␐ ␑ ␒ ␓ ␔ ␕ ␖ ␗ ␘ ␙ ␚ ␛ ␜ ␝ ␞ ␟ ␠ ␡
 
 forbidden symbols will NEVER include:
-_ : ¦ · • ♠ ♡ ♢ ♣ ♤ ♥ ♦ ♧ ♔ ♕ ♖ ♗ ♘ ♙ ♚ ♛ ♜ ♝ ♞ ♟ [set of all unicode letters]
+_ : ¦ · • ♠ ♡ ♢ ♣ ♤ ♥ ♦ ♧ ♔ ♕ ♖ ♗ ♘ ♙ ♚ ♛ ♜ ♝ ♞ ♟ ː ˑ ⫶ [set of all unicode letters]
 
-Tokens are seperated by Whitespace. Whitespace can be specified manually at metacompilation time. By default, this includes:
-␠ ␉ ␣
+Tokens are seperated by "Whitespace". This does not follow the standard unicode definition of "Whitespace".
+Whitespace can be specified manually at metacompilation time. By default, this includes:
+␠ ␉ ↹ ␣ ⍽ <all en spaces> <all em spaces>
+
+Lines are seperated by specially defined characters. This can be chosen, too. by default, this includes:
+␊ ␍ ␋ ; ⏎
+
+TYPE TREE
+the type tree contains the names of all types. any user defined types are automatically added to the type tree.
 
 VERSION NUMBERS
 ---------------
