@@ -1,4 +1,4 @@
-My Language V0.2.1 0000000 00-00-0000
+My Language V0.2.1a 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -456,12 +456,14 @@ BUILDING
 The source for the first alpha version is projected to need:
 - a POSIX shell
 - a Make utility
-- a C compiler, compatible with C89, C99, AND C11
+- a C compiler
+- a C++ compiler
+- a C preprocessor that can be called independently
 - an Assembler
 - a Linker
-- a C preprocessor
-- flex|lex and yacc|bison
-- wget or curl (to ensure the most current unicode files)
+- flex or lex
+- yacc or bison
+- curl (to ensure the most current unicode files)
 - an Awk interpreter (for processing the unicode files)
 
 To implement both the C and Pascal sides of the file, The current implementation is to "Volley" the file back and fourth between flex/lex and plex until no tokens remain.
