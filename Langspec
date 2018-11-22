@@ -1,4 +1,4 @@
-My Language V0.1.21 0000000 00-00-0000
+My Language V0.2.0 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -42,23 +42,17 @@ fprintf(...) : append a formatted value to file, as in C. returns as in C. Forma
 scanf(...) : get a value matching format from stdin, as in C. returns as in C. Formats as in C.
 sscanf(...) : get a value matching format from a string, as in C. returns as in C. Formats as in C.
 fscanf(...) : get a value matching format from file, as in C. returns as in C. Formats as in C.
+fgets(...) : get a line from a file, as in C. returns without the newline. Formats as in C.
 fflush(...) : flush an output file, as in C. returns as in C. Formats as in C.
 fopen(...) : open a file as a stream, as in C. returns as in C. Formats as in C.
 fclose(...) : close a stream, as in C. returns as in C. Formats as in C.
 fseek(...) : go to an offset in a file, as in C. returns as in C. Formats as in C.
 ftell(...) : get the current offset in a file, as in C. returns as in C. Formats as in C.
 rewind(...) : go to the beginning of a file, as in C. returns as in C. Formats as in C.
-
-assign(foo, "/path/to/bar") : assign foo the real file bar
-write(...) : write to a file, as in Pascal. returns as in Pascal. Formats as in Pascal.
-writeln(...) : write to a file, as in Pascal. returns as in Pascal. Formats as in Pascal.
-read(...) : write to a file, as in Pascal. returns as in Pascal. Formats as in Pascal.
-readln(...) : write to a file, as in Pascal. returns as in Pascal. Formats as in Pascal.
-rewrite(...) : create a file, as in Pascal. returns as in Pascal. Formats as in Pascal.
-reset(...) : open a file at the beginning, as in Pascal. returns as in Pascal. Formats as in Pascal.
-append(...) : open a file at the end, as in Pascal. returns as in Pascal. Formats as in Pascal.
-close(...) : close a file, as in Pascal. returns as in Pascal. Formats as in Pascal.
-INPUT and OUTPUT have their pascal meanings as Stdin and Stdout inside pascal functions.
+write(foo, ...) : write the strings or variables to file foo, similar to Pascal. convert formats automaticaly.
+writeln(foo, ...) : write the strings or variables to file foo and append a newline, similar to Pascal. convert formats automaticaly.
+read(foo, ...) : read the next field from an istrem, similar to Pascal. foo is the file, subsequent arguments are variables.
+readln(foo, ...) : read a line from an istrem and assign fields in order, similar to Pascal. foo is a file, subsequent fields are variables.
 
 FUNCTION foo(...) {...} : define a function foo. () contains an exaustive list of the internal names of arguments, {} contains the function itself.
 VARIADIC foo(bar) {...} : define a function foo. bar is an array of arguments, {} contains the function itself.
@@ -229,7 +223,7 @@ structure dots are evaluated next
 normal functions (functions of the form foo() ) are next.
 infix mathmatical operators are next, then tests (set theory, then [in]equality, then bitwise, lastly logical);
 postfix operator assignments are evaluated next to last.
-assignments are evaluated last.
+assignments, extraction, and insertion are evaluated last.
 
 functions such as return, {}, ;, newline, and control functions are evaluated differently. they control how other functions are evaluated.
 
@@ -239,18 +233,23 @@ Operators other than assignments are evaluated left to right; assignment precede
 
 SPECIAL VARIABLES
 -----------------
-
-OUTPUT : immediately print a string or datatype upon assignment, followed by newline.
-INPUT : gets an entire line from input.
-NOWHERE : a null device or bitbucket, implemented as a null pointer. can be used in places where an address or pointer is expected.
+stdout : the C-style output file
+stdin : the C-style input file
+stderr : the C-style error file
+cout : the C++-style output file
+cin : the C++-style input file
+cerr : the C++-style error file
+clog : the C++-style logging file
+NULL : a null file or bitbucket, implemented as a null pointer.
 ⅈ : √-1, for complex numbers
 ℯ : eulars number, double
 π : pi, double
 ∞ : uncountable infinity. Implemented as part of floating point support currently, but could be implemented differently on systems without floating point support.
+� : Not a Number (quiet) (literal U+FFFD)
 true : bool of 1
 false : bool of 0
 
-OUTPUT and INPUT are inspired by Snobol4. They have their Pascal meanings as Stdin and Stdout in Pascal functions.
+OUTPUT and INPUT are inspired by Snobol4.
 
 formating
 ---------
@@ -272,6 +271,7 @@ Variable names should only consist of letters to prevent unexpected behavior.
 using high adress characters may cause an increse in application size
 
 The assignment operator is :=, as in algol or pascal
+An insertion operator, :<, and extraction operator, :>, are also avalible
 
 "this is a string"
 
@@ -340,8 +340,9 @@ RADIX : a PDP-11 Radix-50 string.
 FLOAT : single precision float
 DOUBLE : double precision float
 ARRAY : array of anythings, can be multidimensional if rectangular/cuboid/hypercuboid.
-P_FILE : a Pascal-style textfile
-C_FILE : a C-style file
+FILE : a C-style file
+ISTREM : a C++ style input stream
+OSTREM : a C++ style output stream
 LLIST : a doubly-linked list. implemented as a collection of nodes.
 NODE : a structure consisting of a pointer .prev, an anything .data, and a pointer .next
 TIMTYP : a structure for holding C style real times.
@@ -446,20 +447,15 @@ the actual APL transpiler
 
 cross compilation and assembly-only implementation for Z80 embedded system design
 
-Compilation from C and C++ alone
-
 BUILDING
 --------
 The source for the first alpha version is projected to need:
 - a POSIX shell
 - a Make utility
-- a Pascal compiler compatible with ISO Pascal
 - a C compiler, compatible with C89, C99, AND C11
-- a Fortran compiler compatible with FORTRAN 77
 - an Assembler
 - a Linker
 - a C preprocessor
-- Plex and Pyacc
 - flex|lex and yacc|bison
 - PCRE library
 - wget or curl (to ensure the most current unicode files)
@@ -470,9 +466,6 @@ This is done by having both lexers switch to outputting a second source file tha
 This can be done recursively.
 
 future rewrites may also require
-- a lua interpreter/compiler
-- a Common Lisp compiler
-- a Perl Compiler
 - an M4 macro processor
 
 
@@ -517,19 +510,15 @@ fclose(...) : C , native calling object
 fseek(...) : C , native calling object
 ftell(...) : C , native calling object
 rewind(...) : C , native calling object
-assign(...) : Pascal , native calling object
-write(...) : Pascal , native calling object
-writeln(...) : Pascal , native calling object
-read(...) : Pascal , native calling object
-readln(...) : Pascal , native calling object
-rewrite(...) : Pascal , native calling object
-reset(...) : Pascal , native calling object
-append(...) : Pascal , native calling object
-close(...) : Pascal , native calling object
+assign(...) : C , native calling object
+write(...) : C , native calling object
+writeln(...) : C , native calling object
+read(...) : C , native calling object
+readln(...) : C , native calling object
 FUNCTION foo() {...} : ~ , native parser calling native and C
 VARIADIC foo(bar) {...} : C , native calling object
 EXTERN foo() : C , native calling object
-TYPE FOO bar : Pascal OR C , native calling object
+TYPE FOO bar : C , native calling object
 FOO bar, quux, xyzzy : C OR Pascal , native calling object
 UNDECLARE bar, quux, xyzzy : C , native calling object
 foo[bar][quux] : C , native calling object
@@ -593,14 +582,14 @@ foo >> bar , foo » bar : C , Native calling Asm
 foo << bar , foo « bar : C , Native calling Asm
 foo -> bar , foo → bar : C , Native calling Asm
 foo <- bar , foo ← bar : C , Native calling Asm
-¬foo , ~foo : Pascal , Native calling object
-=foo : Pascal , Native calling object
-foo && bar : Pascal , Native calling object
-foo || bar : Pascal , Native calling object
-foo ~&& bar , foo ¬&& bar , foo !&& bar : Pascal , Native calling object
-foo ~|| bar , foo ¬|| bar , foo !&& bar : Pascal , Native calling object
-foo ~= bar , foo ¬= bar , foo != bar : Pascal , Native calling object
-foo ⇔ bar , foo <> bar , foo IFF bar : Pascal , Native calling object
+¬foo , ~foo : C , Native calling object
+=foo : C , Native calling object
+foo && bar : C , Native calling object
+foo || bar : C , Native calling object
+foo ~&& bar , foo ¬&& bar , foo !&& bar : C , Native calling object
+foo ~|| bar , foo ¬|| bar , foo !&& bar : C , Native calling object
+foo ~= bar , foo ¬= bar , foo != bar : C , Native calling object
+foo ⇔ bar , foo <> bar , foo IFF bar : C , Native calling object
 foo ∈ bar , foo ELEMENT bar : C , Native calling object
 foo ∪ bar , foo UNION bar : C , Native calling object
 foo ∩ bar , foo INTRSECT bar : C , Native calling object
@@ -645,47 +634,58 @@ movew(foo, bar) : Asm , native calling object
 movel(foo, bar) : Asm , native calling object
 zerofill(foo) : C calling Asm , native calling object
 signfill(foo) : C calling Asm , native calling object
+:= : C , native calling object
+:< : C++ , native calling object
+:> : C++ , native calling object
 
-Type implementation
-TYPE : C , Pascal [, Fortran]
+stdout : C , native calling object
+stdin : C , native calling object
+stderr : C , native calling object
+cout : C++ , native calling object
+cin : C++ , native calling object
+cerr : C++ , native calling object
+clog : C++ , native calling object
+NULL : C , native calling object
+ⅈ : C , native calling object
+ℯ : C , native calling object
+π : C , native calling object
+∞ : C++ , native calling object
+� : C++ , native calling object
+true : C calling asm , native calling asm
+false : C , native calling object
 
-BOOL : char , boolean
-BYTE : unsigned char , byte
-WORD : unsigned short int , word
-LONG : unsigned long , longword
-QUAD : unsigned long long , qword
-S_BYTE : signed char , shortint , INTERGER*1
-S_WORD : short , smallint , INTERGER*2
-S_LONG : long , longint , INTERGER*4
-S_QUAD : long long , int64 , INTERGER*8
-BOOL : char , boolean
-BYTE : unsigned char , byte
-WORD : unsigned short int , word
-LONG : unsigned long , longword
-QUAD : unsigned long long , qword
-STRING : char * , string
-FLOAT : float , single
-DOUBLE : double , double
-ARRAY : void * , ~
-P_FILE : ~ , textfile
-C_FILE : FILE * , ~
-LLIST : <node structure> * , ~
-NODE : struct , record
-TIMTYP : time_t , record
-CLKTYP : clock_t , interger
-DIVTYP : div_t , record
-TYPTYP : unsigned long , ~
-PATTRN : ~ , ~ , ~ , basic_regex
-VOID : void , ~
+BOOL : C
+BYTE : C
+WORD : C
+LONG : C
+QUAD : C
+S_BYTE : C
+S_WORD : C
+S_LONG : C
+S_QUAD : C
+U_BYTE : C
+U_WORD : C
+U_LONG : C
+U_QUAD : C
+STRING : C
+FLOAT : C/C++
+DOUBLE : C/C++
+ARRAY : C
+FILE : C
+ISTREM : C++
+OSTREM : C++
+LLIST : C
+NODE : C
+TIMTYP : C
+CLKTYP : C
+DIVTYP : C
+TYPTYP : C/C++ 
+PATTRN : C++
+VOID : C
+* : C
+& : C
+£ : Parser
 
-NOWHERE : NULL , nil , NULL
-
-OUTPUT is implemented as a Pascal call using the Output file and put. the put token is added by the C parser at the end of the line.
-INPUT is implemented in a C object using fgets and sscanf.
-*foo and &foo are C function calls
-£foo is a very complicated second iteration parser macro that uses function prototype lookup to get <arguments> number of array pointers.
-datatypes are otherwise implemented in Pascal.
-the adressing symbols are implemented as C objects.
 a garbage collector is a HIGH PRIORETY to-do, see bug#1.
 
 PARSING (CONTINUED)
@@ -702,10 +702,6 @@ a name may not overlap exactly with a special variable.
 OUTPUT INPUT NOWHERE ⅈ ℯ  π ∞ true false
 
 a variable name and function name may not overlap.
-
-the first level bootstrapper generates functions and variables of the following forms:
-volly_function_[c|pascal]_########()
-The first level of the bootstrapper PRODUCES NO WARNINGS.
 
 a variable name may not contain an unprintable character [some stand-ins iterated]
 ␀ ␁ ␂ ␃ ␄ ␅ ␆ ␇ ␈ ␉ ␊ ␋ ␌ ␍ ␎ ␏ ␐ ␑ ␒ ␓ ␔ ␕ ␖ ␗ ␘ ␙ ␚ ␛ ␜ ␝ ␞ ␟ ␠ ␡
@@ -743,42 +739,14 @@ LONGFIX extraodinary measures			[waiting]
 }&{
 Actions for next part of issue.....
 
-bug#0	Author		0.1.10 0000000 00-00-0000	Deferred to alpha	Medium
-Mathtypes, Math error returns tied to C/Pascal standards.
-{
-Write assembly routines for each primitive function on each different size input...	lolnope
-Forth subroutines for math functions...	the fourth compiler I (and most prospect endusers) have cannot link to C	IF NOT THEN
-It would seem a standards compliant FORTRAN 77 compiler MUST have 8-bit capabilities....	Should work perfectly if fortran compiler is compliant. cast unsigned types up by 1 size, call C for floats, and always call minisize() when done.	IN NOT THEN
-APL would be the logical choice, but I don't have the complete docs.
-}&{
-String handling is a pascal-types issue. Can easily be handled with some typechecks in the second stage of bootstrap...	Partialy Depricated
-0.1.16 outlines the plans for the "Volley" type lexer, thus migrating a large portion, if not all, of the relavent code for the above string issue back to C. Will have to wait and see how this changes things	[waiting]
-}
+bug#0	Author		0.1.10 0000000 00-00-0000	FIXED	Annoying
+Placeholder for further mathtypes errors
 
-bug#1	Author		0.1.14 0000000 00-00-0000	Unconfirmed		CRITICAL
-Possible memory leak, Input buffers defined in C-side backing but not derefed after string is sent to Pascal-side.
-{
-It's too big and too spidery to know for sure...	[waiting]	IF NOT THEN
-rewrite C-side buffer allocating...	[waiting]
-}
+bug#1	Author		0.1.14 0000000 00-00-0000	Unconfirmed	CRITICAL
+Placeholder for specific buffer-related memory leaks
 
-bug#2	Author		0.1.17 0000000 00-00-0000	PATCHED		CRITICAL
-Functions are defined by a call. Niether C nor Pascal allow for multi-typed returns, and AFAIK niether do C++ or Fortran
-{
-Always have custom functions return void, and use a global variable to fake it...	see above about memory leaks
-Use a void pointer...		void pointers seem liget, but won't do the job	IF NOT THEN
-...I'm being silly. The first step won't implement function declaration, it's still premordial goop. use the real parser to do the heavy lifting in the second round.	IF NOT THEN
-If I can't figure that out, that really shoots me in the foot, but it will still work. Goto trees could be used as a replacement like in SNOBOL4.
-}
+bug#2	Author		0.1.17 0000000 00-00-0000	FIXED	CRITICAL
+Placeholder for specific FUNCTION/RETURN type related errors
 
-bug#3	Author		0.1.18 0000000 00-00-0000	FIXED		High
-GOTO from IF|ELSE might cause parser error. That simply won't do.
-{
-Make parser treat IF and ELSE curly brackets differently from WHILE and DOTIMES curly brackets, make BREAK more complicated.
-}
-
-bug#4	Author		0.1.18 0000000 00-00-0000	FIXED		High
-parser is going to choack on ELSE IF
-{
-Make a command ELSEIF
-}
+bug#3	Author		0.1.18 0000000 00-00-0000	FIXED	CRITICAL
+Placeholder for parser errors related to brackets
