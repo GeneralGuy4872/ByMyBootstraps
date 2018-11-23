@@ -1,4 +1,4 @@
-My Language V0.2.3b 0000000 00-00-0000
+My Language V0.2.3c 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -33,8 +33,8 @@ UNTIL (foo) {} : loop the function enclosed in {} until foo is true.
 BREAK : immediately exit the current loop
 GOTO (foo) : go to label foo. NOTE: there is no return function. putting a goto inside a function declaration can screw up your control flow.
 DOTIMES (foo) {} : do whatever is in {} foo times. if foo is a float, rounds down. if foo is infinity, you're trying too hard.
-MAP (foo) ⟦x⟧ {} : for array or linked list foo, do whatever is in {} where bar is the list item
-KEY (foo) ⟦x⟧ {...} : key a list using x as the list item
+MAP (foo) ❬x❭ {} : for array or linked list foo, do whatever is in {} where bar is the list item
+KEY (foo) ❬x❭ {...} : key a list using x as the list item
 ¶foo : a label called foo. Please don't put these INSIDE loops unless you know what you're doing.
 If you GOTO out of a WHILE or DOTIMES, the parser will think you are still in that loop! This does not apply to IF, ELSEIF, or ELSE.
 
@@ -96,7 +96,7 @@ foo nCr bar : combinations of foo elements from bar items
 foo nPr bar : permutations of foo elements from bar items
 
 elog(foo) : the natural logarithem of foo
-abs(foo) : absolute value of number foo. returns according to mathtypes
+abs(foo) , ⟦foo⟧ : absolute value of number foo. returns according to mathtypes
 cabs(foo) : the complex absolute value of foo.
 floor(foo) , ⌊foo⌋ : floor of number foo, returns shortest int format possible
 ceiling(foo) , ⌈foo⌉ : ceiling of number foo, returns shortest int format possible
@@ -184,7 +184,7 @@ sort(foo) : sort array foo, return array.
 RETURN foo : make the containing function return foo. If you need return to evaluate something, put it in () like FOR, such as RETURN (foo + bar)
 RETURN void : does nothing, optimized out
 
-lambda(foo, bar, baz) ⟦quux, garply, waldo⟧ {...} : do anonamous function in {...} to anythings foo, bar, and baz, reffered to by local variabls quux, garply, and waldo. will iterate arrays or linked lists. multiple such items will be combined in all possible ways, eg ((foo nCr bar) * (bar nCr quux)) times
+lambda(foo, bar, baz) ❬quux, garply, waldo❭ {...} : do anonamous function in {...} to anythings foo, bar, and baz, reffered to by local variabls quux, garply, and waldo. will iterate arrays or linked lists. multiple such items will be combined in all possible ways, eg ((foo nCr bar) * (bar nCr quux)) times
 lambda(foo, bar, baz) {...} : do anonamous function in {...} to anythings foo, bar, and baz, that affects them directly
 
 sizeof(foo) : returns the number of bits in anything foo
@@ -717,8 +717,8 @@ PARSING (CONTINUED)
 
 a name may not contain any technical symbol. these include:
 ' " ; : [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + =
-⟦ ⟧ ¶ ➤ × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡ » « → ← ¬ ⇔ ∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠
-≈ ¢ £ ¿ № ± ℓ ⏎ ↯ ↹ ␣ ⍽
+❬ ❭ ⟦ ⟧ ¶ ➤ × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡ » « → ← ¬ ⇔ ∈ ∪ ∩ ⊂ ⊖ ≤
+≥ ≠ ≈ ¢ £ ¿ № ± ℓ ⏎ ↯ ↹ ␣ ⍽
 
 a name may not contain spaces:
 ␠ <all en spaces> <all em spaces> <thin spaces>
