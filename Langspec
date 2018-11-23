@@ -1,4 +1,4 @@
-My Language V0.2.3d 0000000 00-00-0000
+My Language V0.2.3f 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -186,9 +186,15 @@ RETURN void : does nothing, optimized out
 
 lambda(foo, bar, baz) ❬quux, garply, waldo❭ {...} : do anonamous function in {...} to anythings foo, bar, and baz, reffered to by local variabls quux, garply, and waldo. will iterate arrays or linked lists. multiple such items will be combined in all possible ways, eg ((foo nCr bar) * (bar nCr quux)) times
 
-sizeof(foo) : returns the number of bits in anything foo
+sizeof(foo) : returns the number of bits in anything foo. sizeof(&[any variable]) should return the CPU address register size.
+typeof(foo) : uses the type tree to determin the type of foo
+classof(foo) : uses the type tree to determin the generalized type of foo
+isnumber(foo) : uses the type tree to determin if foo is a number type. returns 1 for numbers, 0 for non numbers, -1 for number structs, and NaN for possible numbers.
+signof(foo) : determins the sign of foo. returns -1 for negitives, 1 for positives, 0 for 0, and NaN on error.
+
 float(foo) : convert int foo to a float
 dfloat(foo) : convert int or float foo to a double
+complx(foo) : convert int, float, or double to complex
 NOTE if you want a floating point number to be converted to an int type, you want the function floor(). remember this by the silly image of the float literaly floating, and you need it to be pulled down to the floor.
 
 tonumber(foo) : converts string foo to number by mathtypes
@@ -220,13 +226,11 @@ functions for transfinites, base-60 numbers, and graphics deferred.
 
 Parseing
 --------
-comments, ?, and \ have the absolute highest priority.
-the double angle bracket quotes are the higest priority symbol besides comments. they, however, can override the default behavior of newlines and ; while those terminate a comment.
+comments, and \ have the absolute highest priority.
 quotes, single or double, come next.
-functions inside parenthases have the highest precedance of true operators
-prefix operators, in the order: number base sign, address signs, and then unary functions or -. a prefix of higher precedence cannot be placed after a prefix of lower precedence.
-structure dots are evaluated next
-normal functions (functions of the form foo() ) are next.
+functions inside parenthases, normal functions(), and special bracket functions, have the highest precedance of true operators
+prefix operators are evaluated inside to out. this includes unary functions, inquiries, splat, pointers, and base signs. be mindful of applying large chains of these (splat interprets anything attatched the left of it as a variable, number signs cannot be applied to strings, pointers applied to numbers are VERY DANGEROUS)
+structure dots and structure pointers are evaluated next
 infix mathmatical operators are next, then tests (set theory, then [in]equality, then bitwise, lastly logical);
 postfix operator assignments are evaluated next to last.
 assignments, extraction, and insertion are evaluated last.
@@ -325,11 +329,11 @@ adressing and inquiring
 
 &foo : the adress of foo
 *foo : pointer to foo
-?foo : a pointer that indicates the type of foo
-¿foo : a pointer that indicates the recursive type of foo
-№foo : a pointer that indicates whether foo is a number
-±foo : the sign of foo, as signed byte 1, 0, or -1
-ℓfoo : the size of foo, same as sizeof(foo), but with higher precedance
+?foo : indicates the type of foo, same as typeof(foo)
+¿foo : indicates the recursive type of foo, same as classof(foo)
+№foo : indicates whether foo is a number, same as isnumber(foo)
+±foo : the sign of foo, same as signof(foo)
+ℓfoo : the size of foo, same as sizeof(foo)
 £foo : expand an array or linked list as a comma seperated list here (recursively).
 
 WARNING! using & or * on a decimal, hexidecimal, binary, or octal interger will read the ABSOLUTE ADDRESS.
@@ -338,7 +342,7 @@ This is an INTENDED RESPONSE, not a bug. IF YOU USE THIS ON A PRE-EXISTING OPERA
 DATATYPES
 ---------
 
-BOOL : 1 bit <currently implementation dependent>
+BOOL : 2 bits <currently implementation dependent>
 BYTE : 8 bits unspecified sign
 WORD : 16 bits unspecified sign
 LONG : 32 bits unspecified sign
@@ -346,7 +350,6 @@ QUAD : 64 bits unspecified sign
 S_[BYTE|WORD|LONG|QUAD] : signed versions of above
 U_[BYTE|WORD|LONG|QUAD] : unsigned versions of above
 STRING : utf8 ansi-style string. multibyte characters are stored internaly as multiple characters.
-RADIX : a PDP-11 Radix-50 string.
 FLOAT : single precision float
 DOUBLE : double precision float
 ARRAY : array of anythings, can be multidimensional if rectangular/cuboid/hypercuboid.
@@ -355,6 +358,7 @@ ISTREM : a C++ style input stream
 OSTREM : a C++ style output stream
 LLIST : a doubly-linked list. implemented as a collection of nodes.
 NODE : a structure consisting of a pointer .prev, an anything .data, and a pointer .next
+LEAF : a structure consisting of a pointer .parent, and an anything .data
 TIMTYP : a structure for holding C style real times.
 CLKTYP : an number type for storing the C-style elapsed time.
 DIVTYP : the result of div. a struct with fields numer and denom.
@@ -442,7 +446,7 @@ Ability to output sound by frequency, note, or telephone button for a given dura
 would support sine, square, and sawtooth for note and frequency. telephone would always be duplexed sine.
 Ability to load and save sound scripts
 
-The ability to store 8 bools in a byte
+The ability to store 4 bools in a byte
 
 Support for Nibbles and the ability to store 2 of them in a byte
 
@@ -631,10 +635,15 @@ deal(foo, bar) : C , native calling object
 shuffle(foo) : ~ , native
 sort(foo) : ~ , native
 RETURN foo : ~ , native parser calling native and C
-lambda(foo, bar, baz) ❬quux, garply, waldo❭ {...} ; C++ , native
+lambda(foo, bar, baz) ❬quux, garply, waldo❭ {...} : C++ , native
 sizeof(foo) : C , native calling object
+typeof(foo) : C , native calling object
+classof(foo) : C , native calling object
+isnumber(foo) : C calling C++ , native calling object
+signof(foo) : C calling C++ , native calling object
 float(foo) : C , native calling object
 dfloat(foo) : C , native calling object
+complx(foo) : C , native calling object
 minisize(foo) : ~ , native
 atof(foo) : C , native calling object
 atoi(foo) : C , native calling object
@@ -668,11 +677,11 @@ NULL : C , NULL
 π : C , M_PI
 ∞ : C , HUGE_VAL
 � : C++ , quiet_NaN
-true : C , (char) true
-false : C , (char) false
-ternary : C , (char) -1
+true : C , signed char TRUE
+false : C , signed char FALSE
+ternary : C , signed char -1
 
-BOOL : C, char
+BOOL : C, signed char
 BYTE : C, unsigned char * [1]
 WORD : C, unsigned short * [1]
 LONG : C, unsigned long * [1]
@@ -685,7 +694,7 @@ U_BYTE : C, unsigned char
 U_WORD : C, unsigned short
 U_LONG : C, unsigned long
 U_QUAD : C, unsigned long long
-STRING : C, char *
+STRING : C, char * [up to MAX_BUFFER]
 FLOAT : C, float
 DOUBLE : C, double
 ARRAY : C, void * [][]...
@@ -747,6 +756,8 @@ Whitespace can be specified manually at metacompilation time. By default, this i
 Lines are seperated by specially defined characters. This can be chosen, too. by default, this includes:
 ␊ ␍ ; ⏎ ↯
 
+MAX_BUFFER is a value used in string and file operations. it defaults to 512 bytes. This is the amount of memory allocated for buffer reads.
+
 TYPE TREE
 the type tree contains the names of all types. any user defined types are automatically added to the type tree.
 
@@ -787,4 +798,4 @@ bug#2	Author		0.1.17 0000000 00-00-0000	FIXED	CRITICAL
 Placeholder for specific FUNCTION/RETURN type related errors
 
 bug#3	Author		0.1.18 0000000 00-00-0000	FIXED	CRITICAL
-Placeholder for parser errors related to brackets
+Placeholder for parser errors related to curly brackets and loops
