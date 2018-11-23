@@ -1,4 +1,4 @@
-My Language V0.2.3c 0000000 00-00-0000
+My Language V0.2.3d 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -185,7 +185,6 @@ RETURN foo : make the containing function return foo. If you need return to eval
 RETURN void : does nothing, optimized out
 
 lambda(foo, bar, baz) ❬quux, garply, waldo❭ {...} : do anonamous function in {...} to anythings foo, bar, and baz, reffered to by local variabls quux, garply, and waldo. will iterate arrays or linked lists. multiple such items will be combined in all possible ways, eg ((foo nCr bar) * (bar nCr quux)) times
-lambda(foo, bar, baz) {...} : do anonamous function in {...} to anythings foo, bar, and baz, that affects them directly
 
 sizeof(foo) : returns the number of bits in anything foo
 float(foo) : convert int foo to a float
@@ -512,7 +511,8 @@ UNTIL (foo) {} : C , native calling object
 DOTIMES (foo) {} : C , native reimplimentation
 BREAK : parser , native parser
 GOTO (foo) : parser , native parser
-MAP (foo, bar) {} : C , native calling object
+MAP (foo) ❬x❭ {} : C , native calling object
+KEY (foo) ❬x❭ {...} : C , native calling object
 ¶foo : parser , native parser
 printf(...) : C , native calling object
 sprintf(...) : C , native calling object
@@ -558,10 +558,10 @@ foo ROOT bar , foo √ bar : C , native calling object OR Fortran
 foo nCr bar : C , native calling object OR Fortran
 foo nPr bar : C , native calling object OR Fortran
 elog(foo) : C , native calling object OR Fortran
-abs(foo) : C , native calling object OR Fortran
+abs(foo) , ⟦foo⟧ : C , native calling object OR Fortran
 cabs(foo) : C , native calling object OR Fortran
-floor(foo) : C , native calling object OR Fortran
-ceiling(foo) : C , native calling object OR Fortran
+floor(foo) , ⌊foo⌋ : C , native calling object OR Fortran
+ceiling(foo) , ⌈foo⌉ : C , native calling object OR Fortran
 div(foo, bar) : C , native calling object OR Fortran
 sqrt(foo) : Pascal , native calling object OR Fortran
 cbrt(foo) : Pascal , native calling object OR Fortran
@@ -631,7 +631,7 @@ deal(foo, bar) : C , native calling object
 shuffle(foo) : ~ , native
 sort(foo) : ~ , native
 RETURN foo : ~ , native parser calling native and C
-lambda (...) {...} : ~ , native
+lambda(foo, bar, baz) ❬quux, garply, waldo❭ {...} ; C++ , native
 sizeof(foo) : C , native calling object
 float(foo) : C , native calling object
 dfloat(foo) : C , native calling object
@@ -717,8 +717,8 @@ PARSING (CONTINUED)
 
 a name may not contain any technical symbol. these include:
 ' " ; : [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + =
-❬ ❭ ⟦ ⟧ ¶ ➤ × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡ » « → ← ¬ ⇔ ∈ ∪ ∩ ⊂ ⊖ ≤
-≥ ≠ ≈ ¢ £ ¿ № ± ℓ ⏎ ↯ ↹ ␣ ⍽
+❬ ❭ ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ¶ ➤ × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡ » « → ← ¬ ⇔ ∈ ∪
+∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ £ ¿ № ± ℓ ⏎ ↯ ↹ ␣ ⍽
 
 a name may not contain spaces:
 ␠ <all en spaces> <all em spaces> <thin spaces>
