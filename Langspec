@@ -1,4 +1,4 @@
-My Language V0.2.3 0000000 00-00-0000
+My Language V0.2.3a 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -659,6 +659,7 @@ cout : C++ , std::cout
 cin : C++ , std::cin
 cerr : C++ , std::cerr
 clog : C++ , std::clog
+endln : C++ , endl
 NULL : C , NULL
 ⅈ : C , _IMAGINARY_I
 ℯ : C , M_E
@@ -713,22 +714,25 @@ PARSING (CONTINUED)
 -------------------
 
 a name may not contain any technical symbol. these include:
-' " ; : [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + = ¶ × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡
-» « → ← ¬ ⇔ ∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ £ ¿ № ± ℓ ⏎ ↹ ␣ ⍽ <all en spaces> <all em spaces>
+' " ; : [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + =
+¶ ➤ × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡ » « → ← ¬ ⇔ ∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢
+£ ¿ № ± ℓ ⏎ ↯ ↹ ␣ ⍽ <all en spaces> <all em spaces>
 
 a name may not contain a number as the first character
 0 1 2 3 4 5 6 7 8 9
 
 a name may not overlap exactly with a special variable.
-OUTPUT INPUT NOWHERE ⅈ ℯ  π ∞ true false
+stdin stdout stderr cin cout cerr clog endln NULL ⅈ ℯ π ∞ � true false ternary
 
 The compiler automatically generates a type tree and associated variables for each variable. They follow the form:
 type_of_[variablename]
 Be mindful of these when naming your variables, as collisions will screw up type checking
 these are always structures of typtyp
 
-a variable name may not contain an unprintable character [some stand-ins iterated]
+a variable name may not contain an unprintable character
 ␀ ␁ ␂ ␃ ␄ ␅ ␆ ␇ ␈ ␉ ␊ ␋ ␌ ␍ ␎ ␏ ␐ ␑ ␒ ␓ ␔ ␕ ␖ ␗ ␘ ␙ ␚ ␛ ␜ ␝ ␞ ␟ ␠ ␡
+
+these symbols are also substituted for their LITERAL MEANINGS if unescaped.
 
 forbidden symbols will NEVER include:
 _ ¦ · • ♠ ♡ ♢ ♣ ♤ ♥ ♦ ♧ ♔ ♕ ♖ ♗ ♘ ♙ ♚ ♛ ♜ ♝ ♞ ♟ ː ˑ ⫶ [set of all unicode letters]
@@ -738,7 +742,7 @@ Whitespace can be specified manually at metacompilation time. By default, this i
 ␠ ␉ ↹ ␣ ⍽ <all en spaces> <all em spaces>
 
 Lines are seperated by specially defined characters. This can be chosen, too. by default, this includes:
-␊ ␍ ␋ ; ⏎ ↯
+␊ ␍ ; ⏎ ↯
 
 TYPE TREE
 the type tree contains the names of all types. any user defined types are automatically added to the type tree.
