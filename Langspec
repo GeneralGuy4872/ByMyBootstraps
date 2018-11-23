@@ -1,4 +1,4 @@
-My Language V0.2.3a 0000000 00-00-0000
+My Language V0.2.3b 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -33,7 +33,8 @@ UNTIL (foo) {} : loop the function enclosed in {} until foo is true.
 BREAK : immediately exit the current loop
 GOTO (foo) : go to label foo. NOTE: there is no return function. putting a goto inside a function declaration can screw up your control flow.
 DOTIMES (foo) {} : do whatever is in {} foo times. if foo is a float, rounds down. if foo is infinity, you're trying too hard.
-MAP (foo, bar) {} : for array or linked list foo, do whatever is in {} where bar is the local variable
+MAP (foo) ⟦x⟧ {} : for array or linked list foo, do whatever is in {} where bar is the list item
+KEY (foo) ⟦x⟧ {...} : key a list using x as the list item
 ¶foo : a label called foo. Please don't put these INSIDE loops unless you know what you're doing.
 If you GOTO out of a WHILE or DOTIMES, the parser will think you are still in that loop! This does not apply to IF, ELSEIF, or ELSE.
 
@@ -164,7 +165,7 @@ foo ≥ bar , foo GE bar : test if foo is greater than or equal to bar, returns 
 foo ≠ bar , foo NE bar : test if foo is not equal to bar, returns bool result
 foo = bar , foo EQ bar : test if foo is equal to bar, returns bool result
 foo ≈ bar , foo APROX bar : test if floor or ceiling of foo is equal to the floor or ceiling of bar
-foo ≡ bar , foo == bar : test bitwise foo matches bar, returns bool
+foo ≡ bar , foo == bar : test byte for byte if foo matches bar, returns bool
 
 foo ¢ bar , foo CON bar : concatinate the anythings foo and bar, returns the resulting anything. may be an invalid type.
 
@@ -183,7 +184,8 @@ sort(foo) : sort array foo, return array.
 RETURN foo : make the containing function return foo. If you need return to evaluate something, put it in () like FOR, such as RETURN (foo + bar)
 RETURN void : does nothing, optimized out
 
-lambda(...) {...} : an anonymous function.
+lambda(foo, bar, baz) ⟦quux, garply, waldo⟧ {...} : do anonamous function in {...} to anythings foo, bar, and baz, reffered to by local variabls quux, garply, and waldo. will iterate arrays or linked lists. multiple such items will be combined in all possible ways, eg ((foo nCr bar) * (bar nCr quux)) times
+lambda(foo, bar, baz) {...} : do anonamous function in {...} to anythings foo, bar, and baz, that affects them directly
 
 sizeof(foo) : returns the number of bits in anything foo
 float(foo) : convert int foo to a float
@@ -715,8 +717,11 @@ PARSING (CONTINUED)
 
 a name may not contain any technical symbol. these include:
 ' " ; : [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + =
-¶ ➤ × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡ » « → ← ¬ ⇔ ∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢
-£ ¿ № ± ℓ ⏎ ↯ ↹ ␣ ⍽ <all en spaces> <all em spaces>
+⟦ ⟧ ¶ ➤ × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡ » « → ← ¬ ⇔ ∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠
+≈ ¢ £ ¿ № ± ℓ ⏎ ↯ ↹ ␣ ⍽
+
+a name may not contain spaces:
+␠ <all en spaces> <all em spaces> <thin spaces>
 
 a name may not contain a number as the first character
 0 1 2 3 4 5 6 7 8 9
@@ -732,14 +737,12 @@ these are always structures of typtyp
 a variable name may not contain an unprintable character
 ␀ ␁ ␂ ␃ ␄ ␅ ␆ ␇ ␈ ␉ ␊ ␋ ␌ ␍ ␎ ␏ ␐ ␑ ␒ ␓ ␔ ␕ ␖ ␗ ␘ ␙ ␚ ␛ ␜ ␝ ␞ ␟ ␠ ␡
 
-these symbols are also substituted for their LITERAL MEANINGS if unescaped.
-
 forbidden symbols will NEVER include:
 _ ¦ · • ♠ ♡ ♢ ♣ ♤ ♥ ♦ ♧ ♔ ♕ ♖ ♗ ♘ ♙ ♚ ♛ ♜ ♝ ♞ ♟ ː ˑ ⫶ [set of all unicode letters]
 
 Tokens are seperated by "Whitespace". This does not follow the standard unicode definition of "Whitespace".
 Whitespace can be specified manually at metacompilation time. By default, this includes:
-␠ ␉ ↹ ␣ ⍽ <all en spaces> <all em spaces>
+␠ ␉ ↹ ␣ ⍽ <all en spaces> <all em spaces> <thin spaces>
 
 Lines are seperated by specially defined characters. This can be chosen, too. by default, this includes:
 ␊ ␍ ; ⏎ ↯
