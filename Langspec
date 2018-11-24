@@ -364,7 +364,7 @@ LEAF : a structure consisting of a pointer .parent, and an anything .data
 TIMTYP : a structure for holding C style real times.
 CLKTYP : an number type for storing the C-style elapsed time.
 DIVTYP : the result of div. a struct with fields numer and denom.
-TYPTYP : an enumerated type of all the basic types. 
+TYPTYP : a structure for use in the typetree
 PATTRN : a compiled regex
 VOID : a nothing 0 bits wide
 NULL : the type of NULL. Technicaly assignable, but will cause most functions to catch the variable with null handling before the value is read.
