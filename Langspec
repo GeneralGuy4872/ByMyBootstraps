@@ -1,4 +1,4 @@
-My Language V0.2.3f 0000000 00-00-0000
+My Language V0.2.3g 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -252,11 +252,12 @@ cerr : the C++-style error file
 clog : the C++-style logging file
 endln : C++ newline
 NULL : a null file or bitbucket, implemented as a null pointer.
-ⅈ : √-1, for complex numbers
-ℯ : eulars number, double
-π : pi, double
-∞ : infinity macro
-� : quiet Not a Number macro (literal U+FFFD)
+ⅈ : √-1, for complex numbers. (the variable "i" is antireserved as too generic)
+ℯ : eulars number, double. (the variable "euler" is antireserved for i.e. user defined approximations) 
+π : pi, double. (The variable "pi" is antireserved for i.e. user defined approximations)
+φ : (1+√5)/2, double. (the variable "phi" is antireserved for i.e. user defined approximations. ϕ is antireserved for i.e. the second angle in a spherical coordinate system)
+∞ , infinity : infinity. Currently a double (7FF0000000000000), may be changed to a special, more compact type for special numbers.
+� , notanumber : quiet Not a Number. Currently a double (FFFFFFFFFFFFFFFF), may be changed to a special, more compact type for special numbers. (symbol is literal U+FFFD)
 true : bool of 1
 false : bool of 0
 ternary : bool of -1
@@ -358,6 +359,7 @@ ISTREM : a C++ style input stream
 OSTREM : a C++ style output stream
 LLIST : a doubly-linked list. implemented as a collection of nodes.
 NODE : a structure consisting of a pointer .prev, an anything .data, and a pointer .next
+TREERT : the root of a tree of leaves.
 LEAF : a structure consisting of a pointer .parent, and an anything .data
 TIMTYP : a structure for holding C style real times.
 CLKTYP : an number type for storing the C-style elapsed time.
@@ -365,6 +367,7 @@ DIVTYP : the result of div. a struct with fields numer and denom.
 TYPTYP : an enumerated type of all the basic types. 
 PATTRN : a compiled regex
 VOID : a nothing 0 bits wide
+NULL : the type of NULL. Technicaly assignable, but will cause most functions to catch the variable with null handling before the value is read.
 
 "detonation" in this document refers to a fatal crash
 int in this document refers to a byte, word, long, or quad (either signed or unsigned), or clktyp
@@ -381,13 +384,13 @@ operations dealing with bytes SHOULD not return a word or long unless the value 
 operations dealing in signed values SHOULD return a signed value unless the returned value is positive and too large to hold.
 all math functions should return the smallest length type possible, and use this type for calculation unless architecture makes this impractical.
 Strings and NOWHERE evaluate to Quiet_NaN in math fuctions.
-Non-empty strings evaluate as true if taken with =foo in logic functions. =NOWHERE evaluates as false.
+Non-empty strings evaluate as true if taken with =foo in logic functions. =NULL evaluates as false.
 
 While the language may be initialy written for i686 and x86_64, it was concieved for the 68020+68881.
 A backport for 680x0 will be made avalible for the first system whos calling conventions can be located and demystifyed.
 a barebones embedded Z80 implementation for system design is also planned
 
-Error strings should all be converted to a more consistant string of "NULL".
+Error strings should all be converted to NULL or NaN
 
 DEFINEING FUNCTIONS
 -------------------
@@ -675,6 +678,7 @@ NULL : C , NULL
 ⅈ : C , _IMAGINARY_I
 ℯ : C , M_E
 π : C , M_PI
+φ : C , (double) ((1 + sqrt(5)) / 2)
 ∞ : C , HUGE_VAL
 � : C++ , quiet_NaN
 true : C , signed char TRUE
@@ -701,14 +705,17 @@ ARRAY : C, void * [][]...
 FILE : C, FILE
 INPUT : C++, istream
 OUTPUT : C++, ostream
-LLIST : C, struct * []
-NODE : C, struct {* struct, * void, * struct}
+LLIST : C, struct node*
+NODE : C, struct {*node, *node}
+TREERT : C, struct leaf*
+LEAF : C, struct {*leaf}
 TIMTYP : C, time_t
 CLKTYP : C, clock_t
 DIVTYP : C, div_t
-TYPTYP : C, struct {char[6], * struct}
+TYPTYP : C, struct {*typtyp, *typtyp, char[6]}
 PATTRN : C++, basic_regex
 VOID : C, void
+NULL : C, void* [0]
 
 * : C, *foo
 & : C, &foo
@@ -736,17 +743,17 @@ a name may not contain a number as the first character
 0 1 2 3 4 5 6 7 8 9
 
 a name may not overlap exactly with a special variable.
-stdin stdout stderr cin cout cerr clog endln NULL ⅈ ℯ π ∞ � true false ternary
+stdin stdout stderr cin cout cerr clog endln NULL ⅈ ℯ π φ ∞ infinity � notanumber true false ternary
 
-The compiler automatically generates a type tree and associated variables for each variable. They follow the form:
-type_of_[variablename]
+The compiler automatically generates a type tree and associated variables for each variable and type. They follow the form:
+type_of_[variablename] type_table_[typename]
 Be mindful of these when naming your variables, as collisions will screw up type checking
 these are always structures of typtyp
 
 a variable name may not contain an unprintable character
 ␀ ␁ ␂ ␃ ␄ ␅ ␆ ␇ ␈ ␉ ␊ ␋ ␌ ␍ ␎ ␏ ␐ ␑ ␒ ␓ ␔ ␕ ␖ ␗ ␘ ␙ ␚ ␛ ␜ ␝ ␞ ␟ ␠ ␡
 
-forbidden symbols will NEVER include:
+forbidden symbols will NEVER include (antireserved):
 _ ¦ · • ♠ ♡ ♢ ♣ ♤ ♥ ♦ ♧ ♔ ♕ ♖ ♗ ♘ ♙ ♚ ♛ ♜ ♝ ♞ ♟ ː ˑ ⫶ [set of all unicode letters]
 
 Tokens are seperated by "Whitespace". This does not follow the standard unicode definition of "Whitespace".
