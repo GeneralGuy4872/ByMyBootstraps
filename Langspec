@@ -1,4 +1,4 @@
-My Language V0.2.3g 0000000 00-00-0000
+My Language V0.2.4 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -77,7 +77,10 @@ LEAF FOO bar : create a leaf bar with data field of valid type FOO
 and so on as in the C preprocessor
 
 ; , ⏎ , ↯ : equivilant to new line
+
 EXIT : close the program immidiately
+ERROR : close the program and report that an error has occurred
+💣 , POKE5945862 : cause an oops or raise a panic (implementation dependent; result is to be that the OS is stopped without further damage and the standard error message is displayed) WARNING DON'T DO THIS UNLESS SITUATION IS DIRE
 
 math types noted below
 foo + bar : foo plus bar
@@ -364,7 +367,7 @@ LEAF : a structure consisting of a pointer .parent, and an anything .data
 TIMTYP : a structure for holding C style real times.
 CLKTYP : an number type for storing the C-style elapsed time.
 DIVTYP : the result of div. a struct with fields numer and denom.
-TYPTYP : a structure for use in the typetree
+TYPTYP : a structure for use in the type tree.
 PATTRN : a compiled regex
 VOID : a nothing 0 bits wide
 NULL : the type of NULL. Technicaly assignable, but will cause most functions to catch the variable with null handling before the value is read.
@@ -550,6 +553,8 @@ STRUCT FOO {...} : C , native calling object
 foo.bar : C , native calling object
 LLIST foo {...} : C , native calling object
 EXIT : C , native calling object
+ERROR : C , native calling object
+POKE5945862 : C , native calling object
 foo + bar : C , native calling object OR Fortran
 foo - bar : C , native calling object OR Fortran
 -foo : C , native calling object OR Fortran
