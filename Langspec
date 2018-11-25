@@ -19,7 +19,7 @@ any returned array will be 1 dimensional.
 
 My language will have the following functions:
 
-wait(foo) : wait for foo milliseconds, returns void
+wait(foo) , ⌛foo : wait for foo milliseconds, returns void
 time() : returns the current real time, timtyp
 clock() : return the current program time, clktyp
 beep() : print \a, returns void
@@ -78,8 +78,8 @@ and so on as in the C preprocessor
 
 ; , ⏎ , ↯ : equivilant to new line
 
-EXIT : close the program immidiately
-ERROR : close the program and report that an error has occurred
+⎋ , EXIT : close the program immidiately
+⚠ , ERROR : close the program and report that an error has occurred
 💣 , POKE5945862 : cause an oops or raise a panic (implementation dependent; result is to be that the OS is stopped without further damage and the standard error message is displayed) WARNING DON'T DO THIS UNLESS SITUATION IS DIRE
 
 math types noted below
@@ -187,7 +187,8 @@ sort(foo) : sort array foo, return array.
 RETURN foo : make the containing function return foo. If you need return to evaluate something, put it in () like FOR, such as RETURN (foo + bar)
 RETURN void : does nothing, optimized out
 
-lambda(foo, bar, baz) ❬quux, garply, waldo❭ {...} : do anonamous function in {...} to anythings foo, bar, and baz, reffered to by local variabls quux, garply, and waldo. will iterate arrays or linked lists. multiple such items will be combined in all possible ways, eg ((foo nCr bar) * (bar nCr quux)) times
+lambda(foo, bar, baz) ❬quux, garply, waldo❭ {...} : do anonamous function in {...} to anythings foo, bar, and baz, reffered to by local variabls quux, garply, and waldo. will iterate arrays or linked lists. multiple such items will be combined in all possible ways, eg (foo * bar * quux) times
+λ(foo, bar, baz) ❬quux, garply, waldo❭ {...}  : same as above, adding a comma would just be unnecisarily confusing and it wouldn't fit on same line.
 
 sizeof(foo) : returns the number of bits in anything foo. sizeof(&[any variable]) should return the CPU address register size.
 typeof(foo) : uses the type tree to determin the type of foo
@@ -338,7 +339,7 @@ adressing and inquiring
 №foo : indicates whether foo is a number, same as isnumber(foo)
 ±foo : the sign of foo, same as signof(foo)
 ℓfoo : the size of foo, same as sizeof(foo)
-£foo : expand an array, linked list, or tree as a comma seperated list here (recursively, trees are evaluated from selected node to root).
+£foo : expand an array, linked list, or tree as a comma seperated list here (recursively, trees are evaluated from current leaf to root).
 
 WARNING! using & or * on a decimal, hexidecimal, binary, or octal interger will read the ABSOLUTE ADDRESS.
 This is an INTENDED RESPONSE, not a bug. IF YOU USE THIS ON A PRE-EXISTING OPERATING SYSTEM, ON YOUR HEAD BE IT.
@@ -510,7 +511,7 @@ Here is a list of how I implement built-ins in the first 2 iterations:
 
 function: 1st iteration , 2nd iteration
 
-wait() : ~ , native
+wait() , ⌛(foo) : ~ , native
 time() : C  , native calling object
 clock() : C , native calling object
 IF (foo) {} : C , native calling object
@@ -552,8 +553,8 @@ foo[bar][quux] : C , native calling object
 STRUCT FOO {...} : C , native calling object
 foo.bar : C , native calling object
 LLIST foo {...} : C , native calling object
-EXIT : C , native calling object
-ERROR : C , native calling object
+⎋ , EXIT : C , native calling object
+⚠ , ERROR : C , native calling object
 💣 , POKE5945862 : C , native calling object
 foo + bar : C , native calling object OR Fortran
 foo - bar : C , native calling object OR Fortran
@@ -736,10 +737,12 @@ a garbage collector is a HIGH PRIORETY to-do, see bug#1.
 PARSING (CONTINUED)
 -------------------
 
+a variable name and function name may not overlap
+
 a name may not contain any technical symbol. these include:
 ' " ; : [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + =
 ❬ ❭ ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ¶ ➤ × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡ » « → ← ¬ ⇔ ∈ ∪
-∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ £ ¿ № ± ℓ ⏎ ↯ ↹ ␣ ⍽ 💣
+∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ £ ¿ № ± ℓ ⏎ ↯ ↹ ␣ ⍽ ⌛ ⎋ ⚠ 💣
 
 a name may not contain spaces:
 ␠ <all en spaces> <all em spaces> <thin spaces>
@@ -749,6 +752,9 @@ a name may not contain a number as the first character
 
 a name may not overlap exactly with a special variable.
 stdin stdout stderr cin cout cerr clog endln NULL ⅈ ℯ π φ ∞ infinity � notanumber true false ternary
+
+a name may not overlap exactly with a builtin function
+
 
 The compiler automatically generates a type tree and associated variables for each variable and type. They follow the form:
 type_of_[variablename] type_table_[typename]
