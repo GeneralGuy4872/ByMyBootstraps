@@ -66,7 +66,7 @@ ARRAY foo[bar] {...} : make an array foo of size bar. More square brackets can b
 foo[bar][quux] : the quux-th element of the bar-th column of array foo
 STRUCT FOO {...} : create a structured datatype FOO with the keys named in {}.
 foo.bar : the field bar from the variable foo, where foo is a structure. foo.bar is not a valid variable name otherwise because of this syntax, use foo_bar.
-foo>>>bar , foo➤bar : structure pointer
+foo>>>bar , foo➤bar : structure pointer. can be chained to geather, like baz➤quux➤garply, if the field quux in baz is a pointer to another struct or similar type.
 LLIST foo (bar) {...} : create a linked list bar of nodes with .data fields containing the values in {}
 NODE FOO bar : create a node bar with data field of valid type FOO
 TREERT FOO bar : make a leaf that loops back to itself with a data field of valid type FOO.
@@ -404,7 +404,8 @@ a function can be defined as follows:
 FUNCTION foo(bar, quux)
 	{
 	if(bar < quux) {return bar}
-	else {return quux}
+	elseif(bar > quux) {return quux}
+	else {return �}
 	}
 
 this will make a function that returns the lesser of two numbers, bar and quux.
@@ -456,6 +457,8 @@ Ability to load and save sound scripts
 The ability to store 4 bools in a byte
 
 Support for Nibbles and the ability to store 2 of them in a byte
+
+Special, compact type for ∞ and NaN
 
 Support for Octal pairs and the ability to store 4 of them in 3 byte groups
 
