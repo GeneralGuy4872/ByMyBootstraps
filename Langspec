@@ -1,4 +1,4 @@
-My Language V0.2.4 0000000 00-00-0000
+My Language V0.2.4a 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -338,7 +338,7 @@ adressing and inquiring
 №foo : indicates whether foo is a number, same as isnumber(foo)
 ±foo : the sign of foo, same as signof(foo)
 ℓfoo : the size of foo, same as sizeof(foo)
-£foo : expand an array or linked list as a comma seperated list here (recursively).
+£foo : expand an array, linked list, or tree as a comma seperated list here (recursively, trees are evaluated from selected node to root).
 
 WARNING! using & or * on a decimal, hexidecimal, binary, or octal interger will read the ABSOLUTE ADDRESS.
 This is an INTENDED RESPONSE, not a bug. IF YOU USE THIS ON A PRE-EXISTING OPERATING SYSTEM, ON YOUR HEAD BE IT.
@@ -554,7 +554,7 @@ foo.bar : C , native calling object
 LLIST foo {...} : C , native calling object
 EXIT : C , native calling object
 ERROR : C , native calling object
-POKE5945862 : C , native calling object
+💣 , POKE5945862 : C , native calling object
 foo + bar : C , native calling object OR Fortran
 foo - bar : C , native calling object OR Fortran
 -foo : C , native calling object OR Fortran
@@ -739,7 +739,7 @@ PARSING (CONTINUED)
 a name may not contain any technical symbol. these include:
 ' " ; : [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + =
 ❬ ❭ ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ¶ ➤ × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡ » « → ← ¬ ⇔ ∈ ∪
-∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ £ ¿ № ± ℓ ⏎ ↯ ↹ ␣ ⍽
+∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ £ ¿ № ± ℓ ⏎ ↯ ↹ ␣ ⍽ 💣
 
 a name may not contain spaces:
 ␠ <all en spaces> <all em spaces> <thin spaces>
