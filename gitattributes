@@ -1,0 +1,27 @@
+*.c = linguist-language=C
+*.h = linguist-language=C
+*.cc = linguist-language=C++
+*.hh = linguist-language=C++
+*.c++ = linguist-language=C++
+*.h++ = linguist-language=C++
+*.p = linguist-language=Pascal
+*.pp = linguist-language=Pascal
+*.f = linguist-language=FORTRAN
+*.cob = linguist-language=COBOL
+*.sno = linguist-language=Snobol4
+*.b = linguist-language=B
+*.lex = linguist-language=lex
+*.y = linguist-language=yacc
+*.awk = linguist-language=awk
+*.zzzz = linguist-language=unknown
+*.apl = linguist-language=APL
+make = linguist-language=make
+*.cmake = linguist-language=cmake
+*.sh = linguist-language=shell
+*.lua = linguist-language=lua
+*.objc = linguist-language=objective-c
+*.objc++ = linguist-language=objective-c++
+*.m4 = linguist-language=m4
+*.html =  = linguist-language=xml
+*.s = linguist-language=assembly
+*.asm  = linguist-language=motorola
