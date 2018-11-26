@@ -1,4 +1,4 @@
-My Language V0.2.4a 0000000 00-00-0000
+My Language V0.2.4d 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -105,7 +105,7 @@ floor(foo) , ⌊foo⌋ : floor of number foo, returns shortest int format possib
 ceiling(foo) , ⌈foo⌉ : ceiling of number foo, returns shortest int format possible
 div(foo, bar) : divide int over bar. returns divtyp.
 elog(foo) : natural logarithem of foo
-sqrt(foo) : the square root of foo
+sqrt(foo) , √foo : the square root of foo
 cbrt(foo) : the cube root of foo
 
 max(foo, bar...) : return the greatest value of numbers foo and bar. returns that number.
@@ -188,7 +188,7 @@ RETURN foo : make the containing function return foo. If you need return to eval
 RETURN void : does nothing, optimized out
 
 lambda(foo, bar, baz) ❬quux, garply, waldo❭ {...} : do anonamous function in {...} to anythings foo, bar, and baz, reffered to by local variabls quux, garply, and waldo. will iterate arrays or linked lists. multiple such items will be combined in all possible ways, eg (foo * bar * quux) times
-λ(foo, bar, baz) ❬quux, garply, waldo❭ {...}  : same as above, adding a comma would just be unnecisarily confusing and it wouldn't fit on same line.
+λ(foo, bar, baz) ❬quux, garply, waldo❭ {...} : same as above, adding a comma would just be unnecisarily confusing and it wouldn't fit on same line.
 
 sizeof(foo) : returns the number of bits in anything foo. sizeof(&[any variable]) should return the CPU address register size.
 typeof(foo) : uses the type tree to determin the type of foo
@@ -239,11 +239,12 @@ infix mathmatical operators are next, then tests (set theory, then [in]equality,
 postfix operator assignments are evaluated next to last.
 assignments, extraction, and insertion are evaluated last.
 
+If fields are seperated by commas, the fields will be resolved compleatly before moving on to the next one left to right.
 functions such as return, {}, ;, newline, and control functions are evaluated differently. they control how other functions are evaluated.
 
 Mathmatical operators follow standard order of operations.
 logic and bitwise operators follow the order not, and, or, nand, nor, xor, xnor. not is actually considered a prefix or function.
-Operators other than assignments are evaluated left to right; assignment precedent is REVERSED OF THIS.
+Operators other than assignment-type operators (:=, :<, :>) are evaluated left to right; assignment precedent is REVERSED OF THIS.
 
 SPECIAL VARIABLES
 -----------------
@@ -465,7 +466,11 @@ Support for Octal pairs and the ability to store 4 of them in 3 byte groups
 support for awk, sed, or perl style regexs
 
 Support for Q8.8, Q16.16, and Q32.32 numbers
-Support for EBCDIC-APL, MAC-ROMAN, ISO-8859-1
+
+Support for storing single variable equasions similar to complex numbers for automatic value updating
+
+Support for EBCDIC-APL, MAC-OS-ROMAN, ISO-8859-1.
+MAC-OS-ROMAN's apple would map to the de-facto standard U+F8FF  on all platforms.
 
 a true interpreter (would not replace APL transpiler, but be a third implementation)
 full parody of file IO functions for APL transpiler
@@ -489,10 +494,6 @@ The source for the first alpha version is projected to need:
 - curl (to ensure the most current unicode files)
 - an Awk interpreter (for processing the unicode files)
 
-To implement both the C and Pascal sides of the file, The current implementation is to "Volley" the file back and fourth between flex/lex and plex until no tokens remain.
-This is done by having both lexers switch to outputting a second source file that contains the functions destined for the other, while at the same time only returning an extern function token for their own language.
-This can be done recursively.
-
 future rewrites may also require
 - an M4 macro processor
 
@@ -514,7 +515,7 @@ Here is a list of how I implement built-ins in the first 2 iterations:
 
 function: 1st iteration , 2nd iteration
 
-wait() , ⌛(foo) : ~ , native
+wait() , ⌛foo : ~ , native
 time() : C  , native calling object
 clock() : C , native calling object
 IF (foo) {} : C , native calling object
@@ -559,45 +560,45 @@ LLIST foo {...} : C , native calling object
 ⎋ , EXIT : C , native calling object
 ⚠ , ERROR : C , native calling object
 💣 , POKE5945862 : C , native calling object
-foo + bar : C , native calling object OR Fortran
-foo - bar : C , native calling object OR Fortran
--foo : C , native calling object OR Fortran
-foo * bar , foo × bar : C , native calling object OR Fortran
-foo / bar , foo ÷ bar : C , native calling object OR Fortran
-foo ^ bar , foo ** bar , foo ⋆ bar : C , native calling object OR Fortran
-foo ^^ bar : C , native calling object OR Fortran
-foo % bar : C , native calling object OR Fortran
-foo LOG bar , foo ⍟ bar : C , native calling object OR Fortran
-foo ROOT bar , foo √ bar : C , native calling object OR Fortran
-!foo : C , native calling object OR Fortran
-¡foo : C , native calling object OR Fortran
-foo nCr bar : C , native calling object OR Fortran
-foo nPr bar : C , native calling object OR Fortran
-elog(foo) : C , native calling object OR Fortran
-abs(foo) , ⟦foo⟧ : C , native calling object OR Fortran
-cabs(foo) : C , native calling object OR Fortran
-floor(foo) , ⌊foo⌋ : C , native calling object OR Fortran
-ceiling(foo) , ⌈foo⌉ : C , native calling object OR Fortran
-div(foo, bar) : C , native calling object OR Fortran
-sqrt(foo) : Pascal , native calling object OR Fortran
-cbrt(foo) : Pascal , native calling object OR Fortran
-max(foo, bar...) : C , native calling object OR Fortran
-min(foo, bar...) : C , native calling object OR Fortran
-mean(foo, bar...) : C , native calling object OR Fortran
+foo + bar : C , native calling object OR ASM
+foo - bar : C , native calling object OR ASM
+-foo : C , native calling object OR ASM
+foo * bar , foo × bar : C , native calling object
+foo / bar , foo ÷ bar : C , native calling object
+foo ^ bar , foo ** bar , foo ⋆ bar : C , native calling object
+foo ^^ bar : C , native calling object
+foo % bar : C , native calling object
+foo LOG bar , foo ⍟ bar : C , native calling object
+foo ROOT bar , foo √ bar : C , native calling object
+!foo : C , native calling object
+¡foo : C , native calling object
+foo nCr bar : C , native calling object
+foo nPr bar : C , native calling object
+elog(foo) : C , native calling object
+abs(foo) , ⟦foo⟧ : C , native calling object
+cabs(foo) : C , native calling object
+floor(foo) , ⌊foo⌋ : C , native calling object
+ceiling(foo) , ⌈foo⌉ : C , native calling object
+div(foo, bar) : C , native calling object
+sqrt(foo) , √bar : C , native calling object
+cbrt(foo) : C , native calling object
+max(foo, bar...) : C , native calling object
+min(foo, bar...) : C , native calling object
+mean(foo, bar...) : C , native calling object
 median(foo, bar...) : ~ , native
 mode(foo, bar) : ~ , native
-sin(foo) : C , native calling object OR Fortran
-cos(foo) : C , native calling object OR Fortran
-tan(foo) : C , native calling object OR Fortran
-cot(foo) : C , native calling object OR Fortran
-sec(foo) : C , native calling object OR Fortran
-csc(foo) : C , native calling object OR Fortran
-arcsin(foo) : C , native calling object OR Fortran
-arccos(foo) : C , native calling object OR Fortran
-arctan(foo) : C , native calling object OR Fortran
-arccot(foo) : C , native calling object OR Fortran
-arcsec(foo) : C , native calling object OR Fortran
-arccsc(foo) : C , native calling object OR Fortran
+sin(foo) : C , native calling object
+cos(foo) : C , native calling object
+tan(foo) : C , native calling object
+cot(foo) : C , native calling object
+sec(foo) : C , native calling object
+csc(foo) : C , native calling object
+arcsin(foo) : C , native calling object
+arccos(foo) : C , native calling object
+arctan(foo) : C , native calling object
+arccot(foo) : C , native calling object
+arcsec(foo) : C , native calling object
+arccsc(foo) : C , native calling object
 foo++ : C calling Asm , native calling object
 foo-- : C calling Asm , native calling object
 foo>> : C calling Asm , native calling object
@@ -646,8 +647,9 @@ roll(foo, bar) : ~ , Native
 deal(foo, bar) : C , native calling object
 shuffle(foo) : ~ , native
 sort(foo) : ~ , native
-RETURN foo : ~ , native parser calling native and C
+RETURN foo : parser and C , native parser calling native and C
 lambda(foo, bar, baz) ❬quux, garply, waldo❭ {...} : C++ , native
+λ(foo, bar, baz) ❬quux, garply, waldo❭ {...} : C++ , native
 sizeof(foo) : C , native calling object
 typeof(foo) : C , native calling object
 classof(foo) : C , native calling object
@@ -757,7 +759,7 @@ a name may not overlap exactly with a special variable.
 stdin stdout stderr cin cout cerr clog endln NULL ⅈ ℯ π φ ∞ infinity � notanumber true false ternary
 
 a name may not overlap exactly with a builtin function
-
+[set of all functions]
 
 The compiler automatically generates a type tree and associated variables for each variable and type. They follow the form:
 type_of_[variablename] type_table_[typename]
@@ -781,6 +783,8 @@ MAX_BUFFER is a value used in string and file operations. it defaults to 512 byt
 
 TYPE TREE
 the type tree contains the names of all types. any user defined types are automatically added to the type tree.
+
+
 
 VERSION NUMBERS
 ---------------
