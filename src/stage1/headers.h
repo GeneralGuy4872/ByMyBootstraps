@@ -18,19 +18,19 @@ const double \317\200 = M_PI;
 //unicode symbol for pi, or should be
 const double \342\204\257 = M_E;
 //unicode symbol for e, or should be
-const double \317\206 = (1+sqrt(5))/2
+const double \317\206 = (1+sqrt(5))/2;
 //unicode symbol for phi, or should be
 const float _Imaginary \342\205\210 = _Imaginary_I;
 //unicode symbol for i, or should be
 const float \342\210\236 = INFINITY;
 //unicode symbol for infinity, or should be
-const float \357\277\275 = NAN
+const float \357\277\275 = NAN;
 //unicode replacement character, or should be
 const char* myinput[MAXBUFFER];
 
-const signed char my_true = TRUE
-const signed char my_false = FALSE
-const signed char my_ternary = -1
+const signed char my_true = TRUE;
+const signed char my_false = FALSE;
+const signed char my_ternary = -1;
 
 long mytertiation(double foo, unsigned int bar)
 	{
