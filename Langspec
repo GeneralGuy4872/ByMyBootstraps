@@ -1,4 +1,4 @@
-My Language V0.2.4d 0000000 00-00-0000
+My Language V0.2.4f 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -78,9 +78,10 @@ and so on as in the C preprocessor
 
 ; , ⏎ , ↯ : equivilant to new line
 
-⎋ , EXIT : close the program immidiately
-⚠ , ERROR : close the program and report that an error has occurred
-💣 , POKE5945862 : cause an oops or raise a panic (implementation dependent; result is to be that the OS is stopped without further damage and the standard error message is displayed) WARNING DON'T DO THIS UNLESS SITUATION IS DIRE
+⎋foo , EXIT (foo) {} : close the program cleanly with status number foo, and do optional {} first. cannot do at exit functions when called as ⎋
+⚠foo , ERROR (foo) : raise the signal named foo and close program
+💣 , ABORT : abort the program immidiately.
+ASSERT (foo) : if foo is false, print the error information to stderr and call 💣
 
 math types noted below
 foo + bar : foo plus bar
@@ -223,7 +224,7 @@ assembly functions included for writing memory management functions that can be 
 Intended to be used with variable pointers. SEE BELOW WARNING ABOUT ABSOLUTE MEMORY ADDRESSING IN PRE-EXISTING ENVIROMENTS.
 
 Final implementation will group non-byte datatypes into byte sized blocks.
-(i.e. 8 bools will grouped together to make a byte)
+(i.e. 4 bools will grouped together to make a byte)
 (C can't do this, but this language as written, with disregard to back end, should be able to implement a compiler to do it.)
 
 functions for transfinites, base-60 numbers, and graphics deferred.
@@ -255,7 +256,6 @@ cout : the C++-style output file
 cin : the C++-style input file
 cerr : the C++-style error file
 clog : the C++-style logging file
-endln : C++ newline
 NULL : a null file or bitbucket, implemented as a null pointer.
 ⅈ : √-1, for complex numbers. (the variable "i" is antireserved as too generic)
 ℯ : eulars number, double. (the variable "euler" is antireserved for i.e. user defined approximations) 
@@ -427,7 +427,7 @@ Example 1:
 printf("Hello, World!\n")
 
 Example 2:
-cout :< "Hello, World!" ¢ endln
+cout :< "Hello, World!" ¢ "\n"
 
 Example 3:
 writeln(cout, "Hello, World!")
@@ -466,8 +466,6 @@ Support for Octal pairs and the ability to store 4 of them in 3 byte groups
 support for awk, sed, or perl style regexs
 
 Support for Q8.8, Q16.16, and Q32.32 numbers
-
-Support for storing single variable equasions similar to complex numbers for automatic value updating
 
 Support for EBCDIC-APL, MAC-OS-ROMAN, ISO-8859-1.
 MAC-OS-ROMAN's apple would map to the de-facto standard U+F8FF  on all platforms.
@@ -557,13 +555,14 @@ foo[bar][quux] : C , native calling object
 STRUCT FOO {...} : C , native calling object
 foo.bar : C , native calling object
 LLIST foo {...} : C , native calling object
-⎋ , EXIT : C , native calling object
-⚠ , ERROR : C , native calling object
-💣 , POKE5945862 : C , native calling object
+⎋foo , EXIT (foo) {} : C , native calling object
+⚠foo , ERROR (foo) : C , native calling object
+💣 , ABORT : C , native calling object
+ASSERT (foo) : C , native calling object
 foo + bar : C , native calling object OR ASM
 foo - bar : C , native calling object OR ASM
 -foo : C , native calling object OR ASM
-foo * bar , foo × bar : C , native calling object
+foo * bar , foo × bar : C , native calling object OR ASM
 foo / bar , foo ÷ bar : C , native calling object
 foo ^ bar , foo ** bar , foo ⋆ bar : C , native calling object
 foo ^^ bar : C , native calling object
@@ -684,14 +683,13 @@ cout : C++ , std::cout
 cin : C++ , std::cin
 cerr : C++ , std::cerr
 clog : C++ , std::clog
-endln : C++ , endl
 NULL : C , NULL
 ⅈ : C , _IMAGINARY_I
 ℯ : C , M_E
 π : C , M_PI
 φ : C , (double) ((1 + sqrt(5)) / 2)
-∞ : C , HUGE_VAL
-� : C++ , quiet_NaN
+∞ , infinity : C , INFINITY
+� , notanumber : C , NAN
 true : C , signed char TRUE
 false : C , signed char FALSE
 ternary : C , signed char -1
@@ -756,7 +754,7 @@ a name may not contain a number as the first character
 0 1 2 3 4 5 6 7 8 9
 
 a name may not overlap exactly with a special variable.
-stdin stdout stderr cin cout cerr clog endln NULL ⅈ ℯ π φ ∞ infinity � notanumber true false ternary
+stdin stdout stderr cin cout cerr clog NULL ⅈ ℯ π φ ∞ infinity � notanumber true false ternary
 
 a name may not overlap exactly with a builtin function
 [set of all functions]
