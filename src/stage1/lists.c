@@ -62,7 +62,6 @@ struct typtyp* type_of_cout = (type_of_cout){.parent = *type_table_output, .isnu
 struct typtyp* type_of_cin = (type_of_cin){.parent = *type_table_input, .isnumber = *type_table_input, .type = "input"}
 struct typtyp* type_of_cerr = (type_of_cerr){.parent = *type_table_output, .isnumber = *type_table_output, .type = "output"}
 struct typtyp* type_of_clog = (type_of_clog){.parent = *type_table_output, .isnumber = *type_table_output, .type = "output"}
-struct typtyp* type_of_endln = (type_of_endln){.parent = *type_table_endln, .isnumber = *type_table_string, .type = "endln"}
 struct typtyp* type_of_\342\205\210 = (type_of_\342\205\210){.parent = *type_table_complx, .isnumber = *type_table_complx, .type = "complx"}
 struct typtyp* type_of_\342\204\257 = (type_of_\342\204\257){.parent = *type_table_double, .isnumber = *type_table_double, .type = "double"}
 struct typtyp* type_of_\317\200 = (type_of_\317\200){.parent = *type_table_double, .isnumber = *type_table_double, .type = "double"}
