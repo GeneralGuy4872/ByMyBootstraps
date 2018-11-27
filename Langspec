@@ -1,4 +1,4 @@
-My Language V0.2.6a 0000000 00-00-0000
+My Language V0.2.6b 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -529,14 +529,14 @@ clock() : C , native calling object
 IF (foo) {} : C , native calling object
 ELSE {} : C , native calling object
 ELSEIF (foo) {} : C , native calling object
-WHILE (foo) {} : C , native
-UNTIL (foo) {} : ~ , native calling object
+WHILE (foo) {} : C , native calling object
+UNTIL (foo) {} : ~ , native
 DOTIMES (foo) {} : ~ , native
-BREAK : parser , native parser
-GOTO (foo) : parser , native parser
+BREAK : C , native calling object
+GOTO (foo) : C , native calling object
 MAP (foo) ❬x❭ {} : C , native calling object
 KEY (foo) ❬x❭ {...} : ~ , native
-¶foo : parser , native parser
+¶foo : C , native calling object
 printf(...) : C , native calling object
 sprintf(...) : C , native calling object
 fprintf(...) : C , native calling object
