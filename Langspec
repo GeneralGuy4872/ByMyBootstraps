@@ -1,4 +1,4 @@
-My Language V0.2.5 0000000 00-00-0000
+My Language V0.2.5a 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -525,9 +525,9 @@ clock() : C , native calling object
 IF (foo) {} : C , native calling object
 ELSE {} : C , native calling object
 ELSEIF (foo) {} : C , native calling object
-WHILE (foo) {} : C , native calling object
+WHILE (foo) {} : ~ , native
 UNTIL (foo) {} : C , native calling object
-DOTIMES (foo) {} : C , native reimplimentation
+DOTIMES (foo) {} : ~ , native
 BREAK : parser , native parser
 GOTO (foo) : parser , native parser
 MAP (foo) ❬x❭ {} : C , native calling object
@@ -547,10 +547,10 @@ fseek(...) : C , native calling object
 ftell(...) : C , native calling object
 rewind(...) : C , native calling object
 assign(...) : C , native calling object
-write(...) : C , native calling object
-writeln(...) : C , native calling object
-read(...) : C , native calling object
-readln(...) : C , native calling object
+write(...) : ~ , native
+writeln(...) : ~ , native
+read(...) : ~ , native
+readln(...) : ~ , native
 FUNCTION foo() {...} : ~ , native parser calling native and C
 VARIADIC foo(bar) {...} : C , native calling object
 EXTERN foo() : C , native calling object
@@ -562,6 +562,7 @@ UNDECLARE bar, quux, xyzzy : C , native calling object
 foo[bar][quux] : C , native calling object
 STRUCT FOO {...} : C , native calling object
 foo.bar : C , native calling object
+foo>>>bar , foo➤bar : C , native calling object
 LLIST foo {...} : C , native calling object
 ⎋foo , EXIT (foo) {} : C , native calling object
 ⚠foo , ERROR (foo) : C , native calling object
@@ -661,8 +662,8 @@ lambda(foo, bar, baz) ❬quux, garply, waldo❭ {...} : C++ , native
 sizeof(foo) : C , native calling object
 typeof(foo) : C , native calling object
 classof(foo) : C , native calling object
-isnumber(foo) : C calling C++ , native calling object
-signof(foo) : C calling C++ , native calling object
+isnumber(foo) : C , native calling object
+signof(foo) : C , native calling object
 float(foo) : C , native calling object
 dfloat(foo) : C , native calling object
 complx(foo) : C , native calling object
@@ -670,7 +671,7 @@ minisize(foo) : ~ , native
 atof(foo) : C , native calling object
 atoi(foo) : C , native calling object
 atol(foo) : C , native calling object
-tostring(printf_format, foo) : C , native
+tostring(printf_format, foo) : ~ , native
 toupper(foo) : ~ , native using UnicodeData.txt
 tolower(foo) : ~ , native using UnicodeData.txt
 confuseables(foo) : ~ , native using Confuseables.txt
