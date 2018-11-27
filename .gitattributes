@@ -12,6 +12,7 @@
 *.b = linguist-language=B
 *.lex = linguist-language=lex
 *.y = linguist-language=yacc
+*.yy = linguist-language=yacc
 *.awk = linguist-language=awk
 *.zzzz = linguist-language=unknown
 *.apl = linguist-language=APL
@@ -24,4 +25,4 @@ make = linguist-language=make
 *.m4 = linguist-language=m4
 *.html =  = linguist-language=xml
 *.s = linguist-language=assembly
-*.asm  = linguist-language=motorola
+*.asm  = linguist-language=assembly
