@@ -1,4 +1,4 @@
-My Language V0.2.5a 0000000 00-00-0000
+My Language V0.2.5b 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -364,8 +364,8 @@ FLOAT : single precision float
 DOUBLE : double precision float
 ARRAY : array of anythings, so long as all entries are the same size. can be multidimensional if rectangular/cuboid/hypercuboid.
 FILE : a C-style file
-ISTREM : a C++ style input stream
-OSTREM : a C++ style output stream
+INPUT : a C++ style input stream
+OUTPUT : a C++ style output stream
 LLIST : a doubly-linked list. implemented as a collection of nodes.
 NODE : a structure consisting of a pointer .prev, an anything .data, and a pointer .next
 TREERT : the root of a tree of leaves.
