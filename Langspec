@@ -1,4 +1,4 @@
-My Language V0.2.5b 0000000 00-00-0000
+My Language V0.2.6 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -63,11 +63,10 @@ TYPE FOO bar : define a datatype FOO, whereas FOO is a literal string of case in
 FOO bar, quux, xyzzy : where FOO is a valid datatype, make variables bar, quux, and xyzzy that type
 FOO bar[quux] {...} : make an array bar of size quux with entries of type FOO. More square brackets can be added as waldo[garply][plugh][xyzzy] to define a multi dimensional array.
 GLOBAL FOO bar, quux, xyzzy : where FOO is a valid datatype, make global variables bar, quux, and xyzzy that type
-UNDECLARE bar, quux, xyzzy : unlink the names bar, quux, and xyzzy from the address they point to. the values can still be retrieved with direct addressing methods.
 foo[bar][quux] : the quux-th element of the bar-th column of array foo
 STRUCT FOO {...} : create a structured datatype FOO with the keys named in {}.
 foo.bar : the field bar from the variable foo, where foo is a structure. foo.bar is not a valid variable name otherwise because of this syntax, use foo_bar.
-foo>>>bar , foo➤bar : structure pointer. can be chained to geather, like baz➤quux➤garply, if the field quux in baz is a pointer to another struct or similar type.
+foo>>>bar , foo➤bar : structure pointer. can be chained togeather, like baz➤quux➤garply, if the field quux in baz is a pointer to another struct or similar type.
 LLIST foo (bar) {...} : create a linked list bar of nodes with .data fields containing the values in {}
 NODE FOO bar : create a node bar with data field of valid type FOO
 TREERT FOO bar : make a leaf that loops back to itself with a data field of valid type FOO.
@@ -173,7 +172,7 @@ foo = bar , foo EQ bar : test if foo is equal to bar, returns bool result
 foo ≈ bar , foo APROX bar : test if floor or ceiling of foo is equal to the floor or ceiling of bar
 foo ≡ bar , foo == bar : test byte for byte if foo matches bar, returns bool
 
-foo ¢ bar , foo CON bar : concatinate the anythings foo and bar, returns the resulting anything. may be an invalid type.
+foo ¢ bar , foo CON bar : bitwise concatinate foo and bar.
 
 strtok(foo, bar) : replace the character bar in string foo with a null character, return pointer to current position.
 regex(foo) : compile the regex foo and return the pattern
@@ -216,6 +215,11 @@ confuseables(foo) : remove all confuseables from string foo, according to the of
 
 add(foo, bar, quux) : add foo to linked list bar at position quux
 remove(foo, bar) : remove node bar from linked list foo
+
+malloc(foo) : allocate foo bytes
+calloc(foo, bar) : allocate an array of foo elements of bar bytes
+free(&foo) : erase the memory at foo
+realloc(foo, bar) : resize foo to bar
 
 moveb(foo, bar) : move 1 byte from address bar to address foo and return the value moved. foo and bar can be an interger or an & adress
 movew(foo, bar) : move 2 bytes from address bar to address foo and return the value moved. foo and bar can be an interger or an & adress
@@ -558,7 +562,6 @@ TYPE FOO bar : C , native calling object
 FOO bar, quux, xyzzy : C , native calling object
 FOO bar[quux] {} : C , native calling object
 GLOBAL FOO bar, quux, xyzzy : C , native calling object
-UNDECLARE bar, quux, xyzzy : C , native calling object
 foo[bar][quux] : C , native calling object
 STRUCT FOO {...} : C , native calling object
 foo.bar : C , native calling object
@@ -644,7 +647,7 @@ foo ≤ bar , foo LE bar : C , Native calling object
 foo ≥ bar , foo GE bar : C , Native calling object
 foo ≠ bar , foo NE bar : C , Native calling object
 foo = bar , foo EQ bar : C , Native calling object
-foo ≈ bar , foo APROX bar : C , Native calling object
+foo ≈ bar , foo APROX bar : ~ , Native
 foo ≡ bar , foo == bar : C , Native calling object
 foo ¢ bar , foo CON bar : C , Native calling object
 strtok(foo, bar) : C , native calling object
@@ -677,6 +680,10 @@ tolower(foo) : ~ , native using UnicodeData.txt
 confuseables(foo) : ~ , native using Confuseables.txt
 add(foo, bar, quux) : C , native calling object
 remove(foo, bar) : C , native calling object
+malloc(foo) : C , native calling object
+calloc(foo, bar) : C , native calling object
+free(foo) : C , native calling object
+realloc(foo, bar) : C , native calling object
 moveb(foo, bar) : Asm , native calling object
 movew(foo, bar) : Asm , native calling object
 movel(foo, bar) : Asm , native calling object
