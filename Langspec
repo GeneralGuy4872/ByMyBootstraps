@@ -1,4 +1,4 @@
-My Language V0.2.6b 0000000 00-00-0000
+My Language V0.2.6c 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -62,7 +62,7 @@ EXTERN foo(...) : define an external function that takes standard linkage.
 TYPE FOO bar : define a datatype FOO, whereas FOO is a literal string of case insensitive letters or underscores and bar is number between 0 and CPU maximum (assumed to be 64) specifying bit width which may be prefixed by a U or S to indicate signing, and may be followed by a * to denote repeating units
 FOO bar, quux, xyzzy : where FOO is a valid datatype, make variables bar, quux, and xyzzy that type
 FOO bar[quux] {...} : make an array bar of size quux with entries of type FOO. More square brackets can be added as waldo[garply][plugh][xyzzy] to define a multi dimensional array.
-GLOBAL FOO bar, quux, xyzzy : where FOO is a valid datatype, make global variables bar, quux, and xyzzy that type
+STATIC FOO bar, quux, xyzzy : where FOO is a valid datatype, make static variables bar, quux, and xyzzy that type
 foo[bar][quux] : the quux-th element of the bar-th column of array foo
 STRUCT FOO {...} : create a structured datatype FOO with the keys named in {}.
 foo.bar : the field bar from the variable foo, where foo is a structure. foo.bar is not a valid variable name otherwise because of this syntax, use foo_bar.
@@ -561,7 +561,7 @@ EXTERN foo() : C , native calling object
 TYPE FOO bar : C , native calling object
 FOO bar, quux, xyzzy : C , native calling object
 FOO bar[quux] {} : C , native calling object
-GLOBAL FOO bar, quux, xyzzy : C , native calling object
+STATIC FOO bar, quux, xyzzy : C , native calling object
 foo[bar][quux] : C , native calling object
 STRUCT FOO {...} : C , native calling object
 foo.bar : C , native calling object
