@@ -23,6 +23,6 @@ make = linguist-language=make
 *.objc = linguist-language=objective-c
 *.objc++ = linguist-language=objective-c++
 *.m4 = linguist-language=m4
-*.html =  = linguist-language=xml
+*.html = linguist-language=sgml
 *.s = linguist-language=assembly
 *.asm  = linguist-language=assembly
