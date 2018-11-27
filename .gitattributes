@@ -13,6 +13,8 @@
 *.f = linguist-language=FORTRAN
 *.cob = linguist-language=COBOL
 *.sno = linguist-language=Snobol4
+*.rex = linguist-language=REXX
+*.rexx = linguist-language=REXX
 *.b = linguist-language=B
 *.bcpl = linguist-language=BCPL
 *.bas = linguist-language=BASIC
