@@ -47,5 +47,5 @@ make = linguist-language=make
 *.st = linguist-language=smalltalk
 *.s = linguist-language=assembly
 *.asm = linguist-language=assembly
-*.pict = linguist-language=QuickDraw
+*.lgo = linguist-language=logo
 *.svg = linguist-language=svg
