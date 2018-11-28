@@ -1,4 +1,4 @@
-My Language V0.2.7 0000000 00-00-0000
+My Language V0.2.7a 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -60,9 +60,9 @@ FUNCTION foo(...) {...} : define a function foo. () contains an exaustive list o
 VARIADIC foo(bar) {...} : define a function foo. bar is an array of arguments, {} contains the function itself.
 EXTERN FOO bar(...) : define an external function that takes standard linkage. FOO is the type the function returns, using this language's names. If types are the same width, this can be used to reformat the raw data of the returned function.
 TYPE FOO bar : define a datatype FOO, whereas FOO is a literal string of case insensitive letters or underscores and bar is number between 0 and CPU maximum (assumed to be 64) specifying bit width which may be prefixed by a U or S to indicate signing, and may be followed by a * to denote repeating units
-FOO bar : where FOO is a valid datatype, make variable bar that type
+FOO bar, baz, quux : where FOO is a valid datatype, make variables bar, baz, and quux of that type
 FOO bar[quux] {...} : make an array bar of size quux with entries of type FOO. More square brackets can be added as waldo[garply][plugh][xyzzy] to define a multi dimensional array.
-STATIC FOO bar : where FOO is a valid datatype, make static variable bar that type
+STATIC FOO bar, baz, quux : where FOO is a valid datatype, make static variables bar, baz, and quux of that type
 foo[bar][quux] : the quux-th element of the bar-th column of array foo
 STRUCT FOO {...} : create a structured datatype FOO with the keys named in {}.
 foo.bar : the field bar from the variable foo, where foo is a structure. foo.bar is not a valid variable name otherwise because of this syntax, use foo_bar.
@@ -562,9 +562,9 @@ FUNCTION foo() {...} : ~ , native parser calling native and C
 VARIADIC foo(bar) {...} : ~ , native parser calling native and C
 EXTERN FOO bar() : C , native calling object
 TYPE FOO bar : C , native calling object
-ASSIGN FOO bar : C , native calling object
-ASSIGN FOO bar[quux] {} : C , native calling object
-STATIC FOO bar : C , native calling object
+FOO bar, baz, quux : C , native calling object
+FOO bar[quux] {} : C , native calling object
+STATIC FOO bar, baz, quux : C , native calling object
 foo[bar][quux] : C , native calling object
 STRUCT FOO {...} : C , native calling object
 foo.bar : C , native calling object
