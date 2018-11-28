@@ -1,4 +1,4 @@
-My Language V0.2.6c 0000000 00-00-0000
+My Language V0.2.7 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -58,16 +58,16 @@ readln(foo, ...) : read a line from a file and assign fields in order, similar t
 
 FUNCTION foo(...) {...} : define a function foo. () contains an exaustive list of the internal names of arguments, {} contains the function itself.
 VARIADIC foo(bar) {...} : define a function foo. bar is an array of arguments, {} contains the function itself.
-EXTERN foo(...) : define an external function that takes standard linkage.
+EXTERN FOO bar(...) : define an external function that takes standard linkage. FOO is the type the function returns, using this language's names. If types are the same width, this can be used to reformat the raw data of the returned function.
 TYPE FOO bar : define a datatype FOO, whereas FOO is a literal string of case insensitive letters or underscores and bar is number between 0 and CPU maximum (assumed to be 64) specifying bit width which may be prefixed by a U or S to indicate signing, and may be followed by a * to denote repeating units
-FOO bar, quux, xyzzy : where FOO is a valid datatype, make variables bar, quux, and xyzzy that type
+FOO bar : where FOO is a valid datatype, make variable bar that type
 FOO bar[quux] {...} : make an array bar of size quux with entries of type FOO. More square brackets can be added as waldo[garply][plugh][xyzzy] to define a multi dimensional array.
-STATIC FOO bar, quux, xyzzy : where FOO is a valid datatype, make static variables bar, quux, and xyzzy that type
+STATIC FOO bar : where FOO is a valid datatype, make static variable bar that type
 foo[bar][quux] : the quux-th element of the bar-th column of array foo
 STRUCT FOO {...} : create a structured datatype FOO with the keys named in {}.
 foo.bar : the field bar from the variable foo, where foo is a structure. foo.bar is not a valid variable name otherwise because of this syntax, use foo_bar.
 foo>>>bar , foo➤bar : structure pointer. can be chained togeather, like baz➤quux➤garply, if the field quux in baz is a pointer to another struct or similar type.
-LLIST foo (bar) {...} : create a linked list bar of nodes with .data fields containing the values in {}
+LLIST FOO (bar) {...} : create a linked list bar of nodes with .data fields containing the values of type FOO in {}
 NODE FOO bar : create a node bar with data field of valid type FOO
 TREERT FOO bar : make a leaf that loops back to itself with a data field of valid type FOO.
 LEAF FOO bar : create a leaf bar with data field of valid type FOO
@@ -216,6 +216,10 @@ confuseables(foo) : remove all confuseables from string foo, according to the of
 add(foo, bar, quux) : add foo to linked list bar at position quux
 remove(foo, bar) : remove node bar from linked list foo
 
+SYSTEM (...) : on supported implementations, pass the command in () to an external shell. very much implementation dependent and not mandatory.
+FORK {} : spawn a child process that will do whatever is in {} and exit. avalibility is implementation dependent.
+It is assumed that either both or neither of these will be provided.
+
 malloc(foo) : allocate foo bytes
 calloc(foo, bar) : allocate an array of foo elements of bar bytes
 free(&foo) : erase the memory at foo
@@ -299,7 +303,7 @@ An insertion operator, :<, and extraction operator, :>, are also avalible
 
 "this is a string"
 
-'the raw value of the string'
+'this is also a string'
 
 a newline, ; or ⏎ appearing before a string is closed will be interpreted as a newline,
 but will cause the parser to generate a warning about the virtues of escape sequences.
@@ -515,15 +519,15 @@ Primary functions
 -----------------
 A primary function is a function that is included in the first step of the bootstrapping process. CPP Macros don't count.
 Any built-in function that is a function that is not a primary function is called a "secondary function", and can be implemented with primary functions.
-Some primary functions that could be implemented as secondary functions are meant to be different on the backend from such an implementation or are required in the second iteration.
+Some primary functions that could be implemented as secondary functions are meant to be different on the backend from such an implementation, are required in the second iteration, or are absolutely trivial.
 
 This language standard does not mandate that the functions are implemented in the languages specified; Ideally, they could all be reduced to a single language.
 Starting at iteration 3, I plan to implement both a Static Compiler and an APL transpiler. Iteration 3 is also the first iteration to have all the built-ins.
 Here is a list of how I implement built-ins in the first 2 iterations:
 
-function: 1st iteration , 2nd iteration
+function : 1st iteration , 2nd iteration
 
-wait() , ⌛foo : ~ , native
+wait() , ⌛foo : C , native calling object
 time() : C  , native calling object
 clock() : C , native calling object
 IF (foo) {} : C , native calling object
@@ -534,7 +538,7 @@ UNTIL (foo) {} : ~ , native
 DOTIMES (foo) {} : ~ , native
 BREAK : C , native calling object
 GOTO (foo) : C , native calling object
-MAP (foo) ❬x❭ {} : C , native calling object
+MAP (foo) ❬x❭ {} : ~ , native
 KEY (foo) ❬x❭ {...} : ~ , native
 ¶foo : C , native calling object
 printf(...) : C , native calling object
@@ -550,18 +554,17 @@ fclose(...) : C , native calling object
 fseek(...) : C , native calling object
 ftell(...) : C , native calling object
 rewind(...) : C , native calling object
-assign(...) : C , native calling object
 write(...) : ~ , native
 writeln(...) : ~ , native
 read(...) : ~ , native
 readln(...) : ~ , native
 FUNCTION foo() {...} : ~ , native parser calling native and C
-VARIADIC foo(bar) {...} : C , native calling object
-EXTERN foo() : C , native calling object
+VARIADIC foo(bar) {...} : ~ , native parser calling native and C
+EXTERN FOO bar() : C , native calling object
 TYPE FOO bar : C , native calling object
-FOO bar, quux, xyzzy : C , native calling object
-FOO bar[quux] {} : C , native calling object
-STATIC FOO bar, quux, xyzzy : C , native calling object
+ASSIGN FOO bar : C , native calling object
+ASSIGN FOO bar[quux] {} : C , native calling object
+STATIC FOO bar : C , native calling object
 foo[bar][quux] : C , native calling object
 STRUCT FOO {...} : C , native calling object
 foo.bar : C , native calling object
@@ -680,6 +683,8 @@ tolower(foo) : ~ , native using UnicodeData.txt
 confuseables(foo) : ~ , native using Confuseables.txt
 add(foo, bar, quux) : C , native calling object
 remove(foo, bar) : C , native calling object
+SYSTEM (...) : C , native calling object
+FORK {} : C , native calling object
 malloc(foo) : C , native calling object
 calloc(foo, bar) : C , native calling object
 free(foo) : C , native calling object
@@ -734,9 +739,9 @@ FILE : C, FILE
 INPUT : C++, istream
 OUTPUT : C++, ostream
 LLIST : C, struct node*
-NODE : C, struct {*node, *node}
+NODE : C, struct {*node, *node}; aditional anything field added
 TREERT : C, struct leaf*
-LEAF : C, struct {*leaf}
+LEAF : C, struct {*leaf}; aditional anything field added
 TIMTYP : C, time_t
 CLKTYP : C, clock_t
 DIVTYP : C, div_t
