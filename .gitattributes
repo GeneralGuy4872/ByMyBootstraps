@@ -70,6 +70,8 @@ make = linguist-language=make
 *.py = linguist-language=python
 *.py2 = linguist-language=python
 *.bf = linguist-language=brainfuck
+*.dblc = linguist-language=BLC
+*.i = linguist-language=INTERCALC
 *.d = linguist-language=D
 *.vbs = linguist-language=vbs
 *.vb = linguist-language=visualbasic
