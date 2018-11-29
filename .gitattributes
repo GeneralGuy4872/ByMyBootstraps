@@ -69,6 +69,7 @@ make = linguist-language=make
 *.java = linguist-language=java
 *.py = linguist-language=python
 *.py2 = linguist-language=python
+*.bf = linguist-language=brainfuck
 *.d = linguist-language=D
 *.vbs = linguist-language=vbs
 *.vb = linguist-language=visualbasic
