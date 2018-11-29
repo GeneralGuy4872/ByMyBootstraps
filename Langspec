@@ -1,4 +1,4 @@
-My Language V0.2.7a 0000000 00-00-0000
+My Language V0.2.7b 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -27,7 +27,7 @@ donothing() : does nothing, optimised out
 
 IF (foo) {} : if foo is true, do the function enclosed in {}.
 ELSE {} : if the function if fails, do the function enclosed in {}.
-ELSEIF (foo) {} : single-tier version of ELSE {IF (foo) {}}
+ELSE IF (foo) {} : single-tier version of ELSE {IF (foo) {}}
 WHILE (foo) {} : loop the function enclosed in {} until foo is false.
 UNTIL (foo) {} : loop the function enclosed in {} until foo is true.
 BREAK : immediately exit the current loop
@@ -59,12 +59,12 @@ readln(foo, ...) : read a line from a file and assign fields in order, similar t
 FUNCTION foo(...) {...} : define a function foo. () contains an exaustive list of the internal names of arguments, {} contains the function itself.
 VARIADIC foo(bar) {...} : define a function foo. bar is an array of arguments, {} contains the function itself.
 EXTERN FOO bar(...) : define an external function that takes standard linkage. FOO is the type the function returns, using this language's names. If types are the same width, this can be used to reformat the raw data of the returned function.
-TYPE FOO bar : define a datatype FOO, whereas FOO is a literal string of case insensitive letters or underscores and bar is number between 0 and CPU maximum (assumed to be 64) specifying bit width which may be prefixed by a U or S to indicate signing, and may be followed by a * to denote repeating units
+TYPE FOO bar : define a basic datatype bar, from parent datatype FOO.
 FOO bar, baz, quux : where FOO is a valid datatype, make variables bar, baz, and quux of that type
 FOO bar[quux] {...} : make an array bar of size quux with entries of type FOO. More square brackets can be added as waldo[garply][plugh][xyzzy] to define a multi dimensional array.
 STATIC FOO bar, baz, quux : where FOO is a valid datatype, make static variables bar, baz, and quux of that type
 foo[bar][quux] : the quux-th element of the bar-th column of array foo
-STRUCT FOO {...} : create a structured datatype FOO with the keys named in {}.
+STRUCT FOO {...} : create a structured datatype FOO with the keys named in {}. Each must have it's type specified, but new fields can be added to variables later as in C.
 foo.bar : the field bar from the variable foo, where foo is a structure. foo.bar is not a valid variable name otherwise because of this syntax, use foo_bar.
 foo>>>bar , foo➤bar : structure pointer. can be chained togeather, like baz➤quux➤garply, if the field quux in baz is a pointer to another struct or similar type.
 LLIST FOO (bar) {...} : create a linked list bar of nodes with .data fields containing the values of type FOO in {}
@@ -175,7 +175,9 @@ foo ≡ bar , foo == bar : test byte for byte if foo matches bar, returns bool
 foo ¢ bar , foo CON bar : bitwise concatinate foo and bar.
 
 strtok(foo, bar) : replace the character bar in string foo with a null character, return pointer to current position.
-regex(foo) : compile the regex foo and return the pattern
+regex(foo) : compile the ECMAscript regex foo and return the pattern
+sedex(foo) : compile the basic regex foo and return the pattern
+awkex(foo) : compile the Awk regex foo and return the pattern
 match(foo, bar) : match all foo in string or array of strings bar, return output as a string or an array of strings
 substitute(foo, bar, quux) : substitute all foo for bar in quux, but return output
 
@@ -475,7 +477,7 @@ Special, compact type for ∞ and NaN
 
 Support for Octal pairs and the ability to store 4 of them in 3 byte groups
 
-support for awk, sed, or perl style regexs
+support for perl, lex, and Snobol4 style regexs
 
 Support for Q8.8, Q16.16, and Q32.32 numbers
 
@@ -499,10 +501,9 @@ The source for the first alpha version is projected to need:
 - a C preprocessor that can be called independently
 - an Assembler
 - a Linker
-- flex or lex
+- RE/flex
 - yacc or bison
 - curl (to ensure the most current unicode files)
-- an Awk interpreter (for processing the unicode files)
 
 future rewrites may also require
 - an M4 macro processor
@@ -655,6 +656,8 @@ foo ≡ bar , foo == bar : C , Native calling object
 foo ¢ bar , foo CON bar : C , Native calling object
 strtok(foo, bar) : C , native calling object
 regex(foo) : C++ , Native calling object
+sedex(foo) : C++ , Native calling object
+awkex(foo) : C++ , Native calling object
 match(foo, bar) : C++ , Native calling object
 substitute(foo, bar, quux) : C++ , Native calling object
 rand(foo) : C , Native calling object
