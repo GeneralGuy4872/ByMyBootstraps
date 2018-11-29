@@ -30,6 +30,7 @@
 *.yy = linguist-language=yacc
 *.y++ = linguist-language=yacc
 *.awk = linguist-language=awk
+*.sed = linguist-language=sed
 *.pl = linguist-language=perl
 *.lisp = linguist-language=lisp
 *.scm = linguist-language=scheme
