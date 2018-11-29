@@ -5,13 +5,17 @@
 *.hh = linguist-language=C++
 *.c++ = linguist-language=C++
 *.h++ = linguist-language=C++
-*.r = linguist-language=rust
+*.rs = linguist-language=rust
 *.go = linguist-language=go
+*.rb = linguist-language=ruby
+*.swift = linguist-language=swift
 *.p = linguist-language=Pascal
 *.pas = linguist-language=Pascal
 *.pp = linguist-language=Pascal
 *.f = linguist-language=FORTRAN
 *.cob = linguist-language=COBOL
+*.adb = linguist-language=Ada
+*.ads = linguist-language=Ada
 *.sno = linguist-language=Snobol4
 *.rex = linguist-language=REXX
 *.rexx = linguist-language=REXX
@@ -32,8 +36,16 @@
 *.ss = linguist-language=scheme
 *.hs = linguist-language=haskell
 *.lhs = linguist-language=haskell
+*.norlang = linguist-language=unknown
+#norlang was a discontinued project of mine from a long time ago. It was supposed to be a hardware descriptor language for logic gates,
+#but I didn't have any idea how to write a proper language at that point, and lua sandboxes just wouldn't cut it. I'm still stumped, but I might revisit it later.
 *.zzzz = linguist-language=unknown
+#my magnum opus, this language has been described by at least 1 person as "an anti-rust", however I think of it as an extended B.
+#it is loosely typed, both very high and ultralow level, and has syntax that switches between C-like and Mainframe-era flawlessly.
+#It is an amalgum of several other languages, taking the functions I like and rolling them all up in 1 place.
+#The most visible influence is the use of Unicode symbols for some functions, which was inspired by APL. 
 *.apl = linguist-language=APL
+*.j = linguist-language=J
 make = linguist-language=make
 *.cmake = linguist-language=cmake
 *.sh = linguist-language=shell
@@ -54,6 +66,8 @@ make = linguist-language=make
 *.json = linguist-language=json
 *.js = linguist-language=javascript
 *.java = linguist-language=java
+*.py = linguist-language=python
+*.d = linguist-language=D
 *.vbs = linguist-language=vbs
 *.vb = linguist-language=visualbasic
 *.applescript = linguist-language=applescript
@@ -61,6 +75,8 @@ make = linguist-language=make
 *.lgo = linguist-language=logo
 *.svg = linguist-language=svg
 *.tex = linguist-language=latex
+*.vhd = linguist-language=VHDL
+*.vhdl = linguist-language=VHDL
 *.s = linguist-language=assembly
 *.asm = linguist-language=assembly
 *.pict = linguist-language=QuickDraw
