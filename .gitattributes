@@ -79,6 +79,8 @@ make = linguist-language=make
 *.vhdl = linguist-language=VHDL
 *.s = linguist-language=assembly
 *.asm = linguist-language=assembly
+*.mot = linguist-language=assembly
+*.pcode = linguist-language=assembly
 *.pict = linguist-language=QuickDraw
 *.srec = linguist-language=SRecord
 *.ihex = linguist-language=IntelHex
