@@ -81,12 +81,5 @@ make = linguist-language=make
 *.asm = linguist-language=assembly
 *.mot = linguist-language=assembly
 *.pcode = linguist-language=assembly
-*.pict = linguist-language=QuickDraw
 *.srec = linguist-language=SRecord
 *.ihex = linguist-language=IntelHex
-*.bin = linguist-language=BinaryData
-*.hex = linguist-language=Hex
-*.o = linguist-language=object
-*.out = linguist-language=object
-*.dll = linguist-language=dll
-*.exe = linguist-language=Executable
