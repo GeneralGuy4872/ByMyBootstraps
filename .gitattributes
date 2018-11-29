@@ -68,6 +68,8 @@ make = linguist-language=make
 *.js = linguist-language=javascript
 *.java = linguist-language=java
 *.py = linguist-language=python
+*.py2 = linguist-language=python
+*.py3 = linguist-language=python
 *.d = linguist-language=D
 *.vbs = linguist-language=vbs
 *.vb = linguist-language=visualbasic
