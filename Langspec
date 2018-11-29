@@ -501,7 +501,7 @@ The source for the first alpha version is projected to need:
 - a C preprocessor that can be called independently
 - an Assembler
 - a Linker
-- RE/flex
+- the RE/flex lexer
 - yacc or bison
 - curl (to ensure the most current unicode files)
 
