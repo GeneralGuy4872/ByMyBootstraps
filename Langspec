@@ -1,5 +1,5 @@
-My Language V0.2.9b 0000000 00-00-0000
-Prealpha
+My Language V0.2.9d 0000000 00-00-0000
+Prealpha *ALPHA DEADLINE NEWYEARS*
 ======================================
 
 Caution: early versions will probably be about as stable as a house of cards built atop of jenga towers sitting on a card table.
@@ -23,17 +23,17 @@ wait(foo) , ⌛foo : wait for foo milliseconds, returns void
 time() : returns the current real time, timtyp
 clock() : return the current program time, clktyp
 beep() : print \a, returns void
-donothing() : does nothing, optimised out
 
-IF (foo) {} : if foo is true, do the function enclosed in {}.
-ELSE {} : if the function if fails, do the function enclosed in {}.
-ELSEIF (foo) {} : single-tier version of ELSE {IF (foo) {}}
-WHILE (foo) {} : loop the function enclosed in {} until foo is false.
-UNTIL (foo) {} : loop the function enclosed in {} until foo is true.
+IF (foo) {...} : if foo is true, do the function enclosed in {}.
+ELSE {...} : if the function if fails, do the function enclosed in {}.
+ELSEIF (foo) {...} : single-tier version of ELSE {IF (foo) {}}
+WHILE (foo) {...} : loop the function enclosed in {} until foo is false.
+UNTIL (foo) {...} : loop the function enclosed in {} until foo is true.
 BREAK : immediately exit the current loop
 GOTO (foo) : go to label foo. NOTE: there is no return function. putting a goto inside a function declaration can screw up your control flow.
-DOTIMES (foo) {} : do whatever is in {} foo times. if foo is a float, rounds down. if foo is infinity, you're trying too hard. the current iteration is stored in loop_counter.
+DOTIMES (foo) ❬x❭ {...} : do whatever is in {} foo times. if foo is a float, rounds down. if foo is infinity, you're trying too hard to break things. the loop counter is stored in the variable noted by x.
 ¶foo : a label called foo. Please don't put these INSIDE loops unless you know what you're doing.
+NOP, NOOP, NOPR, CONTINUE, SWYM: reserved commands that do nothing. The parser eats these.
 If you GOTO out of a WHILE or DOTIMES, the parser will think you are still in that loop! This does not apply to IF, ELSEIF, or ELSE.
 
 printf(...) : print a formatted value to stdout, as in C. returns as in C. Formats as in C.
@@ -76,10 +76,10 @@ LEAF FOO bar : create a leaf bar with data field of valid type FOO
 #define foo bar : replace all regex foo with regex bar
 and so on as in the C preprocessor
 
-; , ⏎ , ↯ : equivilant to new line
+; , ⏎ : equivilant to new line
 
-⎋foo , EXIT (foo) {} : close the program cleanly with status number foo, and do optional {} first. cannot do at exit functions when called as ⎋
-⚠foo , ERROR (foo) : raise the signal named foo and close program
+⎋foo , EXIT FOO : close the program cleanly with status number foo
+⚠foo , ERROR FOO : raise the signal named foo and close program
 💣 , ABORT : abort the program immidiately.
 ASSERT (foo) : if foo is false, print the error information to stderr and call 💣
 ☠ , POKE5945862 : In systems with memory security, same as ⚠SIGSEGV. In systems WITHOUT memory security, causes a system error (such as kpanic or BSOD) intentionaly. In embedded systems, light the error indicator (assumed to be at adress 0) and HALT.
@@ -131,10 +131,6 @@ arccsc(foo) : the arccosecant of foo, returns float
 
 foo++ : foo + 1
 foo-- : foo - 1
-foo>> : barrel shift foo to the right by one (left on big endian systems)
-foo<< : barrel shift foo to the left by one (right on big endian systems)
-foo-> : shift foo to the right by one, drop excess (left on big endian systems)
-foo<- : shift foo to the left by one, drop excess (right on big endian systems)
 
 `foo : bitwise inverse of foo, returns result
 foo ∧ bar , foo AND bar , foo & bar : bitwise foo AND bar, returns result
@@ -192,7 +188,7 @@ shuffle(foo) : randomize array foo, return array.
 RETURN foo : make the containing function return foo. If you need return to evaluate something, put it in () like FOR, such as RETURN (foo + bar)
 RETURN void : does nothing, optimized out
 
-lambda(foo, bar, baz) ❬x, y, z❭ {...} : do anonamous function in {...} to anythings foo, bar, and baz, reffered to by local variabls quux, garply, and waldo. will iterate arrays or linked lists. multiple such items will be combined in all possible ways, eg (foo * bar * quux) times
+lambda(foo, bar, baz) ❬x, y, z❭ {...} : do anonamous function in {} to anythings foo, bar, and baz, reffered to by local variabls quux, garply, and waldo. will iterate arrays or linked lists. multiple such items will be combined in all possible ways, eg (foo * bar * quux) times
 λ(foo, bar, baz) ❬x, y, z❭ {...} : same as above, adding a comma would just be unnecisarily confusing and it wouldn't fit on same line.
 
 sizeof(foo) : returns the number of bits in anything foo. sizeof(&[any variable]) should return the CPU address register size.
@@ -201,9 +197,9 @@ classof(foo) : uses the type tree to determin the generalized type of foo
 isnumber(foo) : uses the type tree to determin if foo is a number type. returns 1 for numbers, 0 for non numbers, -1 for number structs, and NaN for possible numbers.
 signof(foo) : determins the sign of foo. returns -1 for negitives, 1 for positives, 0 for 0, and NaN on error.
 
-float(foo) : convert int foo to a float
+sfloat(foo) : convert int foo to a float
 dfloat(foo) : convert int or float foo to a double
-complx(foo) : convert int, float, or double to complex
+complex(foo) : convert int, float, or double to complex
 NOTE if you want a floating point number to be converted to an int type, you want the function floor(). remember this by the silly image of the float literaly floating, and you need it to be pulled down to the floor.
 
 strtol(*foo, **bar, baz) : convert the base baz number in string foo and store the cursor in *bar. returns s_long
@@ -226,7 +222,7 @@ add(foo, bar, quux) : add foo to linked list bar at position quux
 remove(foo, bar) : remove node bar from linked list foo
 
 system(...) : on supported implementations, pass the command in () to an external shell. very much implementation dependent and not mandatory.
-FORK {} : spawn a child process that will do whatever is in {} and exit. avalibility is implementation dependent.
+FORK {...} : spawn a child process that will do whatever is in {} and exit. avalibility is implementation dependent.
 It is assumed that either both or neither of these will be provided.
 
 malloc(foo) : allocate foo bytes
@@ -379,6 +375,7 @@ QUAD : 64 bits unspecified sign
 S_[BYTE|WORD|LONG|QUAD] : signed versions of above
 U_[BYTE|WORD|LONG|QUAD] : unsigned versions of above
 STRING : utf8 ansi-style string. multibyte characters are stored internaly as multiple characters.
+C_INT : C's generic Interger datatype. here for compatibility. Width is implementation dependent.
 FLOAT : single precision float
 DOUBLE : double precision float
 ARRAY : array of anythings, so long as all entries are the same size. can be multidimensional if rectangular/cuboid/hypercuboid.
@@ -398,7 +395,7 @@ VOID : a nothing 0 bits wide
 NULL : the type of NULL. Technicaly assignable, but will cause most functions to catch the variable with null handling before the value is read.
 
 "detonation" in this document refers to a fatal crash
-int in this document refers to a byte, word, long, or quad (either signed or unsigned), or clktyp
+int in this document refers to a byte, word, long, or quad (either signed or unsigned), c_int, or clktyp
 number in this document refers to an int, a float, or double
 
 assigning a negitive or overflowing number to an int will not affect it, since the format is unspecified, so long as the number is within range
@@ -540,18 +537,20 @@ Here is a list of how I implement built-ins in the first 2 iterations:
 
 function : 1st iteration , 2nd iteration (* indicates that a function could be implemented in the next round, but is trivial in the formal sense)
 
-wait() , ⌛foo : *C , native calling object
+wait(foo) , ⌛foo : *C , native calling object
 time() : C  , native calling object
 clock() : C , native calling object
-IF (foo) {} : C , native calling object
-ELSE {} : C , native calling object
-ELSEIF (foo) {} : C , native calling object
-WHILE (foo) {} : C , native calling object
-UNTIL (foo) {} : parser , native
-DOTIMES (foo) {} : parser , native
-BREAK : C , native calling object
+beep() : *C , native calling object
+IF (foo) {...} : C , native calling object
+ELSE {...} : C , native calling object
+ELSEIF (foo) {...} : C , native calling object
+WHILE (foo) {...} : C , native calling object
+UNTIL (foo) {...} : parser , native
+DOTIMES (foo) {...} : parser , native
+↯ , BREAK : C , native calling object
 GOTO (foo) : C , native calling object
 ¶foo : C , native calling object
+NOP, NOOP, NOPR, CONTINUE, SWYM: Eaten by parser
 printf(...) : C , native calling object
 sprintf(...) : C , native calling object
 fprintf(...) : C , native calling object
@@ -570,21 +569,21 @@ writeln(...) : ~ , native
 read(...) : ~ , native
 readln(...) : ~ , native
 getline(foo, bar[, baz]) : C++ , native calling object
-FUNCTION foo() {...} : C , native parser calling native and C
+FUNCTION foo(...) {...} : C , native parser calling native and C
 VARIADIC foo(bar, baz) ❬x❭ {...} : C , native parser calling native and C
-EXTERN FOO bar() : C , native calling object
+EXTERN FOO bar(...) : C , native calling object
 TYPE FOO bar : C , native calling object
 FOO bar, baz, quux : C , native calling object
-FOO bar[quux] {} : C , native calling object
+FOO bar[quux] {...} : C , native calling object
 STATIC FOO bar, baz, quux : C , native calling object
 foo[bar][quux] : C , native calling object
 STRUCT FOO {...} : C , native calling object
 foo.bar : C , native calling object
 foo>>>bar , foo➤bar : C , native calling object
-foo:bar : C , native calling object
+foo...bar , foo…bar : C , native calling object
 LLIST foo {...} : C , native calling object
-⎋foo , EXIT (foo) {} : C , native calling object
-⚠foo , ERROR (foo) : C , native calling object
+⎋foo , Exit(foo) : C , native calling object
+⚠foo , Error(foo) : C , native calling object
 💣 , ABORT : C , native calling object
 ASSERT (foo) : C , native calling object
 ☠ , POKE5945862 : Implementation dependent
@@ -629,10 +628,6 @@ arcsec(foo) : *C , native calling object
 arccsc(foo) : *C , native calling object
 foo++ : *C , native calling object
 foo-- : *C , native calling object
-foo>> : *C , native calling object
-foo<< : *C , native calling object
-foo-> : *C , native calling object
-foo<- : *C , native calling object
 `foo : C , native calling object
 foo ∧ bar , foo AND bar , foo & bar : C , Native calling object
 foo ∨ bar , foo OR bar , foo | bar : C , Native calling object
@@ -704,7 +699,7 @@ confuseables(foo) : ~ , native using Confuseables.txt
 add(foo, bar, quux) : *C , native calling object
 remove(foo, bar) : *C , native calling object
 system(...) : C , native calling object
-FORK {} : C , native calling object
+FORK {...} : C , native calling object
 malloc(foo) : C , native calling object
 calloc(foo, bar) : C , native calling object
 free(foo) : C , native calling object
@@ -788,8 +783,8 @@ a variable name and function name may not overlap
 
 a name may not contain any technical symbol. these include:
 ' " ; : [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + =
-❬ ❭ ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ¶ ➤ … × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡ » « → ← ¬ ⇔ ∈
-∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ≝ ⤆ ⤇ £ ¿ № ± ℓ ⏎ ↯ ↹ ➳ ␣ ⍽ ⌛ ⎋ ⚠ 💣 ☠
+❬ ❭ ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ↯ ¶ ➤ … × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡ » « → ← ¬ ⇔
+∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ≝ ⤆ ⤇ £ ¿ № ± ℓ ⏎ ↵ ↹ ⇥ ␣ ⍽ ⌛ ⎋ ⚠ 💣 ☠
 
 a name may not contain a number as the first character
 0 1 2 3 4 5 6 7 8 9
@@ -813,10 +808,10 @@ _ ¦ · • ♠ ♡ ♢ ♣ ♤ ♥ ♦ ♧ ♔ ♕ ♖ ♗ ♘ ♙ ♚ ♛ ♜ 
 
 Tokens are seperated by "Whitespace". This does not follow the standard unicode definition of "Whitespace".
 Whitespace can be specified manually at metacompilation time. By default, this includes:
-␠ ␉ ↹ ➳ ␣ ⍽ <all en spaces> <all em spaces> <thin spaces>
+␠ ␉ ↹ ⇥ ␣ ⍽ <all breaking spaces>
 
 Lines are seperated by specially defined characters. This can be chosen, too. by default, this includes:
-␊ ␍ ; ⏎ ↯
+␊ ␍ ; ⏎ ↵
 
 MAX_BUFFER is a value used in string and file operations. it defaults to 512 bytes. This is the amount of memory allocated for buffer reads.
 
