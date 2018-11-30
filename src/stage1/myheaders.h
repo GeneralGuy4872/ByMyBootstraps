@@ -6,7 +6,6 @@
 #include <complex.h>
 #include <signal.h>
 #include <stdbool.h>
-
 #define MAXBUFFER 512
 
 //this program uses standard variable names for all it's input variables
