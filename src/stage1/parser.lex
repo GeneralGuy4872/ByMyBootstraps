@@ -495,7 +495,7 @@ STATIC			{
 			}
 
 {NUMBER}	{
-		yylval.num = strtoull(text(), NULL, 10);
+		yylval.num = atoll(text());
 		return(NUMBER);
 		}
 {STRING}	{
