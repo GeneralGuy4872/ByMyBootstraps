@@ -1,370 +1,462 @@
-NAME	[^'";:\[\]\{\}\|\\\<\>,\.\?/~`!@#\$%\^\&\*\(\)\-\+=❬❭⟦⟧⌊⌋⌈⌉¶➤…×÷⋆⍟√¡∧∨⍲⍱⊕↔≡»«→←¬⇔∈∪∩⊂⊖≤≥≠≈¢≝⤆⤇£¿№±ℓ⏎↯↹➳␣⍽⌛⎋⚠💣☠0987654321\n\r\t ][^'";:\[\]\{\}\|\\\<\>,\.\?/~`!@#\$%\^\&\*\(\)\-\+=❬❭⟦⟧⌊⌋⌈⌉¶➤…×÷⋆⍟√¡∧∨⍲⍱⊕↔≡»«→←¬⇔∈∪∩⊂⊖≤≥≠≈¢≝⤆⤇£¿№±ℓ⏎↯↹➳␣⍽⌛⎋⚠💣☠\n\r\t ]*
-DECIMAL [0987654321]+
-BINARY	%[01]+
-OCTAL	@[01234567]+
-HEXADECIMAL	\$[0987654321AaBbCcDdEeFf]
-STRING	["'][.]*["']
-NEWLINE	[⏎↯;\n\r]
-SPACE	[␣⍽ ]
-TAB	[↹➳\t]
-TYPENAME	[qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM]{1,6}
+NAME	[^'";:\[\]\{\}\|\\\<\>,\.\?/~`!@#\$%\^\&\*\(\)\-\+=❬❭⟦⟧⌊⌋⌈⌉↯¶➤…×÷⋆⍟√¡∧∨⍲⍱⊕↔≡»«→←¬⇔∈∪∩⊂⊖≤≥≠≈¢≝⤆⤇£¿№±ℓ⏎↵↹⇥␣⍽⌛⎋⚠💣☠0987654321\n\r\t␀␁␂␃␄␅␆␇␈␉␊␋␌␍␎␏␐␑␒␓␔␕␖␗␘␙␚␛␜␝␞␟␠␡             ⠀　][^'";:\[\]\{\}\|\\\<\>,\.\?/~`!@#\$%\^\&\*\(\)\-\+=❬❭⟦⟧⌊⌋⌈⌉↯¶➤…×÷⋆⍟√¡∧∨⍲⍱⊕↔≡»«→←¬⇔∈∪∩⊂⊖≤≥≠≈¢≝⤆⤇£¿№±ℓ⏎↵↹⇥␣⍽⌛⎋⚠💣☠\n\r\t␀␁␂␃␄␅␆␇␈␉␊␋␌␍␎␏␐␑␒␓␔␕␖␗␘␙␚␛␜␝␞␟␠␡             ⠀　]*
+NUMBER	[0987654321]+
+STRING	([\"][^\"]*[\"]|[\'][^\']*['])
+NEWLINE	[␊␍;⏎↵\n\r]
+SPACE	[␣⍽ ␠            ⠀　]
+TAB	[↹⇥\t␉]
 
-SIGNED	[\-]*{DECIMAL}+
-FRACTIONAL	{SIGNED}\.{DECIMAL}
-ELEMENT	{NAME}([\[]{INTERGER}[\]])+
-
-INTEGER	({SIGNED}|{BINARY}|{OCTAL}|{HEXADECIMAL}|{ADDRESS})
-NUMBER	({INTERGER}|{FRACTIONAL})
-ANYTHING	({NUMBER}|{NAME}|{POINTER}|{ELEMENT})
-
-POINTER	\*({NAME}|{ELEMENT}|{INTERGER})
-ADDRESS \&({NAME}|{ELEMENT})
+DONOTHING	(NOP|NOOP|NOPR|CONTINUE|SWYM)
+FUNCTIONS	(wait|time|clock|beep|[sf]?printf|[sf]?scanf|f(gets|flush|open|seek|tell)|rewind|write[ln]?|read[ln]?|getline|elog|abs|cabs|floor|ceiling|div|elog|sqrt|cbrt|min|max|mean|median|mode|[arc]?(sin|cos|tan|cot|sec|csc)|strtok|(reg|awk|ecma)ex|match|search|replace|rand|roll|deal|choose|shuffle|sizeof|typeof|classof|isnumber|signof|sfloat|dfloat|complex|strto(l|ll|ul|ull|f|d)|ato(f|i|l|ll)|to(upper|lower)|confuseables|add|remove|(m|c|re)alloc|move(b|w|l)|(zero|sign)fill|[x]?swap)
+CONDITIONAL	(IF|ELSE|ELSEIF|ASSERT|FORK)
+DECLARATOR	(FUNCTION|VARIADIC|EXTERN|TYPE)
+DATATYPES	(
+LOOPFUN	(WHILE|UNTIL|DOTIMES)
+CONTROL	(BREAK|ABORT|💣|ABORT|☠|POKE5945862)
+ENDSTATE (EXIT|ERROR|RETURN)
+OPERATOR (LOG|ROOT|nCr|nPr|AND|OR|NAND|NOR|XOR|XNOR|IFF|ELEMENT|UNION|INTRSECT|SUBSET|DIFF|LT|GT|LE|GE|NE|EQ|APROX)
+ANONYMOUS	(lambda|λ)
 
 %top
+#define YY_EXTERN_C extern "C"
 #include myheaders.h
 #include typetree.h
 %}
 
 %{
-static unsigned long errors = 0
-static unsigned char blocklevel = 0
-static unsigned char parenlevel = 0
-static unsigned char looplevel = 0
-static unsigned char indentlevel = 0
+#include "y.tab.h"
+
+static long long lines = 0
+static unsigned int errors = 0
 %}
 
 %%
 <<EOF>>		{
-		printf("end of file reached with %i errors.", errors)
-{WHITESPACE}+	{
-		return(" ");
+		printf("end of file reached. %i lines read with %i errors.", lineno(), errors);
+		exit(0);
 		}
-{TAB}		{
-		indentlevel++;
-		return" ";
-		}
-{NEWLINE}+	{
-		indentlevel = 0;
-		return("\n");
-		}
+{WHITESPACE}+	{}
+{TAB}		{}
+{NEWLINE}+	lines++;
+{DONOTHING}	{}
 
 <LIST>[\{]	{
+		yylval.str = text();
 		return(BEGINLIST);
 		}
 <LIST>[\}]	{
+		yylval.str = text();
 		popstate();
 		return(ENDLIST);
 		}
 <INITIAL>[\{]	{
+		yylval.str = text();
 		push_state(BLOCK);
-		blocklevel++;
 		return(BEGINBLOCK);
 		}
 <INITIAL>[\}]	{
+		yylval.str = text();
 		fprintf(stderr, "WARNING: Hey, was there a \{ to match to this \} at line %i\n", lineno());
 		errors++;
-		blocklevel--;
 		return(ENDBLOCK);
 		}
 <BLOCK>[\{]	{
-		blocklevel++;
+		yylval.str = text();
+		push_state(BLOCK);
 		return(BEGINBLOCK);
 		}
 <BLOCK>[\}]	{
+		yylval.str = text();
 		popstate();
-		blocklevel--;
+		return(ENDBLOCK);
+		}
+<BLOCKINIT>[\{]	{
+		yylval.str = text();
+		popstate();
+		push_state(BLOCK);
+		return(BEGINBLOCK);
+		}
+<BLOCKINIT>[\}]	{
+		yylval.str = text();
+		popstate();
+		fprintf(stderr, "WARNING: Hey, was there a \{ to match to this \} at line %i\n", lineno());
+		errors++;
 		return(ENDBLOCK);
 		}
 <LOOP>[\{]	{
-		looplevel++;
-		return(BEGINLOOP);
+		yylval.str = text();
+		push_state(BLOCK);
+		return(BEGINBLOCK);
 		}
 <LOOP>[\}]	{
-		looplevel--;
+		yylval.str = text();
 		popstate();
 		return(ENDLOOP);
 		}
+<LOOPINIT>[\{]	{
+		yylval.str = text();
+		popstate();
+		push_state(LOOP);
+		return(BEGINLOOP);
+		}
+<LOOPINIT>[\}]	{
+		yylval.str = text();
+		popstate();
+		fprintf(stderr, "WARNING: Hey, was there a \{ to match to this \} at line %i\n", lineno());
+		errors++;
+		return(ENDLOOP);
+		}
 [\(]		{
-		paralevel++;
+		yylval.str = text();
 		return(LPARA);
 		}
 [\)]		{
-		paralevel--;
+		yylval.str = text();
 		return(RPARA);
 		}
 [❬]		{
-		push_state(GETLOCAL);
+		yylval.str = text();
 		return(LANGLE);
 		}
 [❭]		{
-		popstate();
+		yylval.str = text();
 		return(RANGLE);
 		}
-
-wait		{
-		return(wait);
+[\[]		{
+		yylval.str = text();
+		return(LBRAK);
 		}
-⌛/{?}		{
+[\]]		{
+		yylval.str = text();
+		return(RBRAK);
+		}
+
+{FUNCTIONS}	{
+		yylval.str = text();
+		return(FUNCTION);
+		}
+{CONDITIONAL}	{
+		yylval.str = text();
+		push_state(BLOCKINIT);
+		return(CONDITIONAL);
+		}
+{DECLARATOR}	{
+		yylval.str = text();
+		push_state(BLOCKINIT);
+		return(DECLARATOR);
+		}
+{DATATYPES}	{
+		yylval.str = text();
+		return(DATATYPE);
+		}
+STATIC		{
+		yylval.str = text();
+		return(STATIC);
+		}
+{LOOPFUN}	{
+		yylval.str = text();
+		push_state(LOOPINIT);
+		return(LOOPFUN);
+		}
+{ANONYMOUS}	{
+		yylval.str = text();
+		push_state(LOOPINIT);
+		return(LAMBDA);
+		}
+{ENDSTATE}	{
+		yylval.str = text();
+		return(ENDSTATE);
+		}
+{CONTROL}	{
+		yylval.str = text();
+		return(CONTROL);
+		}
+{OPERATOR}	{
+		yylval.str = text();
+		return(OPERATOR);
+		}
+
+[⌛]		{
+		yylval.str = text();
 		return(HOURGLASS);
 		}
-time()		{
-		return(time);
+[↯]		{
+		yylval.str = text();
+		return(DANGERVOLTAGE);
 		}
-clock()		{
-		return(clock);
+[\.]		{
+		yylval.str = text();
+		return(DOT);
 		}
-IF		{
-		push_state(BLOCK);
-		return(IF);
+[➤]		{
+		yylval.str = text();
+		return(ARROWHEAD);
 		}
-ELSE		{
-		push_state(BLOCK);
-		return(ELSE);
+[…]		{
+		yylval.str = text();
+		return(ELLIPSE);
 		}
-ELSEIF		{
-		push_state(BLOCK);
-		return(ELSEIF);
+[⎋]		{
+		yylval.str = text();
+		return(ESCAPE);
 		}
-WHILE		{
-		push_state(LOOP);
-		return(WHILE);
+[⚠]		{
+		yylval.str = text();
+		return(WARNING);
 		}
-UNTIL		{
-		push_state(LOOP);
-		return(UNTIL);
+[\+]		{
+		yylval.str = text();
+		return(PLUS);
 		}
-DOTIMES		{
-		push_state(LOOP);
-		return(DOTIMES);
+[\-]		{
+		yylval.str = text();
+		return(MINUS);
 		}
-BREAK		{
-		popstate();
-		return(break);
+[\*]		{
+		yylval.str = text();
+		return(ASTRICKS);
 		}
-GOTO		{
-		#uummmmmmm frak
-		return(GOTO);
+[\×]		{
+		yylval.str = text();
+		return(TIMES);
 		}
-¶/{name}	{
-		return(LABLE);
-		#something to do with yytext?
-		return(Name);
+[\/]		{
+		yylval.str = text();
+		return(SOLIDUS);
 		}
-printf(...) : C , native calling object
-sprintf(...) : C , native calling object
-fprintf(...) : C , native calling object
-scanf(...) : C , native calling object
-sscanf(...) : C , native calling object
-fscanf(...) : C , native calling object
-fgets(...) : C , native calling object
-fflush(...) : C , native calling object
-fopen(...) : C , native calling object
-fclose(...) : C , native calling object
-fseek(...) : C , native calling object
-ftell(...) : C , native calling object
-rewind(...) : C , native calling object
-write(...) : ~ , native
-writeln(...) : ~ , native
-read(...) : ~ , native
-readln(...) : ~ , native
-FUNCTION foo() {...} : C , native parser calling native and C
-VARIADIC foo(bar, baz) ❬x❭ {...} : C , native parser calling native and C
-EXTERN FOO bar() : C , native calling object
-TYPE FOO bar : C , native calling object
-FOO bar, baz, quux : C , native calling object
-FOO bar[quux] {} : C , native calling object
-STATIC FOO bar, baz, quux : C , native calling object
-foo[bar][quux] : C , native calling object
-STRUCT FOO {...} : C , native calling object
-foo.bar : C , native calling object
-foo>>>bar , foo➤bar : C , native calling object
-foo:bar : C , native calling object
-LLIST foo {...} : C , native calling object
-⎋foo , EXIT (foo) {} : C , native calling object
-⚠foo , ERROR (foo) : C , native calling object
-💣 , ABORT : C , native calling object
-ASSERT (foo) : C , native calling object
-☠ , POKE5945862 : Implementation dependent
-foo + bar : C , native calling object
-foo - bar : C , native calling object
--foo : C , native calling object
-foo * bar , foo × bar : C , native calling object
-foo / bar , foo ÷ bar : C , native calling object
-foo ^ bar , foo ** bar , foo ⋆ bar : *C , native calling object
-foo ^^ bar : *C , native calling object
-foo % bar : C , native calling object
-foo LOG bar , foo ⍟ bar : *C , native calling object
-foo ROOT bar , foo √ bar : *C , native calling object
-!foo : C , native calling object
-¡foo : C , native calling object
-foo nCr bar : C , native calling object
-foo nPr bar : C , native calling object
-elog(foo) : C , native calling object
-abs(foo) , ⟦foo⟧ : *C , native calling object
-cabs(foo) : C , native calling object
-floor(foo) , ⌊foo⌋ : *C , native calling object
-ceiling(foo) , ⌈foo⌉ : *C , native calling object
-div(foo, bar) : *C , native calling object
-sqrt(foo) , √bar : *C , native calling object
-cbrt(foo) : *C , native calling object
-max(foo, bar...) : *C , native calling object
-min(foo, bar...) : *C , native calling object
-mean(foo, bar...) : *C , native calling object
-median(foo, bar...) : ~ , native
-mode(foo, bar) : ~ , native
-sin(foo) : C , native calling object
-cos(foo) : C , native calling object
-tan(foo) : C , native calling object
-cot(foo) : *C , native calling object
-sec(foo) : *C , native calling object
-csc(foo) : *C , native calling object
-arcsin(foo) : C , native calling object
-arccos(foo) : C , native calling object
-arctan(foo) : C , native calling object
-arccot(foo) : *C , native calling object
-arcsec(foo) : *C , native calling object
-arccsc(foo) : *C , native calling object
-foo++ : *C , native calling object
-foo-- : *C , native calling object
-foo>> : *C , native calling object
-foo<< : *C , native calling object
-foo-> : *C , native calling object
-foo<- : *C , native calling object
-`foo : C , native calling object
-foo ∧ bar , foo AND bar , foo & bar : C , Native calling object
-foo ∨ bar , foo OR bar , foo | bar : C , Native calling object
-foo ⍲ bar , foo NAND bar : C , Native calling object
-foo ⍱ bar , foo NOR bar : C , Native calling object
-foo ⊕ bar , foo XOR bar : C , Native calling object
-foo ↔ bar , foo XNOR bar : C , Native calling object
-foo >> bar , foo » bar : C , Native calling object
-foo << bar , foo « bar : C , Native calling object
-foo -> bar , foo → bar : C , Native calling object
-foo <- bar , foo ← bar : C , Native calling object
-¬foo , ~foo : C , Native calling object
-=foo : C , Native calling object
-foo && bar : C , Native calling object
-foo || bar : C , Native calling object
-foo ~&& bar , foo ¬&& bar , foo !&& bar : *C , Native calling object
-foo ~|| bar , foo ¬|| bar , foo !&& bar : *C , Native calling object
-foo ~= bar , foo ¬= bar , foo != bar : C , Native calling object
-foo ⇔ bar , foo <> bar , foo IFF bar : C , Native calling object
-foo ∈ bar , foo ELEMENT bar : C , Native calling object
-foo ∪ bar , foo UNION bar : C , Native calling object
-foo ∩ bar , foo INTRSECT bar : C , Native calling object
-foo ⊂ bar , foo SUBSET bar : C , Native calling object
-foo ⊖ bar , foo DIFF bar : C , Native calling object
-foo < bar , foo LT bar : C , Native calling object
-foo > bar , foo GT bar : C , Native calling object
-foo ≤ bar , foo LE bar : C , Native calling object
-foo ≥ bar , foo GE bar : C , Native calling object
-foo ≠ bar , foo NE bar : C , Native calling object
-foo = bar , foo EQ bar : C , Native calling object
-foo ≈ bar , foo APROX bar : Parser , Native
-foo ≡ bar , foo == bar : C , Native calling object
-foo ¢ bar , foo CON bar : *C , Native calling object
-strtok(foo, bar) : C , native calling object
-regex(foo) : C++ , Native calling object
-sedex(foo) : C++ , Native calling object
-awkex(foo) : C++ , Native calling object
-match(foo, bar) : C++ , Native calling object
-substitute(foo, bar, quux) : C++ , Native calling object
-rand(foo) : C , Native calling object
-roll(foo, bar) : Parser , Native
-deal(foo, bar) : *C , native calling object
-shuffle(foo) : ~ , native
-RETURN foo : parser and C , native parser calling native and C
-lambda(foo, bar, baz) ❬x, y, z❭ {...} : *C , native
-λ(foo, bar, baz) ❬x, y, z❭ {...} : *C , native
-sizeof(foo) : C , native calling object
-typeof(foo) : C , native calling object
-classof(foo) : C , native calling object
-isnumber(foo) : C , native calling object
-signof(foo) : C , native calling object
-float(foo) : C , native calling object
-dfloat(foo) : C , native calling object
-complx(foo) : C , native calling object
-minisize(foo) : ~ , native
-atof(foo) : C , native calling object
-atoi(foo) : C , native calling object
-atol(foo) : C , native calling object
-tostring(printf_format, foo) : ~ , native
-toupper(foo) : ~ , native using UnicodeData.txt
-tolower(foo) : ~ , native using UnicodeData.txt
-confuseables(foo) : ~ , native using Confuseables.txt
-add(foo, bar, quux) : *C , native calling object
-remove(foo, bar) : *C , native calling object
-system(...) : C , native calling object
-FORK {} : C , native calling object
-malloc(foo) : C , native calling object
-calloc(foo, bar) : C , native calling object
-free(foo) : C , native calling object
-realloc(foo, bar) : C , native calling object
-moveb(foo, bar) : Asm , native calling object
-movew(foo, bar) : Asm , native calling object
-movel(foo, bar) : Asm , native calling object
-zerofill(foo) : C calling Asm , native calling object
-signfill(foo) : C calling Asm , native calling object
-xswap(foo, bar) : *C , Native calling object
-swap(foo, bar) : *C++ , native calling object
-:= , ≝ : C , native calling object
-:< , ⤆ : C++ , native calling object
-:> , ⤇ : C++ , native calling object
+[÷]		{
+		yylval.str = text();
+		return(DIVBY);
+		}
+[^]		{
+		yylval.str = text();
+		return(CAROT);
+		}
+[⋆]		{
+		yylval.str = text();
+		return(STAR);
+		}
+[%]		{
+		yylval.str = text();
+		return(PERCENT);
+		}
+[⍟]		{
+		yylval.str = text();
+		return(CIRCLESTAR);
+		}
+[√]		{
+		yylval.str = text();
+		return(CHECK);
+		}
+[\!]		{
+		yylval.str = text();
+		return(EXCLAIM);
+		}
+[¡]		{
+		yylval.str = text();
+		return(INVCLAIM);
+		}
+[⟦]		{
+		yylval.str = text();
+		return(LDOUBRAK);
+		}
+[⟧]		{
+		yylval.str = text();
+		return(RDOUBRAK);
+		}
+[⌊]		{
+		yylval.str = text();
+		return(LFLOOR);
+		}
+[⌋]		{
+		yylval.str = text();
+		return(RFLOOR);
+		}
+[⌈]		{
+		yylval.str = text();
+		return(LCEIL);
+		}
+[⌉]		{
+		yylval.str = text();
+		return(RCEIL);
+		}
+[`]		{
+		yylval.str = text();
+		return(GRAVE);
+		}
+[∧]		{
+		yylval.str = text();
+		return(LOGICAND);
+		}
+[\&]		{
+		yylval.str = text();
+		return(AMPERSAND);
+		}
+[∨]		{
+		yylval.str = text();
+		return(LOGICOR);
+		}
+[\|]		{
+		yylval.str = text();
+		return(PIPE);
+		}
+[⍲]		{
+		yylval.str = text();
+		return(LOGICNAND);
+		}
+[⍱]		{
+		yylval.str = text();
+		return(LOGICNOR);
+		}
+[⊕]		{
+		yylval.str = text();
+		return(CIRCLEPLUS);
+		}
+[↔]		{
+		yylval.str = text();
+		return(ARROWLR);
+		}
+[»]		{
+		yylval.str = text();
+		return(CHEVERONR);
+		}
+[«]		{
+		yylval.str = text();
+		return(CHEVERONL);
+		}
+[→]		{
+		yylval.str = text();
+		return(ARROWR);
+		}
+[←]		{
+		yylval.str = text();
+		return(ARROWL);
+		}
+[¬]		{
+		yylval.str = text();
+		return(LOGICNOT);
+		}
+[~]		{
+		yylval.str = text();
+		return(TILDE);
+		}
+[=]		{
+		yylval.str = text();
+		return(EQUALS);
+		}
+[⇔]		{
+		yylval.str = text();
+		return(DOUBLEARROWLR);
+		}
+[∈]		{
+		yylval.str = text();
+		return(ELEMENT);
+		}
+[∪]		{
+		yylval.str = text();
+		return(UNION);
+		}
+[∩]		{
+		yylval.str = text();
+		return(INTERSECTION);
+		}
+[⊂]		{
+		yylval.str = text();
+		return(SUBSET);
+		}
+[⊖]		{
+		yylval.str = text();
+		return(CIRCLEMINUS);
+		}
+[<]		{
+		yylval.str = text();
+		return(LESSTHAN);
+		}
+[>]		{
+		yylval.str = text();
+		return(GREATERTHAN);
+		}
+[≤]		{
+		yylval.str = text();
+		return(LESSOREQUAL);
+		}
+[≥]		{
+		yylval.str = text();
+		return(GREATEROREQUAL);
+		}
+[≠]		{
+		yylval.str = text();
+		return(NOTEQUAL);
+		}
+[≈]		{
+		yylval.str = text();
+		return(APPROXIMATELY);
+		}
+[≡]		{
+		yylval.str = text();
+		return(EXACTLYEQUAL);
+		}
+[¢]		{
+		yylval.str = text();
+		return(CENTS);
+		}
+[$]		{
+		yylval.str = text();
+		return(DOLLAR);
+		}
+[@]		{
+		yylval.str = text();
+		return(ATSIGN);
+		}
+[?]		{
+		yylval.str = text();
+		return(QUESTIONMARK);
+		}
+[¿]		{
+		yylval.str = text();
+		return(QUEPASA);
+		}
+[№]		{
+		yylval.str = text();
+		return(NUMERO);
+		}
+[±]		{
+		yylval.str = text();
+		return(GIVEORTAKE);
+		}
+[ℓ]		{
+		yylval.str = text();
+		return(LENGTH);
+		}
+[£]		{
+		yylval.str = text();
+		return(LBS);
+		}
+[¶]		{
+		yylval.str = text();
+		return(PILCROW);
+		}
+[≝]		{
+		yylval.str = text();
+		return(DEFINITION);
+		}
+[⤆]		{
+		yylval.str = text();
+		return(DOUBLELEFTARROW);
+		}
+[⤇]		{
+		yylval.str = text();
+		return(DOUBLERIGHTARROW);
+		}
 
-stdout : C , stdout
-stdin : C , stdin
-stderr : C , stderr
-cout : C++ , std::cout
-cin : C++ , std::cin
-cerr : C++ , std::cerr
-clog : C++ , std::clog
-NULL : C , NULL
-ⅈ : C , _IMAGINARY_I
-ℯ : C , M_E
-π : C , M_PI
-φ : *C , (double) ((1 + sqrt(5)) / 2)
-∞ , infinity : *C , INFINITY
-� , notanumber : *C , NAN
-true : *C , signed char TRUE
-false : *C , signed char FALSE
-ternary : *C , signed char -1
-
-BOOL : C, signed char
-BYTE : C, unsigned char * [1]
-WORD : C, unsigned short * [1]
-LONG : C, unsigned long * [1]
-QUAD : C, unsigned long long * [1]
-S_BYTE : C, signed char
-S_WORD : C, short
-S_LONG : C, long
-S_QUAD : C, long long
-U_BYTE : C, unsigned char
-U_WORD : C, unsigned short
-U_LONG : C, unsigned long
-U_QUAD : C, unsigned long long
-STRING : C, char * [up to MAX_BUFFER]
-FLOAT : C, float
-DOUBLE : C, double
-ARRAY : C, <type> [][]...
-FILE : C, FILE
-INPUT : C++, istream
-OUTPUT : C++, ostream
-LLIST : C, struct node*
-NODE : C, struct {*node, *node}; aditional anything field added
-TREERT : C, struct leaf*
-LEAF : C, struct {*leaf}; aditional anything field added
-TIMTYP : C, time_t
-CLKTYP : C, clock_t
-DIVTYP : C, div_t
-TYPTYP : C, struct {*typtyp, *typtyp, char[6]}
-PATTRN : C++, basic_regex
-VOID : C, void
-NULL : C, void* [0]
-
-* : C, *foo
-& : C, &foo
-? : *C, <see type tree>
-¿ : *C, <see type tree>
-№ : *C, <see type tree>
-± : *C, IF (foo ≠ 0) {IF (foo > 0) {return 1} ELSEIF (foo < 0) {return -1} ELSE {RETURN �;fprintf(stderr, "innnnnteresting...\n")}} ELSE {return 0}
-ℓ : *C, sizeof(foo)
+{NUMBER}	{
+		yylval.num = strtoull(text(), NULL, 10);
+		return(NUMBER);
+		}
+{STRING}	{
+		yylval.str = text();
+		return(STRING);
+		}
+{NAME}		{
+		yylval.str = text();
+		return(NAME);
+		}
