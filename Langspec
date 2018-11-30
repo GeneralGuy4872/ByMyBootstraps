@@ -1,4 +1,4 @@
-My Language V0.2.8a 0000000 00-00-0000
+My Language V0.2.8b 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -64,7 +64,7 @@ STATIC FOO bar, baz, quux : where FOO is a valid datatype, make static variables
 foo[bar][quux] : the quux-th element of the bar-th column of array foo
 STRUCT FOO {...} : create a structured datatype FOO with the keys named in {}. Each must have it's type specified, but new fields can be added to variables later as in C.
 foo.bar : the field bar from the variable foo, where foo is a structure. foo.bar is not a valid variable name otherwise because of this syntax, use foo_bar.
-foo>>>bar , foo➤bar , foo➛bar : structure pointer. can be chained togeather, like baz➛quux➛garply, if the field quux in baz is a pointer to another struct or similar type.
+foo>>>bar , foo➤bar : structure pointer. can be chained togeather, like baz➤quux➤garply, if the field quux in baz is a pointer to another struct or similar type.
 foo:bar , foo…bar : an array of pointers to the structure field bar from the linked list foo. all are the type of the first such field in the list.
 LLIST FOO (bar) {...} : create a linked list bar of nodes with .data fields containing the values of type FOO in {}
 NODE FOO bar : create a node bar with data field of valid type FOO
@@ -572,7 +572,7 @@ STATIC FOO bar, baz, quux : C , native calling object
 foo[bar][quux] : C , native calling object
 STRUCT FOO {...} : C , native calling object
 foo.bar : C , native calling object
-foo>>>bar , foo➤bar , foo➛bar : C , native calling object
+foo>>>bar , foo➤bar : C , native calling object
 foo:bar : C , native calling object
 LLIST foo {...} : C , native calling object
 ⎋foo , EXIT (foo) {} : C , native calling object
@@ -774,7 +774,7 @@ a variable name and function name may not overlap
 
 a name may not contain any technical symbol. these include:
 ' " ; : [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + =
-❬ ❭ ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ¶ ➛ … × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡ » « → ← ¬ ⇔ ∈
+❬ ❭ ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ¶ ➤ … × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡ » « → ← ¬ ⇔ ∈
 ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ≝ ⤆ ⤇ £ ¿ № ± ℓ ⏎ ↯ ↹ ➳ ␣ ⍽ ⌛ ⎋ ⚠ 💣 ☠
 
 a name may not contain a number as the first character
