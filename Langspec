@@ -1,4 +1,4 @@
-My Language V0.2.9d 0000000 00-00-0000
+My Language V0.2.9e 0000000 00-00-0000
 Prealpha *ALPHA DEADLINE NEWYEARS*
 ======================================
 
@@ -66,7 +66,7 @@ foo[bar][quux] : the quux-th element of the bar-th column of array foo
 STRUCT FOO {...} : create a structured datatype FOO with the keys named in {}. Each must have it's type specified, but new fields can be added to variables later as in C.
 foo.bar : the field bar from the variable foo, where foo is a structure. foo.bar is not a valid variable name otherwise because of this syntax, use foo_bar.
 foo>>>bar , foo➤bar : structure pointer. can be chained togeather, like baz➤quux➤garply, if the field quux in baz is a pointer to another struct or similar type.
-foo:bar , foo…bar : an array of pointers to the structure field bar from the linked list foo. all are the type of the first such field in the list.
+foo...bar , foo…bar : an array of pointers to the structure field bar from the linked list foo. all are the type of the first such field in the list.
 LLIST FOO (bar) {...} : create a linked list bar of nodes with .data fields containing the values of type FOO in {}
 NODE FOO bar : create a node bar with data field of valid type FOO
 TREERT FOO bar : make a leaf that loops back to itself with a data field of valid type FOO.
@@ -107,7 +107,7 @@ floor(foo) , ⌊foo⌋ : floor of number foo, returns shortest int format possib
 ceiling(foo) , ⌈foo⌉ : ceiling of number foo, returns shortest int format possible
 div(foo, bar) : divide int over bar. returns divtyp.
 elog(foo) : natural logarithem of foo
-sqrt(foo) , √foo : the square root of foo
+sqrt(foo) : the square root of foo
 cbrt(foo) : the cube root of foo
 
 max(foo, bar...) : return the greatest value of numbers foo and bar. returns that number.
@@ -135,8 +135,8 @@ foo-- : foo - 1
 `foo : bitwise inverse of foo, returns result
 foo ∧ bar , foo AND bar , foo & bar : bitwise foo AND bar, returns result
 foo ∨ bar , foo OR bar , foo | bar : bitwise foo OR bar, returns result
-foo ⍲ bar , foo NAND bar : bitwise foo NAND bar, returns result
-foo ⍱ bar , foo NOR bar : bitwise foo NOR bar, returns result
+foo ⍲ bar , foo NAND bar , foo `& bar : bitwise foo NAND bar, returns result
+foo ⍱ bar , foo NOR bar , foo `| bar : bitwise foo NOR bar, returns result
 foo ⊕ bar , foo XOR bar : bitwise foo XOR bar, returns result
 foo ↔ bar , foo XNOR bar : bitwise foo XNOR bar, returns result
 foo >> bar , foo » bar : barrel shift foo to the right by bar (left on big endian systems), returns result
@@ -149,7 +149,7 @@ foo <- bar , foo ← bar : shift foo to the left by bar, drop excess (right on b
 foo && bar : logical foo AND bar
 foo || bar : logical foo OR bar
 foo ~&& bar , foo ¬&& bar , foo !&& bar : logical foo NAND bar
-foo ~|| bar , foo ¬|| bar , foo !&& bar : logical foo NOR bar
+foo ~|| bar , foo ¬|| bar , foo !|| bar : logical foo NOR bar
 foo ~= bar , foo ¬= bar , foo != bar : logical foo XOR bar
 foo ⇔ bar , foo <> bar , foo IFF bar : logical foo XNOR bar
 
@@ -607,7 +607,7 @@ cabs(foo) : C , native calling object
 floor(foo) , ⌊foo⌋ : *C , native calling object
 ceiling(foo) , ⌈foo⌉ : *C , native calling object
 div(foo, bar) : *C , native calling object
-sqrt(foo) , √bar : *C , native calling object
+sqrt(foo) : *C , native calling object
 cbrt(foo) : *C , native calling object
 max(foo, bar...) : *C , native calling object
 min(foo, bar...) : *C , native calling object
