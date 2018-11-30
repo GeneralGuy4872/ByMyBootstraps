@@ -6,7 +6,7 @@ SPACE	[␣⍽ ␠            ⠀　]
 TAB	[↹⇥\t␉]
 
 DONOTHING	(NOP|NOOP|NOPR|CONTINUE|SWYM)
-FUNCTIONS	(wait|time|clock|beep|[sf]?printf|[sf]?scanf|f(gets|puts|flush|open|seek|tell)|rewind|p(write[ln]?|read[ln]?)|f(read|write)|elog|abs|cabs|floor|ceiling|div|elog|sqrt|cbrt|min|max|mean|median|mode|[arc]?(sin|cos|tan|cot|sec|csc)|strtok|(reg|awk|ecma)ex|match|search|replace|rand|roll|deal|choose|shuffle|(size|type|parent|class)of|isnumber|signof|sfloat|dfloat|complex|strto(l|ll|ul|ull|f|d)|ato(f|i|l|ll)|to(upper|lower)|confuseables|add|remove|(m|c|re)alloc|move(b|w|l)|(zero|sign)fill|[x]?swap)
+FUNCTIONS	(wait|time|clock|beep|[sf]?printf|[sf]?scanf|f(gets|puts|flush|open|seek|tell)|rewind|f(read|write)|elog|abs|cabs|floor|ceiling|div|elog|sqrt|cbrt|min|max|mean|[arc]?(sin|cos|tan|cot|sec|csc)|strtok|(reg|awk|ecma)ex|match|search|replace|rand|roll|deal|choose|(size|type|parent|class)of|isnumber|signof|sfloat|dfloat|complex|strto(l|ll|ul|ull|f|d)|ato(f|i|l|ll)|add|remove|(m|c|re)alloc|move(b|w|l)|(zero|sign)fill|xswap)
 CONDITIONAL	(IF|ELSE|ELSEIF|ASSERT|FORK)
 DECLARATOR	(FUNCTION|VARIADIC|EXTERN|TYPE)
 DATATYPES	(

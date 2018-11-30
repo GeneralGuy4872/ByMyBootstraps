@@ -5,7 +5,6 @@
 #include <time.h>
 #include <complex.h>
 #include <signal.h>
-#include <stdbool.h>
 #include <string.h>
 #define MAXBUFFER 512
 

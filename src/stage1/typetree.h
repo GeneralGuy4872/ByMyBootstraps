@@ -43,6 +43,7 @@ struct typtyp* type_table_u_word = (type_table_u_word){.parent = *type_table_uns
 struct typtyp* type_table_u_long = (type_table_u_long){.parent = *type_table_unsign, .isnumber = *type_table_unsign, .type = "u_long"}
 struct typtyp* type_table_u_quad = (type_table_u_quad){.parent = *type_table_unsign, .isnumber = *type_table_unsign, .type = "u_quad"}
 struct typtyp* type_table_C_int = (type_table_C_int){.parent = *type_table_C_int, .isnumber = *type_table_signed, .type = "C_int"}
+struct typtyp* type_table_siztyp = (type_table_siztyp){.parent = *type_table_unsign, .isnumber = *type_table_unsign, .type = "siztyp"}
 struct typtyp* type_table_float = (type_table_float){.parent = *type_table_real, .isnumber = *type_table_real, .type = "float"}
 struct typtyp* type_table_double = (type_table_double){.parent = *type_table_real, .isnumber = *type_table_real, .type = "double"}
 struct typtyp* type_table_enumer = (type_table_enumer){.parent = *type_table_unsign, .isnumber = *type_table_unsign, .type = "enumer"}
