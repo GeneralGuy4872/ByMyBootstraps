@@ -26,7 +26,7 @@ struct typtyp* type_table_real = (type_table_real){.parent = *type_table_real, .
 struct typtyp* type_table_complx = (type_table_complx){.parent = *type_table_complx, .isnumber = *type_table_complx, .type = "complx"}
 struct typtyp* type_table_infini = (type_table_infini){.parent = *type_table_infini, .isnumber = *type_table_double, .type = "infini"}
 struct typtyp* type_table_timtyp = (type_table_timtyp){.parent = *type_table_timtyp, .isnumber = *type_table_timtyp, .type = "timtyp"}
-struct typtyp* type_table_clktyp = (type_table_clktyp){.parent = *type_table_clktyp, .isnumber = *type_table_intger, .type = "clktyp"}
+struct typtyp* type_table_clktyp = (type_table_clktyp){.parent = *type_table_clktyp, .isnumber = *type_table_number, .type = "clktyp"}
 struct typtyp* type_table_divtyp = (type_table_divtyp){.parent = *type_table_divtyp, .isnumber = *type_table_divtyp, .type = "divtyp"}
 struct typtyp* type_table_void = (type_table_void){.parent = *type_table_void, .isnumber = *type_table_unkown, .type = "void"}
 struct typtyp* type_table_bool = (type_table_bool){.parent = *type_table_signed, .isnumber = *type_table_signed, .type = "bool"}
@@ -42,6 +42,7 @@ struct typtyp* type_table_u_byte = (type_table_u_byte){.parent = *type_table_uns
 struct typtyp* type_table_u_word = (type_table_u_word){.parent = *type_table_unsign, .isnumber = *type_table_unsign, .type = "u_word"}
 struct typtyp* type_table_u_long = (type_table_u_long){.parent = *type_table_unsign, .isnumber = *type_table_unsign, .type = "u_long"}
 struct typtyp* type_table_u_quad = (type_table_u_quad){.parent = *type_table_unsign, .isnumber = *type_table_unsign, .type = "u_quad"}
+struct typtyp* type_table_C_int = (type_table_C_int){.parent = *type_table_C_int, .isnumber = *type_table_signed, .type = "C_int"}
 struct typtyp* type_table_float = (type_table_float){.parent = *type_table_real, .isnumber = *type_table_real, .type = "float"}
 struct typtyp* type_table_double = (type_table_double){.parent = *type_table_real, .isnumber = *type_table_real, .type = "double"}
 struct typtyp* type_table_enumer = (type_table_enumer){.parent = *type_table_unsign, .isnumber = *type_table_unsign, .type = "enumer"}
