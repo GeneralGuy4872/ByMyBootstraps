@@ -1,4 +1,4 @@
-My Language V0.2.7b 0000000 00-00-0000
+My Language V0.2.8 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -33,8 +33,6 @@ UNTIL (foo) {} : loop the function enclosed in {} until foo is true.
 BREAK : immediately exit the current loop
 GOTO (foo) : go to label foo. NOTE: there is no return function. putting a goto inside a function declaration can screw up your control flow.
 DOTIMES (foo) {} : do whatever is in {} foo times. if foo is a float, rounds down. if foo is infinity, you're trying too hard.
-MAP (foo) ❬x❭ {} : for array or linked list foo, do whatever is in {} where bar is the list item
-KEY (foo) ❬x❭ {...} : key a list using x as the list item
 ¶foo : a label called foo. Please don't put these INSIDE loops unless you know what you're doing.
 If you GOTO out of a WHILE or DOTIMES, the parser will think you are still in that loop! This does not apply to IF, ELSEIF, or ELSE.
 
@@ -57,7 +55,7 @@ read(foo, ...) : read the next field from a file, similar to Pascal. foo is the 
 readln(foo, ...) : read a line from a file and assign fields in order, similar to Pascal. foo is a file, subsequent fields are variables.
 
 FUNCTION foo(...) {...} : define a function foo. () contains an exaustive list of the internal names of arguments, {} contains the function itself.
-VARIADIC foo(bar) {...} : define a function foo. bar is an array of arguments, {} contains the function itself.
+VARIADIC foo(bar, baz) ❬x❭ {...} : define a function foo. bar and baz are fixed arguments, {} contains the function itself, and x are iterated arguments beyond those listed.
 EXTERN FOO bar(...) : define an external function that takes standard linkage. FOO is the type the function returns, using this language's names. If types are the same width, this can be used to reformat the raw data of the returned function.
 TYPE FOO bar : define a basic datatype bar, from parent datatype FOO.
 FOO bar, baz, quux : where FOO is a valid datatype, make variables bar, baz, and quux of that type
@@ -66,7 +64,8 @@ STATIC FOO bar, baz, quux : where FOO is a valid datatype, make static variables
 foo[bar][quux] : the quux-th element of the bar-th column of array foo
 STRUCT FOO {...} : create a structured datatype FOO with the keys named in {}. Each must have it's type specified, but new fields can be added to variables later as in C.
 foo.bar : the field bar from the variable foo, where foo is a structure. foo.bar is not a valid variable name otherwise because of this syntax, use foo_bar.
-foo>>>bar , foo➤bar : structure pointer. can be chained togeather, like baz➤quux➤garply, if the field quux in baz is a pointer to another struct or similar type.
+foo>>>bar , foo➛bar : structure pointer. can be chained togeather, like baz➛quux➛garply, if the field quux in baz is a pointer to another struct or similar type.
+foo:bar , foo…bar : an array of pointers to the structure field bar from the linked list foo. all are the type of the first such field in the list.
 LLIST FOO (bar) {...} : create a linked list bar of nodes with .data fields containing the values of type FOO in {}
 NODE FOO bar : create a node bar with data field of valid type FOO
 TREERT FOO bar : make a leaf that loops back to itself with a data field of valid type FOO.
@@ -157,11 +156,11 @@ foo ~|| bar , foo ¬|| bar , foo !&& bar : logical foo NOR bar
 foo ~= bar , foo ¬= bar , foo != bar : logical foo XOR bar
 foo ⇔ bar , foo <> bar , foo IFF bar : logical foo XNOR bar
 
-foo ∈ bar , foo ELEMENT bar : test if array or linked list bar contains element foo, returns bool result
-foo ∪ bar , foo UNION bar : 1-dimensional union of arrays or linked list foo and bar, returns array
-foo ∩ bar , foo INTRSECT bar : 1-dimensional intersection of arrays or linked lists foo and bar, returns array
-foo ⊂ bar , foo SUBSET bar : test if array or linked list foo is a subset of bar, returns bool result
-foo ⊖ bar , foo DIFF bar : 1 dimensional symetric difference of arrays or linked lists foo and bar, returns array
+foo ∈ bar , foo ELEMENT bar : test if array or linked list field pointer array bar contains element foo, returns bool result
+foo ∪ bar , foo UNION bar : 1-dimensional union of arrays or linked list field pointer array foo and bar, returns array
+foo ∩ bar , foo INTRSECT bar : 1-dimensional intersection of arrays or linked list field pointer arrays foo and bar, returns array
+foo ⊂ bar , foo SUBSET bar : test if array or linked list field pointer array foo is a subset of bar, returns bool result
+foo ⊖ bar , foo DIFF bar : 1 dimensional symetric difference of arrays or linked list field pointer arrays foo and bar, returns array
 
 foo < bar , foo LT bar : test if foo is less than bar, returns bool result
 foo > bar , foo GT bar : test if foo is greater than bar, returns bool result
@@ -175,24 +174,25 @@ foo ≡ bar , foo == bar : test byte for byte if foo matches bar, returns bool
 foo ¢ bar , foo CON bar : bitwise concatinate foo and bar.
 
 strtok(foo, bar) : replace the character bar in string foo with a null character, return pointer to current position.
-regex(foo) : compile the ECMAscript regex foo and return the pattern
-sedex(foo) : compile the basic regex foo and return the pattern
+regex(foo) : compile the POSIX regex foo and return the pattern
 awkex(foo) : compile the Awk regex foo and return the pattern
-match(foo, bar) : match all foo in string or array of strings bar, return output as a string or an array of strings
-substitute(foo, bar, quux) : substitute all foo for bar in quux, but return output
+ecmaex(foo) : compile the ECMAscript regex foo and return the pattern
+match(foo, bar) : determine if foo matches expression bar, return bool. 
+search(foo, bar) : match all foo in string or array of strings bar, return output as a string or an array of strings. m//
+replace(foo, bar, quux) : substitute all foo for bar in quux, but return output. s///
+the regular expression commands should all be UTF8 aware except strtok, which is C-compatible
 
 rand(foo) : number between 0 and foo, returns number
 roll(foo, bar) : roll <foo>d<bar>, returns sum of sides
-deal(foo, bar) : deal bar sequential elements from array or linked list foo, returns array
-choose(foo) : choose 1 random element from array foo and return it
+deal(foo, bar) : deal bar sequential elements from array or linked list field pointer array foo, returns array
+choose(foo) : choose 1 random element from array or linked list field pointer array foo and return it
 shuffle(foo) : randomize array foo, return array.
-sort(foo) : sort array foo, return array.
 
 RETURN foo : make the containing function return foo. If you need return to evaluate something, put it in () like FOR, such as RETURN (foo + bar)
 RETURN void : does nothing, optimized out
 
-lambda(foo, bar, baz) ❬quux, garply, waldo❭ {...} : do anonamous function in {...} to anythings foo, bar, and baz, reffered to by local variabls quux, garply, and waldo. will iterate arrays or linked lists. multiple such items will be combined in all possible ways, eg (foo * bar * quux) times
-λ(foo, bar, baz) ❬quux, garply, waldo❭ {...} : same as above, adding a comma would just be unnecisarily confusing and it wouldn't fit on same line.
+lambda(foo, bar, baz) ❬x, y, z❭ {...} : do anonamous function in {...} to anythings foo, bar, and baz, reffered to by local variabls quux, garply, and waldo. will iterate arrays or linked lists. multiple such items will be combined in all possible ways, eg (foo * bar * quux) times
+λ(foo, bar, baz) ❬x, y, z❭ {...} : same as above, adding a comma would just be unnecisarily confusing and it wouldn't fit on same line.
 
 sizeof(foo) : returns the number of bits in anything foo. sizeof(&[any variable]) should return the CPU address register size.
 typeof(foo) : uses the type tree to determin the type of foo
@@ -275,8 +275,8 @@ NULL : a null file or bitbucket, implemented as a null pointer.
 ℯ : eulars number, double. (the variable "euler" is antireserved for i.e. user defined approximations) 
 π : pi, double. (The variable "pi" is antireserved for i.e. user defined approximations)
 φ : (1+√5)/2, double. (the variable "phi" is antireserved for i.e. user defined approximations. ϕ is antireserved for i.e. the second angle in a spherical coordinate system)
-∞ , infinity : infinity. Currently a double (7FF0000000000000), may be changed to a special, more compact type for special numbers.
-� , notanumber : quiet Not a Number. Currently a double (FFFFFFFFFFFFFFFF), may be changed to a special, more compact type for special numbers. (symbol is literal U+FFFD)
+∞ , infinity : infinity. Currently a double, may be changed to a special, more compact type for special numbers.
+� , notanumber : quiet Not a Number. Currently a double, may be changed to a special, more compact type for special numbers. (symbol is literal U+FFFD)
 true : bool of 1
 false : bool of 0
 ternary : bool of -1
@@ -303,8 +303,10 @@ using high adress characters may cause an increse in application size
 The assignment operator is :=, as in algol or pascal
 An insertion operator, :<, and extraction operator, :>, are also avalible
 
-"this is a string"
+a Unicode alternitive for assignment is ≝
+Unicode alternitives for insertion and extraction are ⤆ and ⤇
 
+"this is a string"
 'this is also a string'
 
 a newline, ; or ⏎ appearing before a string is closed will be interpreted as a newline,
@@ -471,6 +473,8 @@ Ability to load and save sound scripts
 
 The ability to store 4 bools in a byte
 
+Useless ability to modify constants without causing SIGSEGV
+
 Support for Nibbles and the ability to store 2 of them in a byte
 
 Special, compact type for ∞ and NaN
@@ -501,12 +505,13 @@ The source for the first alpha version is projected to need:
 - a C preprocessor that can be called independently
 - an Assembler
 - a Linker
-- the RE/flex lexer
+- RE/flex
 - yacc or bison
 - curl (to ensure the most current unicode files)
 
 future rewrites may also require
 - an M4 macro processor
+- a Rust compiler
 
 
 Yes, this first alpha version is expected to be huge in size and have dozens of intermidiate object files. I expect it to get bigger, not smaller, as there is a 1:1 corraspondance between primary functions and object files.
@@ -526,21 +531,19 @@ This language standard does not mandate that the functions are implemented in th
 Starting at iteration 3, I plan to implement both a Static Compiler and an APL transpiler. Iteration 3 is also the first iteration to have all the built-ins.
 Here is a list of how I implement built-ins in the first 2 iterations:
 
-function : 1st iteration , 2nd iteration
+function : 1st iteration , 2nd iteration (* indicates that a function could be implemented in the next round, but is trivial in the formal sense)
 
-wait() , ⌛foo : C , native calling object
+wait() , ⌛foo : *C , native calling object
 time() : C  , native calling object
 clock() : C , native calling object
 IF (foo) {} : C , native calling object
 ELSE {} : C , native calling object
-ELSEIF (foo) {} : C , native calling object
+ELSE IF (foo) {} : C , native calling object
 WHILE (foo) {} : C , native calling object
-UNTIL (foo) {} : ~ , native
-DOTIMES (foo) {} : ~ , native
+UNTIL (foo) {} : *C , native
+DOTIMES (foo) {} : *C , native
 BREAK : C , native calling object
 GOTO (foo) : C , native calling object
-MAP (foo) ❬x❭ {} : ~ , native
-KEY (foo) ❬x❭ {...} : ~ , native
 ¶foo : C , native calling object
 printf(...) : C , native calling object
 sprintf(...) : C , native calling object
@@ -559,8 +562,8 @@ write(...) : ~ , native
 writeln(...) : ~ , native
 read(...) : ~ , native
 readln(...) : ~ , native
-FUNCTION foo() {...} : ~ , native parser calling native and C
-VARIADIC foo(bar) {...} : ~ , native parser calling native and C
+FUNCTION foo() {...} : C , native parser calling native and C
+VARIADIC foo(bar, baz) ❬x❭ {...} : C , native parser calling native and C
 EXTERN FOO bar() : C , native calling object
 TYPE FOO bar : C , native calling object
 FOO bar, baz, quux : C , native calling object
@@ -570,74 +573,75 @@ foo[bar][quux] : C , native calling object
 STRUCT FOO {...} : C , native calling object
 foo.bar : C , native calling object
 foo>>>bar , foo➤bar : C , native calling object
+foo:bar : C , native calling object
 LLIST foo {...} : C , native calling object
 ⎋foo , EXIT (foo) {} : C , native calling object
 ⚠foo , ERROR (foo) : C , native calling object
 💣 , ABORT : C , native calling object
 ASSERT (foo) : C , native calling object
 ☠ , POKE5945862 : Implementation dependent
-foo + bar : C , native calling object OR ASM
-foo - bar : C , native calling object OR ASM
--foo : C , native calling object OR ASM
-foo * bar , foo × bar : C , native calling object OR ASM
+foo + bar : C , native calling object
+foo - bar : C , native calling object
+-foo : C , native calling object
+foo * bar , foo × bar : C , native calling object
 foo / bar , foo ÷ bar : C , native calling object
-foo ^ bar , foo ** bar , foo ⋆ bar : C , native calling object
-foo ^^ bar : C , native calling object
+foo ^ bar , foo ** bar , foo ⋆ bar : *C , native calling object
+foo ^^ bar : *C , native calling object
 foo % bar : C , native calling object
-foo LOG bar , foo ⍟ bar : C , native calling object
-foo ROOT bar , foo √ bar : C , native calling object
+foo LOG bar , foo ⍟ bar : *C , native calling object
+foo ROOT bar , foo √ bar : *C , native calling object
 !foo : C , native calling object
 ¡foo : C , native calling object
 foo nCr bar : C , native calling object
 foo nPr bar : C , native calling object
 elog(foo) : C , native calling object
-abs(foo) , ⟦foo⟧ : C , native calling object
+abs(foo) , ⟦foo⟧ : *C , native calling object
 cabs(foo) : C , native calling object
-floor(foo) , ⌊foo⌋ : C , native calling object
-ceiling(foo) , ⌈foo⌉ : C , native calling object
-div(foo, bar) : C , native calling object
-sqrt(foo) , √bar : C , native calling object
-cbrt(foo) : C , native calling object
-max(foo, bar...) : C , native calling object
-min(foo, bar...) : C , native calling object
-mean(foo, bar...) : C , native calling object
+floor(foo) , ⌊foo⌋ : *C , native calling object
+ceiling(foo) , ⌈foo⌉ : *C , native calling object
+div(foo, bar) : *C , native calling object
+sqrt(foo) , √bar : *C , native calling object
+cbrt(foo) : *C , native calling object
+max(foo, bar...) : *C , native calling object
+min(foo, bar...) : *C , native calling object
+mean(foo, bar...) : *C , native calling object
 median(foo, bar...) : ~ , native
 mode(foo, bar) : ~ , native
 sin(foo) : C , native calling object
 cos(foo) : C , native calling object
 tan(foo) : C , native calling object
-cot(foo) : C , native calling object
-sec(foo) : C , native calling object
-csc(foo) : C , native calling object
+cot(foo) : *C , native calling object
+sec(foo) : *C , native calling object
+csc(foo) : *C , native calling object
 arcsin(foo) : C , native calling object
 arccos(foo) : C , native calling object
 arctan(foo) : C , native calling object
-arccot(foo) : C , native calling object
-arcsec(foo) : C , native calling object
-arccsc(foo) : C , native calling object
-foo++ : C calling Asm , native calling object
-foo-- : C calling Asm , native calling object
-foo>> : C calling Asm , native calling object
-foo<< : C calling Asm , native calling object
-foo-> : C calling Asm , native calling object
-foo<- : C calling Asm , native calling object
-`foo : C calling Asm , native calling object
-foo ∧ bar , foo AND bar , foo & bar : C , Native calling object or Asm
-foo ∨ bar , foo OR bar , foo | bar : C , Native calling object or Asm
-foo ⍲ bar , foo NAND bar : C , Native calling object or Asm
-foo ⍱ bar , foo NOR bar : C , Native calling object or Asm
-foo ⊕ bar , foo XOR bar : C , Native calling object or Asm
-foo ↔ bar , foo XNOR bar : C , Native calling object or Asm
-foo >> bar , foo » bar : C , Native calling Asm
-foo << bar , foo « bar : C , Native calling Asm
-foo -> bar , foo → bar : C , Native calling Asm
-foo <- bar , foo ← bar : C , Native calling Asm
+arccot(foo) : *C , native calling object
+arcsec(foo) : *C , native calling object
+arccsc(foo) : *C , native calling object
+foo++ : *C , native calling object
+foo-- : *C , native calling object
+foo>> : *C , native calling object
+foo<< : *C , native calling object
+foo-> : *C , native calling object
+foo<- : *C , native calling object
+`foo : C , native calling object
+foo ∧ bar , foo AND bar , foo & bar : C , Native calling object
+foo ∨ bar , foo OR bar , foo | bar : C , Native calling object
+foo ⍲ bar , foo NAND bar : C , Native calling object
+foo ⍱ bar , foo NOR bar : C , Native calling object
+foo ⊕ bar , foo XOR bar : C , Native calling object
+foo ↔ bar , foo XNOR bar : C , Native calling object
+foo >> bar , foo » bar : C , Native calling object
+foo << bar , foo « bar : C , Native calling object
+foo -> bar , foo → bar : C , Native calling object
+foo <- bar , foo ← bar : C , Native calling object
 ¬foo , ~foo : C , Native calling object
 =foo : C , Native calling object
 foo && bar : C , Native calling object
 foo || bar : C , Native calling object
-foo ~&& bar , foo ¬&& bar , foo !&& bar : C , Native calling object
-foo ~|| bar , foo ¬|| bar , foo !&& bar : C , Native calling object
+foo ~&& bar , foo ¬&& bar , foo !&& bar : *C , Native calling object
+foo ~|| bar , foo ¬|| bar , foo !&& bar : *C , Native calling object
 foo ~= bar , foo ¬= bar , foo != bar : C , Native calling object
 foo ⇔ bar , foo <> bar , foo IFF bar : C , Native calling object
 foo ∈ bar , foo ELEMENT bar : C , Native calling object
@@ -651,9 +655,9 @@ foo ≤ bar , foo LE bar : C , Native calling object
 foo ≥ bar , foo GE bar : C , Native calling object
 foo ≠ bar , foo NE bar : C , Native calling object
 foo = bar , foo EQ bar : C , Native calling object
-foo ≈ bar , foo APROX bar : ~ , Native
+foo ≈ bar , foo APROX bar : *C , Native calling object
 foo ≡ bar , foo == bar : C , Native calling object
-foo ¢ bar , foo CON bar : C , Native calling object
+foo ¢ bar , foo CON bar : *C , Native calling object
 strtok(foo, bar) : C , native calling object
 regex(foo) : C++ , Native calling object
 sedex(foo) : C++ , Native calling object
@@ -661,13 +665,12 @@ awkex(foo) : C++ , Native calling object
 match(foo, bar) : C++ , Native calling object
 substitute(foo, bar, quux) : C++ , Native calling object
 rand(foo) : C , Native calling object
-roll(foo, bar) : ~ , Native
-deal(foo, bar) : C , native calling object
+roll(foo, bar) : *C , Native calling object
+deal(foo, bar) : *C , native calling object
 shuffle(foo) : ~ , native
-sort(foo) : ~ , native
 RETURN foo : parser and C , native parser calling native and C
-lambda(foo, bar, baz) ❬quux, garply, waldo❭ {...} : C++ , native
-λ(foo, bar, baz) ❬quux, garply, waldo❭ {...} : C++ , native
+lambda(foo, bar, baz) ❬x, y, z❭ {...} : *C , native
+λ(foo, bar, baz) ❬x, y, z❭ {...} : *C , native
 sizeof(foo) : C , native calling object
 typeof(foo) : C , native calling object
 classof(foo) : C , native calling object
@@ -684,8 +687,8 @@ tostring(printf_format, foo) : ~ , native
 toupper(foo) : ~ , native using UnicodeData.txt
 tolower(foo) : ~ , native using UnicodeData.txt
 confuseables(foo) : ~ , native using Confuseables.txt
-add(foo, bar, quux) : C , native calling object
-remove(foo, bar) : C , native calling object
+add(foo, bar, quux) : *C , native calling object
+remove(foo, bar) : *C , native calling object
 SYSTEM (...) : C , native calling object
 FORK {} : C , native calling object
 malloc(foo) : C , native calling object
@@ -697,8 +700,8 @@ movew(foo, bar) : Asm , native calling object
 movel(foo, bar) : Asm , native calling object
 zerofill(foo) : C calling Asm , native calling object
 signfill(foo) : C calling Asm , native calling object
-xswap(foo, bar) : C , Native calling Asm
-swap(foo, bar) : C++ , native calling object
+xswap(foo, bar) : *C , Native calling object
+swap(foo, bar) : *C++ , native calling object
 := : C , native calling object
 :< : C++ , native calling object
 :> : C++ , native calling object
@@ -714,12 +717,12 @@ NULL : C , NULL
 ⅈ : C , _IMAGINARY_I
 ℯ : C , M_E
 π : C , M_PI
-φ : C , (double) ((1 + sqrt(5)) / 2)
-∞ , infinity : C , INFINITY
-� , notanumber : C , NAN
-true : C , signed char TRUE
-false : C , signed char FALSE
-ternary : C , signed char -1
+φ : *C , (double) ((1 + sqrt(5)) / 2)
+∞ , infinity : *C , INFINITY
+� , notanumber : *C , NAN
+true : *C , signed char TRUE
+false : *C , signed char FALSE
+ternary : *C , signed char -1
 
 BOOL : C, signed char
 BYTE : C, unsigned char * [1]
@@ -755,11 +758,11 @@ NULL : C, void* [0]
 
 * : C, *foo
 & : C, &foo
-? : C, <see type tree>
-¿ : C, <see type tree>
-№ : C, <see type tree>
-± : C, IF (foo ≠ 0) {IF (foo > 0) {return 1} ELSEIF (foo < 0) {return -1} ELSE {return �}} ELSE {return 0}
-ℓ : C, sizeof(foo)
+? : *C, <see type tree>
+¿ : *C, <see type tree>
+№ : *C, <see type tree>
+± : *C, IF (foo ≠ 0) {IF (foo > 0) {return 1} ELSEIF (foo < 0) {return -1} ELSE {RETURN �;fprintf(stderr, "innnnnteresting...\n")}} ELSE {return 0}
+ℓ : *C, sizeof(foo)
 £ : Parser, <to complicated to explain briefly>
 
 a garbage collector is a HIGH PRIORETY to-do, see bug#1.
@@ -771,8 +774,8 @@ a variable name and function name may not overlap
 
 a name may not contain any technical symbol. these include:
 ' " ; : [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + =
-❬ ❭ ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ¶ ➤ × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡ » « → ← ¬ ⇔ ∈ ∪
-∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ £ ¿ № ± ℓ ⏎ ↯ ↹ ␣ ⍽ ⌛ ⎋ ⚠ 💣 ☠
+❬ ❭ ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ¶ ➛ … × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡ » « → ← ¬ ⇔ ∈
+∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ≝ ⤆ ⤇ £ ¿ № ± ℓ ⏎ ↯ ↹ ➳ ␣ ⍽ ⌛ ⎋ ⚠ 💣 ☠
 
 a name may not contain a number as the first character
 0 1 2 3 4 5 6 7 8 9
@@ -796,7 +799,7 @@ _ ¦ · • ♠ ♡ ♢ ♣ ♤ ♥ ♦ ♧ ♔ ♕ ♖ ♗ ♘ ♙ ♚ ♛ ♜ 
 
 Tokens are seperated by "Whitespace". This does not follow the standard unicode definition of "Whitespace".
 Whitespace can be specified manually at metacompilation time. By default, this includes:
-␠ ␉ ↹ ␣ ⍽ <all en spaces> <all em spaces> <thin spaces>
+␠ ␉ ↹ ➳ ␣ ⍽ <all en spaces> <all em spaces> <thin spaces>
 
 Lines are seperated by specially defined characters. This can be chosen, too. by default, this includes:
 ␊ ␍ ; ⏎ ↯
