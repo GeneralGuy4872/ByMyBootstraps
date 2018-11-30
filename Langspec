@@ -51,6 +51,11 @@ fseek(...) : go to an offset in a file, as in C. returns as in C. Formats as in 
 ftell(...) : get the current offset in a file, as in C. returns as in C. Formats as in C.
 rewind(...) : go to the beginning of a file, as in C. returns as in C. Formats as in C.
 
+write(foo, ...) : write the strings or variables to file foo, similar to Pascal. convert formats automaticaly.
+writeln(foo, ...) : write the strings or variables to file foo and append a newline, similar to Pascal. convert formats automaticaly.
+read(foo, ...) : read the next field from a file, similar to Pascal. foo is the file, subsequent arguments are variables.
+readln(foo, ...) : read a line from a file and assign fields in order, similar to Pascal. foo is a file, subsequent fields are variables.
+
 fread(...) : read raw data from a file, as in C. returns as in C.
 fwrite(...) : write raw data to a file, as in C. returns as in C.
 
@@ -236,6 +241,7 @@ movel(foo, bar) : move 4 bytes from address bar to address foo and return the va
 zerofill(foo) : double the width of int foo by buffering it with zeros. return result. fails if sizeof(foo) is not a power of 2 greater than 8 and less than 33
 signfill(foo) : double the width of int foo by buffering it with signed fill. return result. fails if sizeof(foo) is not a power of 2 greater than 8 and less than 33
 swap(foo, bar) : swap foo with bar
+xswap(foo, bar) : xor algorithem swap
 assembly functions included for writing memory management functions that can be implementation independent.
 Intended to be used with variable pointers. SEE BELOW WARNING ABOUT ABSOLUTE MEMORY ADDRESSING IN PRE-EXISTING ENVIROMENTS.
 
@@ -559,6 +565,10 @@ fclose(...) : C , native calling object
 fseek(...) : C , native calling object
 ftell(...) : C , native calling object
 rewind(...) : C , native calling object
+pwrite(...) : ~ , native
+pwriteln(...) : ~ , native
+pread(...) : ~ , native
+preadln(...) : ~ , native
 fread(...) : C , native calling object
 fwrite(...) : C , native calling object
 FUNCTION foo(...) {...} : C , native parser calling native and C
@@ -702,7 +712,10 @@ movel(foo, bar) : Asm , native calling object
 zerofill(foo) : C calling Asm , native calling object
 signfill(foo) : C calling Asm , native calling object
 swap(foo, bar) : *C , Native calling object
+xswap(foo, bar) : *C , Native calling object
 := , ≝ : C , native calling object
+:< , ⤆ : ~ , native calling object
+:> , ⤇ : ~ , native calling object
 
 stdout : C , stdout
 stdin : C , stdin
