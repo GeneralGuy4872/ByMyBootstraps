@@ -34,7 +34,7 @@ static unsigned int errors = 0
 			exit(0);
 			}
 {WHITESPACE}+		{}
-{TAB}			{}
+{TAB}+			{}
 {NEWLINE}+		lines++;
 {DONOTHING}		{}
 
