@@ -1,4 +1,4 @@
-My Language V0.2.9a 0000000 00-00-0000
+My Language V0.2.9b 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -569,6 +569,7 @@ write(...) : ~ , native
 writeln(...) : ~ , native
 read(...) : ~ , native
 readln(...) : ~ , native
+getline(foo, bar[, baz]) : C++ , native calling object
 FUNCTION foo() {...} : C , native parser calling native and C
 VARIADIC foo(bar, baz) ❬x❭ {...} : C , native parser calling native and C
 EXTERN FOO bar() : C , native calling object
