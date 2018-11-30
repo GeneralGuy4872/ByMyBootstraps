@@ -42,18 +42,17 @@ fprintf(...) : append a formatted value to file, as in C. returns as in C. Forma
 scanf(...) : get a value matching format from stdin, as in C. returns as in C. Formats as in C.
 sscanf(...) : get a value matching format from a string, as in C. returns as in C. Formats as in C.
 fscanf(...) : get a value matching format from file, as in C. returns as in C. Formats as in C.
-fgets(...) : get an entire line from a file, as in C. returns as in C (including \n). Formats as in C.
+fgets(...) : get a raw string from a file, as in C. returns as in C (including \n). Formats as in C.
+fputs(...) : write a string to a file, as in C. returns as in C. Formats as in C.
 fflush(...) : flush an output file, as in C. returns as in C. Formats as in C.
 fopen(...) : open a file as a stream, as in C. returns as in C. Formats as in C.
 fclose(...) : close a stream, as in C. returns as in C. Formats as in C.
 fseek(...) : go to an offset in a file, as in C. returns as in C. Formats as in C.
 ftell(...) : get the current offset in a file, as in C. returns as in C. Formats as in C.
 rewind(...) : go to the beginning of a file, as in C. returns as in C. Formats as in C.
-write(foo, ...) : write the strings or variables to file foo, similar to Pascal. convert formats automaticaly.
-writeln(foo, ...) : write the strings or variables to file foo and append a newline, similar to Pascal. convert formats automaticaly.
-read(foo, ...) : read the next field from a file, similar to Pascal. foo is the file, subsequent arguments are variables.
-readln(foo, ...) : read a line from a file and assign fields in order, similar to Pascal. foo is a file, subsequent fields are variables.
-getline(foo, bar[, baz]) : get a line from input stream foo and put it in bar. optionaly, stop at custom deliminater baz.
+
+fread(...) : read raw data from a file, as in C. returns as in C.
+fwrite(...) : write raw data to a file, as in C. returns as in C.
 
 FUNCTION foo(...) {...} : define a function foo. () contains an exaustive list of the internal names of arguments, {} contains the function itself.
 VARIADIC foo(bar, baz) ❬x❭ {...} : define a function foo. bar and baz are fixed arguments, {} contains the function itself, and x are iterated arguments beyond those listed.
@@ -188,7 +187,6 @@ choose(foo) : choose 1 random element from array or linked list field pointer ar
 shuffle(foo) : randomize array foo, return array.
 
 RETURN foo : make the containing function return foo. If you need return to evaluate something, put it in () like FOR, such as RETURN (foo + bar)
-RETURN void : does nothing, optimized out
 
 lambda(foo, bar, baz) ❬x, y, z❭ {...} : do anonamous function in {} to anythings foo, bar, and baz, reffered to by local variabls quux, garply, and waldo. will iterate arrays or linked lists. multiple such items will be combined in all possible ways, eg (foo * bar * quux) times
 λ(foo, bar, baz) ❬x, y, z❭ {...} : same as above, adding a comma would just be unnecisarily confusing and it wouldn't fit on same line.
@@ -237,8 +235,7 @@ movew(foo, bar) : move 2 bytes from address bar to address foo and return the va
 movel(foo, bar) : move 4 bytes from address bar to address foo and return the value moved. foo and bar can be an interger or an & adress
 zerofill(foo) : double the width of int foo by buffering it with zeros. return result. fails if sizeof(foo) is not a power of 2 greater than 8 and less than 33
 signfill(foo) : double the width of int foo by buffering it with signed fill. return result. fails if sizeof(foo) is not a power of 2 greater than 8 and less than 33
-xswap(foo, bar) : xor algorithem swap
-swap(foo, bar) : temporary variable swap
+swap(foo, bar) : swap foo with bar
 assembly functions included for writing memory management functions that can be implementation independent.
 Intended to be used with variable pointers. SEE BELOW WARNING ABOUT ABSOLUTE MEMORY ADDRESSING IN PRE-EXISTING ENVIROMENTS.
 
@@ -268,13 +265,9 @@ Operators other than assignment-type operators (:=, :<, :>) are evaluated left t
 
 SPECIAL VARIABLES
 -----------------
-stdout : the C-style output file
-stdin : the C-style input file
-stderr : the C-style error file
-cout : the C++-style output file
-cin : the C++-style input file
-cerr : the C++-style error file
-clog : the C++-style logging file
+stdout : the output file
+stdin : the input file
+stderr : the error file
 NULL : a null file or bitbucket, implemented as a null pointer.
 ⅈ : √-1, for complex numbers. (the variable "i" is antireserved as too generic)
 ℯ : eulars number, double. (the variable "euler" is antireserved for i.e. user defined approximations) 
@@ -382,8 +375,6 @@ FLOAT : single precision float
 DOUBLE : double precision float
 ARRAY : array of anythings, so long as all entries are the same size. can be multidimensional if rectangular/cuboid/hypercuboid.
 FILE : a C-style file
-INPUT : a C++ style input stream
-OUTPUT : a C++ style output stream
 LLIST : a doubly-linked list. implemented as a collection of nodes.
 NODE : a structure consisting of a pointer .prev, an anything .data, and a pointer .next
 TREERT : the root of a tree of leaves.
@@ -391,6 +382,7 @@ LEAF : a structure consisting of a pointer .parent, and an anything .data
 TIMTYP : a structure for holding C style real times.
 CLKTYP : an number type for storing the C-style elapsed time.
 DIVTYP : the result of div. a struct with fields numer and denom.
+SIZTYP : the result of sizeof. an unsigned int.
 TYPTYP : a structure for use in the type tree.
 PATTRN : a compiled regex
 VOID : a nothing 0 bits wide
@@ -560,17 +552,15 @@ scanf(...) : C , native calling object
 sscanf(...) : C , native calling object
 fscanf(...) : C , native calling object
 fgets(...) : C , native calling object
+fputs(...) : C , native calling object
 fflush(...) : C , native calling object
 fopen(...) : C , native calling object
 fclose(...) : C , native calling object
 fseek(...) : C , native calling object
 ftell(...) : C , native calling object
 rewind(...) : C , native calling object
-write(...) : ~ , native
-writeln(...) : ~ , native
-read(...) : ~ , native
-readln(...) : ~ , native
-getline(foo, bar[, baz]) : C++ , native calling object
+fread(...) : C , native calling object
+fwrite(...) : C , native calling object
 FUNCTION foo(...) {...} : C , native parser calling native and C
 VARIADIC foo(bar, baz) ❬x❭ {...} : C , native parser calling native and C
 EXTERN FOO bar(...) : C , native calling object
@@ -711,19 +701,12 @@ movew(foo, bar) : Asm , native calling object
 movel(foo, bar) : Asm , native calling object
 zerofill(foo) : C calling Asm , native calling object
 signfill(foo) : C calling Asm , native calling object
-xswap(foo, bar) : *C , Native calling object
-swap(foo, bar) : *C++ , native calling object
+swap(foo, bar) : *C , Native calling object
 := , ≝ : C , native calling object
-:< , ⤆ : C++ , native calling object
-:> , ⤇ : C++ , native calling object
 
 stdout : C , stdout
 stdin : C , stdin
 stderr : C , stderr
-cout : C++ , std::cout
-cin : C++ , std::cin
-cerr : C++ , std::cerr
-clog : C++ , std::clog
 NULL : C , NULL
 ⅈ : C , _IMAGINARY_I
 ℯ : C , M_E
@@ -748,13 +731,12 @@ U_BYTE : C, unsigned char
 U_WORD : C, unsigned short
 U_LONG : C, unsigned long
 U_QUAD : C, unsigned long long
+C_INT : C, int
 STRING : C, char * [up to MAX_BUFFER]
 FLOAT : C, float
 DOUBLE : C, double
 ARRAY : C, <type> [][]...
 FILE : C, FILE
-INPUT : C++, istream
-OUTPUT : C++, ostream
 LLIST : C, struct node*
 NODE : C, struct {*node, *node}; aditional anything field added
 TREERT : C, struct leaf*
@@ -762,6 +744,7 @@ LEAF : C, struct {*leaf}; aditional anything field added
 TIMTYP : C, time_t
 CLKTYP : C, clock_t
 DIVTYP : C, div_t
+SIZTYP : C, size_t
 TYPTYP : C, struct {*typtyp, *typtyp, char[6]}
 PATTRN : C++, basic_regex
 VOID : C, void
@@ -786,7 +769,7 @@ a variable name and function name may not overlap
 a name may not contain any technical symbol. these include:
 ' " ; : [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + =
 ❬ ❭ ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ↯ ¶ ➤ … × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡ » « → ← ¬ ⇔
-∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ≝ ⤆ ⤇ £ ¿ № ± ℓ ⏎ ↵ ↹ ⇥ ␣ ⍽ ⌛ ⎋ ⚠ 💣 ☠
+∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ≝ £ ¿ № ± ℓ ⏎ ↵ ↹ ⇥ ␣ ⍽ ⌛ ⎋ ⚠ 💣 ☠
 
 a name may not contain a number as the first character
 0 1 2 3 4 5 6 7 8 9
