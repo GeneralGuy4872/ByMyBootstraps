@@ -1,4 +1,4 @@
-My Language V0.2.8b 0000000 00-00-0000
+My Language V0.2.9a 0000000 00-00-0000
 Prealpha
 ======================================
 
@@ -27,12 +27,12 @@ donothing() : does nothing, optimised out
 
 IF (foo) {} : if foo is true, do the function enclosed in {}.
 ELSE {} : if the function if fails, do the function enclosed in {}.
-ELSE IF (foo) {} : single-tier version of ELSE {IF (foo) {}}
+ELSEIF (foo) {} : single-tier version of ELSE {IF (foo) {}}
 WHILE (foo) {} : loop the function enclosed in {} until foo is false.
 UNTIL (foo) {} : loop the function enclosed in {} until foo is true.
 BREAK : immediately exit the current loop
 GOTO (foo) : go to label foo. NOTE: there is no return function. putting a goto inside a function declaration can screw up your control flow.
-DOTIMES (foo) {} : do whatever is in {} foo times. if foo is a float, rounds down. if foo is infinity, you're trying too hard.
+DOTIMES (foo) {} : do whatever is in {} foo times. if foo is a float, rounds down. if foo is infinity, you're trying too hard. the current iteration is stored in loop_counter.
 ¶foo : a label called foo. Please don't put these INSIDE loops unless you know what you're doing.
 If you GOTO out of a WHILE or DOTIMES, the parser will think you are still in that loop! This does not apply to IF, ELSEIF, or ELSE.
 
@@ -42,7 +42,7 @@ fprintf(...) : append a formatted value to file, as in C. returns as in C. Forma
 scanf(...) : get a value matching format from stdin, as in C. returns as in C. Formats as in C.
 sscanf(...) : get a value matching format from a string, as in C. returns as in C. Formats as in C.
 fscanf(...) : get a value matching format from file, as in C. returns as in C. Formats as in C.
-fgets(...) : get an entire line from a file, as in C. returns as in C. Formats as in C.
+fgets(...) : get an entire line from a file, as in C. returns as in C (including \n). Formats as in C.
 fflush(...) : flush an output file, as in C. returns as in C. Formats as in C.
 fopen(...) : open a file as a stream, as in C. returns as in C. Formats as in C.
 fclose(...) : close a stream, as in C. returns as in C. Formats as in C.
@@ -53,6 +53,7 @@ write(foo, ...) : write the strings or variables to file foo, similar to Pascal.
 writeln(foo, ...) : write the strings or variables to file foo and append a newline, similar to Pascal. convert formats automaticaly.
 read(foo, ...) : read the next field from a file, similar to Pascal. foo is the file, subsequent arguments are variables.
 readln(foo, ...) : read a line from a file and assign fields in order, similar to Pascal. foo is a file, subsequent fields are variables.
+getline(foo, bar[, baz]) : get a line from input stream foo and put it in bar. optionaly, stop at custom deliminater baz.
 
 FUNCTION foo(...) {...} : define a function foo. () contains an exaustive list of the internal names of arguments, {} contains the function itself.
 VARIADIC foo(bar, baz) ❬x❭ {...} : define a function foo. bar and baz are fixed arguments, {} contains the function itself, and x are iterated arguments beyond those listed.
@@ -205,12 +206,18 @@ dfloat(foo) : convert int or float foo to a double
 complx(foo) : convert int, float, or double to complex
 NOTE if you want a floating point number to be converted to an int type, you want the function floor(). remember this by the silly image of the float literaly floating, and you need it to be pulled down to the floor.
 
-tonumber(foo) : converts string foo to number by mathtypes
-atof(foo) : convert string foo to a double
-atoi(foo) : convert string foo to a word
-atol(foo) : convert string foo to a long
+strtol(*foo, **bar, baz) : convert the base baz number in string foo and store the cursor in *bar. returns s_long
+strtoll(*foo, **bar, baz) : convert the base baz number in string foo and store the cursor in *bar. returns s_quad
+strtoul(*foo, **bar, baz) : convert the base baz number in string foo and store the cursor in *bar. returns u_long
+strtoull(*foo, **bar, baz) : convert the base baz number in string foo and store the cursor in *bar. returns u_quad
+strtof(*foo, **bar, baz) : convert the base baz number in string foo and store the cursor in *bar. returns float.
+strtod(*foo, **bar, baz) : convert the base baz number in string foo and store the cursor in *bar. returns double.
 
-tostring(printf_format, foo) : converts foo to a string
+atof(foo) : convert string foo to a double, return it
+atoi(foo) : convert string foo to a s_word, return it
+atol(foo) : convert string foo to a s_long, return it
+atoll(foo) : convert string foo to a s_quad, return it
+
 toupper(foo) : convert the string foo to UPPERCASE
 tolower(foo) : convert the string foo to lowercase
 confuseables(foo) : remove all confuseables from string foo, according to the official confuseables.txt
@@ -218,7 +225,7 @@ confuseables(foo) : remove all confuseables from string foo, according to the of
 add(foo, bar, quux) : add foo to linked list bar at position quux
 remove(foo, bar) : remove node bar from linked list foo
 
-SYSTEM (...) : on supported implementations, pass the command in () to an external shell. very much implementation dependent and not mandatory.
+system(...) : on supported implementations, pass the command in () to an external shell. very much implementation dependent and not mandatory.
 FORK {} : spawn a child process that will do whatever is in {} and exit. avalibility is implementation dependent.
 It is assumed that either both or neither of these will be provided.
 
@@ -356,7 +363,7 @@ adressing and inquiring
 №foo : indicates whether foo is a number, same as isnumber(foo)
 ±foo : the sign of foo, same as signof(foo)
 ℓfoo : the size of foo, same as sizeof(foo)
-£foo : expand an array, linked list, or tree as a comma seperated list here (recursively, trees are evaluated from current leaf to root).
+£foo(bar) : splat an array foo here. same as foo[0], foo[1], foo[2]...
 
 WARNING! using & or * on a decimal, hexidecimal, binary, or octal interger will read the ABSOLUTE ADDRESS.
 This is an INTENDED RESPONSE, not a bug. IF YOU USE THIS ON A PRE-EXISTING OPERATING SYSTEM, ON YOUR HEAD BE IT.
@@ -517,7 +524,7 @@ future rewrites may also require
 Yes, this first alpha version is expected to be huge in size and have dozens of intermidiate object files. I expect it to get bigger, not smaller, as there is a 1:1 corraspondance between primary functions and object files.
 This is because the alpha version will be only the first and second step in a bootstrapping process, and the first revision of them at that.
 I do expect the final version of the bootstrapping process to gradually get smaller after the third iteration as external object files are rolled into a single file and optimized. I'm probably wrong.
-The use of the C preprocessor is not expected to change. It does everything I need it to.
+The use of the C preprocessor may change in a future version.
 I don't forsee needing any other languages for the commands I've included, but I can forsee complications which may arise that could call for the ones in the second list. the two lists taken together covers most of my useful programming skills. amoungst the languages that I will definately NOT be including is Cobol.
 This language is designed for POSIX-compliant enviroments. Barring a signifigant change in policy by Microsoft, Windows support is unlikely to be feasible, but may be possible by extra-ordinary mesures (like compleatly reimplimenting everything about how unicode is implemented internaly).
 
@@ -538,10 +545,10 @@ time() : C  , native calling object
 clock() : C , native calling object
 IF (foo) {} : C , native calling object
 ELSE {} : C , native calling object
-ELSE IF (foo) {} : C , native calling object
+ELSEIF (foo) {} : C , native calling object
 WHILE (foo) {} : C , native calling object
-UNTIL (foo) {} : *C , native
-DOTIMES (foo) {} : *C , native
+UNTIL (foo) {} : parser , native
+DOTIMES (foo) {} : parser , native
 BREAK : C , native calling object
 GOTO (foo) : C , native calling object
 ¶foo : C , native calling object
@@ -655,7 +662,7 @@ foo ≤ bar , foo LE bar : C , Native calling object
 foo ≥ bar , foo GE bar : C , Native calling object
 foo ≠ bar , foo NE bar : C , Native calling object
 foo = bar , foo EQ bar : C , Native calling object
-foo ≈ bar , foo APROX bar : *C , Native calling object
+foo ≈ bar , foo APROX bar : Parser , Native
 foo ≡ bar , foo == bar : C , Native calling object
 foo ¢ bar , foo CON bar : *C , Native calling object
 strtok(foo, bar) : C , native calling object
@@ -665,7 +672,7 @@ awkex(foo) : C++ , Native calling object
 match(foo, bar) : C++ , Native calling object
 substitute(foo, bar, quux) : C++ , Native calling object
 rand(foo) : C , Native calling object
-roll(foo, bar) : *C , Native calling object
+roll(foo, bar) : Parser , Native
 deal(foo, bar) : *C , native calling object
 shuffle(foo) : ~ , native
 RETURN foo : parser and C , native parser calling native and C
@@ -680,16 +687,22 @@ float(foo) : C , native calling object
 dfloat(foo) : C , native calling object
 complx(foo) : C , native calling object
 minisize(foo) : ~ , native
+strtol(*foo, **bar, baz) : C , native calling object
+strtoll(*foo, **bar, baz) : C , native calling object
+strtoul(*foo, **bar, baz) : C , native calling object
+strtoull(*foo, **bar, baz) : C , native calling object
+strtof(*foo, **bar, baz) : C , native calling object
+strtod(*foo, **bar, baz) : C , native calling object
 atof(foo) : C , native calling object
 atoi(foo) : C , native calling object
 atol(foo) : C , native calling object
-tostring(printf_format, foo) : ~ , native
+atoll(foo) : C , native calling object
 toupper(foo) : ~ , native using UnicodeData.txt
 tolower(foo) : ~ , native using UnicodeData.txt
 confuseables(foo) : ~ , native using Confuseables.txt
 add(foo, bar, quux) : *C , native calling object
 remove(foo, bar) : *C , native calling object
-SYSTEM (...) : C , native calling object
+system(...) : C , native calling object
 FORK {} : C , native calling object
 malloc(foo) : C , native calling object
 calloc(foo, bar) : C , native calling object
@@ -702,9 +715,9 @@ zerofill(foo) : C calling Asm , native calling object
 signfill(foo) : C calling Asm , native calling object
 xswap(foo, bar) : *C , Native calling object
 swap(foo, bar) : *C++ , native calling object
-:= : C , native calling object
-:< : C++ , native calling object
-:> : C++ , native calling object
+:= , ≝ : C , native calling object
+:< , ⤆ : C++ , native calling object
+:> , ⤇ : C++ , native calling object
 
 stdout : C , stdout
 stdin : C , stdin
@@ -763,7 +776,7 @@ NULL : C, void* [0]
 № : *C, <see type tree>
 ± : *C, IF (foo ≠ 0) {IF (foo > 0) {return 1} ELSEIF (foo < 0) {return -1} ELSE {RETURN �;fprintf(stderr, "innnnnteresting...\n")}} ELSE {return 0}
 ℓ : *C, sizeof(foo)
-£ : Parser, <to complicated to explain briefly>
+£ : Deferred
 
 a garbage collector is a HIGH PRIORETY to-do, see bug#1.
 
@@ -808,8 +821,6 @@ MAX_BUFFER is a value used in string and file operations. it defaults to 512 byt
 
 TYPE TREE
 the type tree contains the names of all types. any user defined types are automatically added to the type tree.
-
-
 
 VERSION NUMBERS
 ---------------
