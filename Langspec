@@ -1,4 +1,4 @@
-My Language V0.2.9e 0000000 00-00-0000
+My Language V0.2.9f 0000000 00-00-0000
 Prealpha *ALPHA DEADLINE NEWYEARS*
 ======================================
 
@@ -76,7 +76,9 @@ LEAF FOO bar : create a leaf bar with data field of valid type FOO
 #define foo bar : replace all regex foo with regex bar
 and so on as in the C preprocessor
 
-; , ⏎ : equivilant to new line
+; , ⏎ , ↵ : equivilant to new line
+↹ , ⇥ : equivilant to tab
+␣ , ⍽ : equivilant to space
 
 ⎋foo , EXIT FOO : close the program cleanly with status number foo
 ⚠foo , ERROR FOO : raise the signal named foo and close program
@@ -729,8 +731,8 @@ NULL : C , NULL
 φ : *C , (double) ((1 + sqrt(5)) / 2)
 ∞ , infinity : *C , INFINITY
 � , notanumber : *C , NAN
-true : *C , signed char TRUE
-false : *C , signed char FALSE
+true : *C , signed char 1
+false : *C , signed char 0
 ternary : *C , signed char -1
 
 BOOL : C, signed char
