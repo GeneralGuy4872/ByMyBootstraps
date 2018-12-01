@@ -1,4 +1,4 @@
-My Language V0.2.9g 0000000 00-00-0000
+My Language V0.2.b10 0000000 00-00-0000
 Prealpha *ALPHA DEADLINE NEWYEARS*
 WARNING: EXCUSE THE MESS. C-ONLY BRANCH
 ======================================
@@ -388,7 +388,7 @@ CLKTYP : an number type for storing the C-style elapsed time.
 DIVTYP : the result of div. a struct with fields numer and denom.
 SIZTYP : the result of sizeof. an unsigned int.
 TYPTYP : a structure for use in the type tree.
-PATTRN : a compiled PCRE regex
+PATTRN : a compiled regex
 VOID : a nothing 0 bits wide
 NULL : the type of NULL. Technicaly assignable, but will cause most functions to catch the variable with null handling before the value is read.
 
@@ -464,7 +464,6 @@ The source for the first alpha version is projected to need:
 - RE/flex
 - yacc or bison
 - curl (to ensure the most current unicode files)
-- PCRE
 future rewrites may also require
 - an M4 macro processor
 
@@ -515,12 +514,7 @@ fopen(...) : C , native calling object
 fclose(...) : C , native calling object
 fseek(...) : C , native calling object
 ftell(...) : C , native calling object
-getline(foo, bar[, baz]) : ~ , native
 rewind(...) : C , native calling object
-pwrite(...) : ~ , native
-pwriteln(...) : ~ , native
-pread(...) : ~ , native
-preadln(...) : ~ , native
 fread(...) : C , native calling object
 fwrite(...) : C , native calling object
 FUNCTION foo(...) {...} : C , native parser calling native and C
@@ -616,8 +610,8 @@ foo ≈ bar , foo APROX bar : Parser , Native
 foo ≡ bar , foo == bar : C , Native calling object
 foo ¢ bar , foo CON bar : *C , Native calling object
 strtok(foo, bar) : C , native calling object
-regex(foo) : C++ , Native calling object
-match(foo, bar) : C++ , Native calling object
+regex(foo) : C , Native calling object
+match(foo, bar) : C , Native calling object
 rand(foo) : C , Native calling object
 roll(foo, bar) : Parser , Native
 deal(foo, bar) : *C , native calling object
@@ -707,7 +701,7 @@ CLKTYP : C, clock_t
 DIVTYP : C, div_t
 SIZTYP : C, size_t
 TYPTYP : C, struct {*typtyp, *typtyp, char[6]}
-PATTRN : C++, basic_regex
+PATTRN : C, regex_t
 VOID : C, void
 NULL : C, void* [0]
 
