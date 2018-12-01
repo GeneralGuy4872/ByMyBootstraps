@@ -51,6 +51,8 @@ fseek(...) : go to an offset in a file, as in C. returns as in C. Formats as in 
 ftell(...) : get the current offset in a file, as in C. returns as in C. Formats as in C.
 rewind(...) : go to the beginning of a file, as in C. returns as in C. Formats as in C.
 
+getline(foo, bar[, baz]) : get a line foo and store it in array bar. stop at optional deliminator baz.
+
 write(foo, ...) : write the strings or variables to file foo, similar to Pascal. convert formats automaticaly.
 writeln(foo, ...) : write the strings or variables to file foo and append a newline, similar to Pascal. convert formats automaticaly.
 read(foo, ...) : read the next field from a file, similar to Pascal. foo is the file, subsequent arguments are variables.
@@ -172,7 +174,7 @@ foo ≥ bar , foo GE bar : test if foo is greater than or equal to bar, returns 
 foo ≠ bar , foo NE bar : test if foo is not equal to bar, returns bool result
 foo = bar , foo EQ bar : test if foo is equal to bar, returns bool result
 foo ≈ bar , foo APROX bar : test if floor or ceiling of foo is equal to the floor or ceiling of bar
-foo ≡ bar , foo == bar : test byte for byte if foo matches bar, returns bool
+foo ≡ bar , foo == bar : test anything foo matches anything bar, returns bool
 
 foo ¢ bar , foo CON bar : bitwise concatinate foo and bar.
 
@@ -198,6 +200,7 @@ lambda(foo, bar, baz) ❬x, y, z❭ {...} : do anonamous function in {} to anyth
 
 sizeof(foo) : returns the number of bits in anything foo. sizeof(&[any variable]) should return the CPU address register size.
 typeof(foo) : uses the type tree to determin the type of foo
+parentof(foo) : uses the type tree to determin the parent type of foo
 classof(foo) : uses the type tree to determin the generalized type of foo
 isnumber(foo) : uses the type tree to determin if foo is a number type. returns 1 for numbers, 0 for non numbers, -1 for number structs, and NaN for possible numbers.
 signof(foo) : determins the sign of foo. returns -1 for negitives, 1 for positives, 0 for 0, and NaN on error.
@@ -356,6 +359,7 @@ adressing and inquiring
 &foo : the adress of foo
 *foo : pointer to foo
 ?foo : indicates the type of foo, same as typeof(foo)
+⸮foo : indicates the type of foo, same as typeof(foo)
 ¿foo : indicates the recursive type of foo, same as classof(foo)
 №foo : indicates whether foo is a number, same as isnumber(foo)
 ±foo : the sign of foo, same as signof(foo)
@@ -564,6 +568,7 @@ fopen(...) : C , native calling object
 fclose(...) : C , native calling object
 fseek(...) : C , native calling object
 ftell(...) : C , native calling object
+getline(foo, bar[, baz]) : ~ , native
 rewind(...) : C , native calling object
 pwrite(...) : ~ , native
 pwriteln(...) : ~ , native
@@ -674,10 +679,11 @@ roll(foo, bar) : Parser , Native
 deal(foo, bar) : *C , native calling object
 shuffle(foo) : ~ , native
 RETURN foo : parser and C , native parser calling native and C
-lambda(foo, bar, baz) ❬x, y, z❭ {...} : *C , native
-λ(foo, bar, baz) ❬x, y, z❭ {...} : *C , native
+lambda(foo, bar, baz) ❬x, y, z❭ {...} : ~ , native
+λ(foo, bar, baz) ❬x, y, z❭ {...} : ~ , native
 sizeof(foo) : C , native calling object
 typeof(foo) : C , native calling object
+parentof(foo) : C , native calling object
 classof(foo) : C , native calling object
 isnumber(foo) : C , native calling object
 signof(foo) : C , native calling object
@@ -745,7 +751,7 @@ U_WORD : C, unsigned short
 U_LONG : C, unsigned long
 U_QUAD : C, unsigned long long
 C_INT : C, int
-STRING : C, char * [up to MAX_BUFFER]
+STRING : C++, std::string
 FLOAT : C, float
 DOUBLE : C, double
 ARRAY : C, <type> [][]...
@@ -770,7 +776,7 @@ NULL : C, void* [0]
 № : *C, <see type tree>
 ± : *C, IF (foo ≠ 0) {IF (foo > 0) {return 1} ELSEIF (foo < 0) {return -1} ELSE {RETURN �;fprintf(stderr, "innnnnteresting...\n")}} ELSE {return 0}
 ℓ : *C, sizeof(foo)
-£ : Deferred
+£ : Prototype tree
 
 a garbage collector is a HIGH PRIORETY to-do, see bug#1.
 
@@ -782,7 +788,7 @@ a variable name and function name may not overlap
 a name may not contain any technical symbol. these include:
 ' " ; : [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + =
 ❬ ❭ ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ↯ ¶ ➤ … × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡ » « → ← ¬ ⇔
-∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ≝ £ ¿ № ± ℓ ⏎ ↵ ↹ ⇥ ␣ ⍽ ⌛ ⎋ ⚠ 💣 ☠
+∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ≝ £ ⸮ ¿ № ± ℓ ⏎ ↵ ↹ ⇥ ␣ ⍽ ⌛ ⎋ ⚠ 💣 ☠
 
 a name may not contain a number as the first character
 0 1 2 3 4 5 6 7 8 9
