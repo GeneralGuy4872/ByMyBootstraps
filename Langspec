@@ -1,5 +1,6 @@
-My Language V0.2.9f 0000000 00-00-0000
+My Language V0.2.10 0000000 00-00-0000
 Prealpha *ALPHA DEADLINE NEWYEARS*
+EXCUSE THE MESS. C++-migrated branch
 ======================================
 
 Caution: early versions will probably be about as stable as a house of cards built atop of jenga towers sitting on a card table.
@@ -40,10 +41,10 @@ printf(...) : print a formatted value to stdout, as in C. returns as in C. Forma
 sprintf(...) : print a formatted value to variable, as in C. returns as in C. Formats as in C.
 fprintf(...) : append a formatted value to file, as in C. returns as in C. Formats as in C.
 scanf(...) : get a value matching format from stdin, as in C. returns as in C. Formats as in C.
-sscanf(...) : get a value matching format from a string, as in C. returns as in C. Formats as in C.
+sscanf(...) : get a value matching format from a char array, as in C. returns as in C. Formats as in C.
 fscanf(...) : get a value matching format from file, as in C. returns as in C. Formats as in C.
-fgets(...) : get a raw string from a file, as in C. returns as in C (including \n). Formats as in C.
-fputs(...) : write a string to a file, as in C. returns as in C. Formats as in C.
+fgets(...) : get a raw char array from a file, as in C. returns as in C (including \n). Formats as in C.
+fputs(...) : write a char array to a file, as in C. returns as in C. Formats as in C.
 fflush(...) : flush an output file, as in C. returns as in C. Formats as in C.
 fopen(...) : open a file as a stream, as in C. returns as in C. Formats as in C.
 fclose(...) : close a stream, as in C. returns as in C. Formats as in C.
@@ -178,7 +179,7 @@ foo ≡ bar , foo == bar : test anything foo matches anything bar, returns bool
 
 foo ¢ bar , foo CON bar : bitwise concatinate foo and bar.
 
-strtok(foo, bar) : replace the character bar in string foo with a null character, return pointer to current position.
+strtok(foo, bar) : replace the character bar in char array foo with a null character, return pointer to current position.
 regex(foo) : compile the POSIX regex foo and return the pattern
 awkex(foo) : compile the Awk regex foo and return the pattern
 ecmaex(foo) : compile the ECMAscript regex foo and return the pattern
@@ -208,23 +209,35 @@ signof(foo) : determins the sign of foo. returns -1 for negitives, 1 for positiv
 sfloat(foo) : convert int foo to a float
 dfloat(foo) : convert int or float foo to a double
 complex(foo) : convert int, float, or double to complex
+minisize(foo) : squeeze foo into the smallest type possible
 NOTE if you want a floating point number to be converted to an int type, you want the function floor(). remember this by the silly image of the float literaly floating, and you need it to be pulled down to the floor.
 
-strtol(*foo, **bar, baz) : convert the base baz number in string foo and store the cursor in *bar. returns s_long
+tostring(foo) : convert number foo to a string
+string_data(foo) , c_str(foo) : convert string foo to a char array, return pointer
+
+stoi(*foo, **bar, baz) : convert the base baz number in string foo and store the cursor in *bar. returns c_int
+stol(*foo, **bar, baz) : convert the base baz number in string foo and store the cursor in *bar. returns s_long
+stoul(*foo, **bar, baz) : convert the base baz number in string foo and store the cursor in *bar. returns u_long
+stoll(*foo, **bar, baz) : convert the base baz number in string foo and store the cursor in *bar. returns s_quad
+stoull(*foo, **bar, baz) : convert the base baz number in string foo and store the cursor in *bar. returns u_quad
+stof(*foo, **bar) : convert the number in string foo and store the cursor in *bar. returns float.
+stod(*foo, **bar) : convert the number in string foo and store the cursor in *bar. returns double.
+
+strtol(*foo, **bar, baz) : convert the base baz number in fixstr foo and store the cursor in *bar. returns s_long
 strtoll(*foo, **bar, baz) : convert the base baz number in string foo and store the cursor in *bar. returns s_quad
 strtoul(*foo, **bar, baz) : convert the base baz number in string foo and store the cursor in *bar. returns u_long
 strtoull(*foo, **bar, baz) : convert the base baz number in string foo and store the cursor in *bar. returns u_quad
-strtof(*foo, **bar, baz) : convert the base baz number in string foo and store the cursor in *bar. returns float.
-strtod(*foo, **bar, baz) : convert the base baz number in string foo and store the cursor in *bar. returns double.
+strtof(*foo, **bar) : convert the number in string foo and store the cursor in *bar. returns float.
+strtod(*foo, **bar) : convert the number in string foo and store the cursor in *bar. returns double.
 
 atof(foo) : convert string foo to a double, return it
 atoi(foo) : convert string foo to a s_word, return it
 atol(foo) : convert string foo to a s_long, return it
 atoll(foo) : convert string foo to a s_quad, return it
 
-toupper(foo) : convert the string foo to UPPERCASE
-tolower(foo) : convert the string foo to lowercase
-confuseables(foo) : remove all confuseables from string foo, according to the official confuseables.txt
+toupper(foo) : convert the string or char array foo to UPPERCASE
+tolower(foo) : convert the string or char array foo to lowercase
+confuseables(foo) : remove all confuseables from string or char array foo, according to the official confuseables.txt
 
 add(foo, bar, quux) : add foo to linked list bar at position quux
 remove(foo, bar) : remove node bar from linked list foo
@@ -274,9 +287,13 @@ Operators other than assignment-type operators (:=, :<, :>) are evaluated left t
 
 SPECIAL VARIABLES
 -----------------
-stdout : the output file
-stdin : the input file
-stderr : the error file
+stdout : the C output file
+stdin : the C input file
+stderr : the C error file
+cout : the C++ output file
+cin : the C++ input file
+cerr : the C++ error file
+clog : the C++ log file
 NULL : a null file or bitbucket, implemented as a null pointer.
 ⅈ : √-1, for complex numbers. (the variable "i" is antireserved as too generic)
 ℯ : eulars number, double. (the variable "euler" is antireserved for i.e. user defined approximations) 
@@ -379,12 +396,15 @@ LONG : 32 bits unspecified sign
 QUAD : 64 bits unspecified sign
 S_[BYTE|WORD|LONG|QUAD] : signed versions of above
 U_[BYTE|WORD|LONG|QUAD] : unsigned versions of above
-STRING : utf8 ansi-style string. multibyte characters are stored internaly as multiple characters.
+STRING : C++ style string
+FIXSTR : C style *char array
 C_INT : C's generic Interger datatype. here for compatibility. Width is implementation dependent.
 FLOAT : single precision float
 DOUBLE : double precision float
 ARRAY : array of anythings, so long as all entries are the same size. can be multidimensional if rectangular/cuboid/hypercuboid.
 FILE : a C-style file
+INPUT : a C++-style istream
+OUTPUT : a C++-style ostream
 LLIST : a doubly-linked list. implemented as a collection of nodes.
 NODE : a structure consisting of a pointer .prev, an anything .data, and a pointer .next
 TREERT : the root of a tree of leaves.
@@ -514,12 +534,11 @@ The source for the first alpha version is projected to need:
 - an Assembler
 - a Linker
 - RE/flex
-- yacc or bison
+- yacc, byacc, or bison
 - curl (to ensure the most current unicode files)
 
 future rewrites may also require
 - an M4 macro processor
-- a Rust compiler
 
 
 Yes, this first alpha version is expected to be huge in size and have dozens of intermidiate object files. I expect it to get bigger, not smaller, as there is a 1:1 corraspondance between primary functions and object files.
@@ -687,16 +706,24 @@ parentof(foo) : C , native calling object
 classof(foo) : C , native calling object
 isnumber(foo) : C , native calling object
 signof(foo) : C , native calling object
-float(foo) : C , native calling object
+sfloat(foo) : C , native calling object
 dfloat(foo) : C , native calling object
-complx(foo) : C , native calling object
+complex(foo) : C , native calling object
 minisize(foo) : ~ , native
+tostring(foo) : C++ , 
+stoi(*foo, **bar, baz)
+stol(*foo, **bar, baz)
+stoul(*foo, **bar, baz)
+stoll(*foo, **bar, baz)
+stoull(*foo, **bar, baz)
+stof(*foo, **bar)
+stod(*foo, **bar)
 strtol(*foo, **bar, baz) : C , native calling object
 strtoll(*foo, **bar, baz) : C , native calling object
 strtoul(*foo, **bar, baz) : C , native calling object
 strtoull(*foo, **bar, baz) : C , native calling object
-strtof(*foo, **bar, baz) : C , native calling object
-strtod(*foo, **bar, baz) : C , native calling object
+strtof(*foo, **bar) : C , native calling object
+strtod(*foo, **bar) : C , native calling object
 atof(foo) : C , native calling object
 atoi(foo) : C , native calling object
 atol(foo) : C , native calling object
@@ -717,11 +744,11 @@ movew(foo, bar) : Asm , native calling object
 movel(foo, bar) : Asm , native calling object
 zerofill(foo) : C calling Asm , native calling object
 signfill(foo) : C calling Asm , native calling object
-swap(foo, bar) : *C , Native calling object
+swap(foo, bar) : *C++ , Native calling object
 xswap(foo, bar) : *C , Native calling object
-:= , ≝ : C , native calling object
-:< , ⤆ : ~ , native calling object
-:> , ⤇ : ~ , native calling object
+:= , ≝ : C++ , native calling object
+:< , ⤆ : C++ , native calling object
+:> , ⤇ : C++ , native calling object
 
 stdout : C , stdout
 stdin : C , stdin
@@ -752,10 +779,13 @@ U_LONG : C, unsigned long
 U_QUAD : C, unsigned long long
 C_INT : C, int
 STRING : C++, std::string
+FIXSTR : C, char * [up to MAXBUFFER]
 FLOAT : C, float
 DOUBLE : C, double
 ARRAY : C, <type> [][]...
 FILE : C, FILE
+INPUT : C++, std::istream
+OUTPUT : C++, std::ostream
 LLIST : C, struct node*
 NODE : C, struct {*node, *node}; aditional anything field added
 TREERT : C, struct leaf*
