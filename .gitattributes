@@ -100,3 +100,4 @@ CMakeLists.txt = linguist-language=CMake
 *.fth = linguist-language=Forth
 *.srec = linguist-language=SRecord
 *.ihex = linguist-language=IntelHex
+*.man.* = linguist-language=txt
