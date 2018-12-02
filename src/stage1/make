@@ -1,1 +1,12 @@
+#my first makefile
+mylanguage.out: myheaders.h typetree.h lexer.lex parser.y
+	cc -o mylanguage.out y.tab.o lex.y.o
 
+lex.y.o: lex.y.c y.tab.h
+lex.y.o y.tab.o: myheaders.h typetree.h
+
+y.tab.c y.tab.h: parser.y
+	yacc -v parser.y
+
+lex.y: lexer.lex
+	reflex --flex --bison lexer.lex
