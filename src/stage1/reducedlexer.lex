@@ -1,19 +1,19 @@
 NAME	[^'";:\[\]\{\}\|\\\<\>,\.\?/~`!@#\$%\^\&\*\(\)\-\+=❬❭⟦⟧⌊⌋⌈⌉↯¶➤…×÷⋆⍟√¡∧∨⍲⍱⊕↔≡»«→←¬⇔∈∪∩⊂⊖≤≥≠≈¢≝⤆⤇£⸮¿№±ℓ⏎↵↹⇥␣⍽⌛⎋⚠💣☠0987654321\n\r\t␀␁␂␃␄␅␆␇␈␉␊␋␌␍␎␏␐␑␒␓␔␕␖␗␘␙␚␛␜␝␞␟␠␡             ⠀　][^'";:\[\]\{\}\|\\\<\>,\.\?/~`!@#\$%\^\&\*\(\)\-\+=❬❭⟦⟧⌊⌋⌈⌉↯¶➤…×÷⋆⍟√¡∧∨⍲⍱⊕↔≡»«→←¬⇔∈∪∩⊂⊖≤≥≠≈¢≝⤆⤇£⸮¿№±ℓ⏎↵↹⇥␣⍽⌛⎋⚠💣☠\n\r\t␀␁␂␃␄␅␆␇␈␉␊␋␌␍␎␏␐␑␒␓␔␕␖␗␘␙␚␛␜␝␞␟␠␡             ⠀　]*
 NUMBER	[0987654321]+
-STRING	(\"(\\.|[^\"])*\"|\'(\\.|[^\'])*\')
+STRING	\"(\\.|[^\"])*\"
+EXACT	\'[^\']*\'
 NEWLINE	[␊␍;⏎↵\n\r]
 SPACE	[␣⍽ ␠            ⠀　]
 TAB	[↹⇥\t␉]
 
-DONOTHING	(NOP|NOOP|NOPR|CONTINUE|SWYM)
-FUNCTIONS	(wait|time|clock|beep|[sf]?printf|[sf]?scanf|f(gets|puts|flush|open|seek|tell)|rewind|f(read|write)|elog|abs|cabs|floor|ceiling|div|elog|sqrt|cbrt|min|max|mean|[arc]?(sin|cos|tan|cot|sec|csc)|strtok|(reg|awk|ecma)ex|match|search|replace|rand|roll|deal|choose|(size|type|parent|class)of|isnumber|signof|sfloat|dfloat|complex|strto(l|ll|ul|ull|f|d)|ato(f|i|l|ll)|add|remove|(m|c|re)alloc|move(b|w|l)|(zero|sign)fill|xswap)
-CONDITIONAL	(IF|ELSE|ELSEIF|ASSERT|FORK)
-DECLARATOR	(FUNCTION|VARIADIC|EXTERN|TYPE)
-DATATYPES	(
-LOOPFUN	(WHILE|UNTIL|DOTIMES)
-CONTROL	(BREAK|ABORT|💣|ABORT|☠|POKE5945862)
-ENDSTATE (EXIT|ERROR|RETURN)
-ANONYMOUS	(lambda|λ)
+DONOTHING	("NOP"|"NOOP"|"NOPR"|"CONTINUE"|"SWYM")
+FUNCTIONS	("wait"|"time"|"clock"|"beep"|[sf]?"printf"|[sf]?"scanf"|"f"("gets"|"puts"|"flush"|"open"|"seek"|"tell")|"rewind"|"f"("read"|"write")|"elog"|"abs"|"cabs"|"floor"|"ceiling"|"div"|"elog"|"sqrt"|"cbrt"|"min"|"max"|"mean"|("arc")?("sin"|"cos"|"tan"|"cot"|"sec"|"csc")|"regex"|"match"|"search"|"rand"|"roll"|"deal"|"choose"|("size"|"type"|"class"|"sign")"of"|"isnumber"|[sd]"float"|"complex"|"strto"([kfdl]|"ll"|"ul"|"ull")|"ato"([fil]|"ll")|"add"|"remove"|"system"|([mc]|"re")"alloc"|"free"|"move"[bwl]|("zero"|"sign")"fill"|"xswap")
+CONDITIONAL	("IF"|"ELSE"|"ELSEIF"|"ASSERT"|"FORK")
+DECLARATOR	("FUNCTION"|"VARIADIC"|"EXTERN"|"TYPE")
+DATATYPES	("BOOL"|([US]"_")?("BYTE"|"WORD"|"LONG"|"QUAD")|"STRING"|"C_INT"|"FLOAT"|"DOUBLE"|"ARRAY"|"FILE"|"LLIST"|"NODE"|"TREERT"|"LEAF"|("TIM"|"CLK"|"DIV"|"SIZ"|"TYP")"TYP"|"PATTRN"|"VOID")
+LOOPFUN	("WHILE"|"UNTIL"|"DOTIMES")
+CONTROL	("↯"|"BREAK"|"💣"|"ABORT"|"☠"|"POKE5945862")
+ENDSTATE ("EXIT"|"ERROR"|"RETURN")
 
 %top
 #define YY_EXTERN_C extern "C"
@@ -25,7 +25,6 @@ ANONYMOUS	(lambda|λ)
 %{
 #include "y.tab.h"
 
-static long long lines = 0
 static unsigned int errors = 0
 %}
 
@@ -36,7 +35,7 @@ static unsigned int errors = 0
 			}
 {WHITESPACE}+		{}
 {TAB}+			{}
-{NEWLINE}+		lines++;
+{NEWLINE}+		return(NEWLINE);
 {DONOTHING}		{}
 
 <LIST>"{"		{
@@ -115,11 +114,11 @@ static unsigned int errors = 0
 			}
 "❬"			{
 			yylval.str = text();
-			return("❬");
+			return(❬);
 			}
 "❭"			{
 			yylval.str = text();
-			return("❭");
+			return(❭);
 			}
 "["			{
 			yylval.str = text();
@@ -148,7 +147,7 @@ static unsigned int errors = 0
 			yylval.str = text();
 			return(DATATYPE);
 			}
-STATIC			{
+"STATIC"		{
 			yylval.str = text();
 			return(STATIC);
 			}
@@ -156,11 +155,6 @@ STATIC			{
 			yylval.str = text();
 			push_state(LOOPINIT);
 			return(LOOPFUN);
-			}
-{ANONYMOUS}		{
-			yylval.str = text();
-			push_state(LOOPINIT);
-			return(LAMBDA);
 			}
 {ENDSTATE}		{
 			yylval.str = text();
@@ -170,18 +164,18 @@ STATIC			{
 			yylval.str = text();
 			return(CONTROL);
 			}
+"NULL"			{
+			yylval.str = text();
+			return(NULL);
+			}
 
 "⌛"			{
 			yylval.str = text();
-			return("⌛");
-			}
-"↯"			{
-			yylval.str = text();
-			return("↯");
+			return(⌛);
 			}
 ("..."|"…")		{
 			yylval.str = text();
-			return("…");
+			return(…);
 			}
 "."			{
 			yylval.str = text();
@@ -189,11 +183,11 @@ STATIC			{
 			}
 "⎋"			{
 			yylval.str = text();
-			return("⎋");
+			return(⎋);
 			}
 "⚠"			{
 			yylval.str = text();
-			return("⚠");
+			return(⚠);
 			}
 "++"			{
 			yylval.str = text();
@@ -209,7 +203,7 @@ STATIC			{
 			}
 ("->"|"→")		{
 			yylval.str = text();
-			return("→");
+			return(→);
 			}
 "-"			{
 			yylval.str = text();
@@ -225,7 +219,7 @@ STATIC			{
 			}
 "×"			{
 			yylval.str = text();
-			return("×");
+			return(×);
 			}
 "/"			{
 			yylval.str = text();
@@ -233,7 +227,7 @@ STATIC			{
 			}
 "÷"			{
 			yylval.str = text();
-			return("÷");
+			return(÷);
 			}
 "^^"			{
 			yylval.str = text();
@@ -244,7 +238,7 @@ STATIC			{
 			}
 "⋆"			{
 			yylval.str = text();
-			return("⋆");
+			return(⋆);
 			}
 "%"			{
 			yylval.str = text();
@@ -252,19 +246,19 @@ STATIC			{
 			}
 ("⍟"|"LOG")			{
 			yylval.str = text();
-			return("⍟");
+			return(⍟);
 			}
 ("√"|"ROOT")		{
 			yylval.str = text();
-			return("√");
+			return(√);
 			}
 "nPr"			{
 			yylval.str = text();
-			return(NPR);
+			return(nPr);
 			}
 "nCr"			{
 			yylval.str = text();
-			return(NCR);
+			return(nCr);
 			}
 ("¬&&"|"~&&"|"!&&")	{
 			yylval.str = text();
@@ -288,39 +282,39 @@ STATIC			{
 			}
 "¡"			{
 			yylval.str = text();
-			return("¡");
+			return(¡);
 			}
 "⟦"			{
 			yylval.str = text();
-			return("⟦");
+			return(⟦);
 			}
 "⟧"			{
 			yylval.str = text();
-			return("⟧");
+			return(⟧);
 			}
 "⌊"			{
 			yylval.str = text();
-			return("⌊");
+			return(⌊);
 			}
 "⌋"			{
 			yylval.str = text();
-			return("⌋");
+			return(⌋);
 			}
 "⌈"			{
 			yylval.str = text();
-			return("⌈");
+			return(⌈);
 			}
 "⌉"			{
 			yylval.str = text();
-			return("⌉");
+			return(⌉);
 			}
 ("`&"|"⍲"|"NAND")		{
 			yylval.str = text();
-			return("⍲");
+			return(⍲);
 			}
 ("`|"|"⍱"|"NOR")		{
 			yylval.str = text();
-			return("⍱");
+			return(⍱);
 			}
 "`"			{
 			yylval.str = text();
@@ -328,7 +322,7 @@ STATIC			{
 			}
 ("∧"|"AND")		{
 			yylval.str = text();
-			return("∧");
+			return(∧);
 			}
 "&&"			{
 			yylval.str = text();
@@ -340,7 +334,7 @@ STATIC			{
 			}
 ("∨"|"OR")		{
 			yylval.str = text();
-			return("∨");
+			return(∨);
 			}
 "||"			{
 			yylval.str = text();
@@ -352,19 +346,19 @@ STATIC			{
 			}
 ("⊕"|"XOR")		{
 			yylval.str = text();
-			return("⊕");
+			return(⊕);
 			}
 ("↔"|"XNOR")		{
 			yylval.str = text();
-			return("↔");
+			return(↔);
 			}
 (">>>"|"➤")		{
 			yylval.str = text();
-			return("➤");
+			return(➤);
 			}
 (">>"|"»")		{
 			yylval.str = text();
-			return("»");
+			return(»);
 			}
 (">"|"GT")		{
 			yylval.str = text();
@@ -372,15 +366,15 @@ STATIC			{
 			}
 ("<<"|"«")		{
 			yylval.str = text();
-			return("«");
+			return(«);
 			}
 ("<-"|"←")		{
 			yylval.str = text();
-			return("←");
+			return(←);
 			}
 ("⇔"|"<>"|"IFF")	{
 			yylval.str = text();
-			return("⇔");
+			return(⇔);
 			}
 ("<"|"LT")		{
 			yylval.str = text();
@@ -388,7 +382,7 @@ STATIC			{
 			}
 ("≡"|"==")		{
 			yylval.str = text();
-			return("≡");
+			return(≡);
 			}
 ("="|"EQ")			{
 			yylval.str = text();
@@ -396,43 +390,43 @@ STATIC			{
 			}
 ("∈"|"ELEMENT")		{
 			yylval.str = text();
-			return("∈");
+			return(∈);
 			}
 ("∪"|"UNION")		{
 			yylval.str = text();
-			return("∪");
+			return(∪);
 			}
 ("∩"|"INTRSECT")	{
 			yylval.str = text();
-			return("∩");
+			return(∩);
 			}
 ("⊂"|"SUBSET")		{
 			yylval.str = text();
-			return("⊂");
+			return(⊂);
 			}
 ("⊖"|"DIFF")		{
 			yylval.str = text();
-			return("⊖");
+			return(⊖);
 			}
 ("≤"|"LE")		{
 			yylval.str = text();
-			return("≤");
+			return(≤);
 			}
 ("≥"|"GE")		{
 			yylval.str = text();
-			return("≥");
+			return(≥);
 			}
 ("≠"|"NE")		{
 			yylval.str = text();
-			return("≠");
+			return(≠);
 			}
 ("≈"|"APROX")		{
 			yylval.str = text();
-			return("≈");
+			return(≈);
 			}
 "¢"			{
 			yylval.str = text();
-			return("¢");
+			return(¢);
 			}
 "$"			{
 			yylval.str = text();
@@ -448,47 +442,31 @@ STATIC			{
 			}
 "¿"			{
 			yylval.str = text();
-			return("¿");
+			return(¿);
 			}
 "№"			{
 			yylval.str = text();
-			return("№");
+			return(№);
 			}
 "±"			{
 			yylval.str = text();
-			return("±");
+			return(±);
 			}
 "ℓ"			{
 			yylval.str = text();
-			return("±");
-			}
-"£"			{
-			yylval.str = text();
-			return("£");
+			return(ℓ);
 			}
 "¶"			{
 			yylval.str = text();
-			return("¶");
+			return(¶);
 			}
-"\"			{
+"\\"			{
 			yylval.str = text();
-			return("\");
+			return("\\");
 			}
 ("≝"|":=")		{
 			yylval.str = text();
-			return("≝");
-			}
-("⤆"|":<")		{
-			yylval.str = text();
-			return("⤆");
-			}
-("⤇"|":>")		{
-			yylval.str = text();
-			return("⤇");
-			}
-":"			{
-			yylval.str = text();
-			return(":");
+			return(≝);
 			}
 
 {NUMBER}	{

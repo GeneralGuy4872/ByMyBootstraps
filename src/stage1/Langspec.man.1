@@ -80,7 +80,7 @@ and so on as in the C preprocessor
 ␣ , ⍽ : equivilant to space
 
 ⎋foo , EXIT FOO : close the program cleanly with status number foo
-⚠foo , ERROR FOO : raise the signal named foo and close program
+⚠foo , ERROR FOO : raise the signal named foo and close program.
 💣 , ABORT : abort the program immidiately.
 ASSERT (foo) : if foo is false, print the error information to stderr and call 💣
 ☠ , POKE5945862 : In systems with memory security, same as ⚠SIGSEGV. In systems WITHOUT memory security, causes a system error (such as kpanic or BSOD) intentionaly. In embedded systems, light the error indicator (assumed to be at adress 0) and HALT.
@@ -114,8 +114,6 @@ cbrt(foo) : the cube root of foo
 max(foo, bar...) : return the greatest value of numbers foo and bar. returns that number.
 min(foo, bar...) : return the least value of numbers foo and bar. returns that number.
 mean(foo, bar...) : find the adverage of numbers foo and bar. returns according to mathtypes
-median(foo, bar...) : find the median of a list of values. returns according to mathtypes
-mode(foo, bar...) : find the mode of a list of values. returns according to mathtypes
 
 sin(foo) : the sine of foo, returns float
 cos(foo) : the cosine of foo, returns float
@@ -169,7 +167,7 @@ foo = bar , foo EQ bar : test if foo is equal to bar, returns bool result
 foo ≈ bar , foo APROX bar : test if floor or ceiling of foo is equal to the floor or ceiling of bar
 foo ≡ bar , foo == bar : test anything foo matches anything bar, returns bool
 
-foo ¢ bar , foo CON bar : bitwise concatinate foo and bar.
+foo ¢ bar , foo CON bar : concatinate strings foo and bar
 
 strtok(foo, bar) : replace the character bar in string foo with a null character, return pointer to current position.
 regex(foo) : compile the POSIX regex foo and return the pattern
@@ -187,9 +185,6 @@ choose(foo) : choose 1 random element from array or linked list field pointer ar
 shuffle(foo) : randomize array foo, return array.
 
 RETURN foo : make the containing function return foo. If you need return to evaluate something, put it in () like FOR, such as RETURN (foo + bar)
-
-lambda(foo, bar, baz) ❬x, y, z❭ {...} : do anonamous function in {} to anythings foo, bar, and baz, reffered to by local variabls quux, garply, and waldo. will iterate arrays or linked lists. multiple such items will be combined in all possible ways, eg (foo * bar * quux) times
-λ(foo, bar, baz) ❬x, y, z❭ {...} : same as above, adding a comma would just be unnecisarily confusing and it wouldn't fit on same line.
 
 sizeof(foo) : returns the number of bits in anything foo. sizeof(&[any variable]) should return the CPU address register size.
 typeof(foo) : uses the type tree to determin the type of foo
@@ -352,12 +347,11 @@ adressing and inquiring
 &foo : the adress of foo
 *foo : pointer to foo
 ?foo : indicates the type of foo, same as typeof(foo)
-⸮foo : indicates the type of foo, same as typeof(foo)
+⸮foo : indicates the type of foo, same as parentof(foo)
 ¿foo : indicates the recursive type of foo, same as classof(foo)
 №foo : indicates whether foo is a number, same as isnumber(foo)
 ±foo : the sign of foo, same as signof(foo)
 ℓfoo : the size of foo, same as sizeof(foo)
-£foo(bar) : splat an array foo here. same as foo[0], foo[1], foo[2]...
 
 WARNING! using & or * on a decimal, hexidecimal, binary, or octal interger will read the ABSOLUTE ADDRESS.
 This is an INTENDED RESPONSE, not a bug. IF YOU USE THIS ON A PRE-EXISTING OPERATING SYSTEM, ON YOUR HEAD BE IT.
