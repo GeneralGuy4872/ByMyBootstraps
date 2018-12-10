@@ -91,10 +91,10 @@ foo - bar : foo minus bar
 -foo : foo times -1
 foo * bar , foo × bar : foo times bar
 foo / bar , foo ÷ bar : foo over bar
-foo ^ bar , foo ** bar , foo ⋆ bar : foo to the power of bar
+foo ^ bar , foo ** bar , foo ⋆ bar , foo ★ bar : foo to the power of bar
 foo ^^ bar : tertiation, foo raised to foo bar times
 foo % bar : foo modulus bar
-foo LOG bar , foo ⍟ bar : logarithem of bar to base foo
+foo LOG bar , foo ⍟ bar , foo ✪ bar : logarithem of bar to base foo
 foo ROOT bar , foo √ bar : foo root bar
 !foo : foo factorial
 ¡foo : foo derangement
@@ -171,18 +171,13 @@ foo ¢ bar , foo CON bar : concatinate strings foo and bar
 
 strtok(foo, bar) : replace the character bar in string foo with a null character, return pointer to current position.
 regex(foo) : compile the POSIX regex foo and return the pattern
-awkex(foo) : compile the Awk regex foo and return the pattern
-ecmaex(foo) : compile the ECMAscript regex foo and return the pattern
 match(foo, bar) : determine if foo matches expression bar, return bool. 
 search(foo, bar) : match all foo in string or array of strings bar, return output as a string or an array of strings. m//
-replace(foo, bar, quux) : substitute all foo for bar in quux, but return output. s///
-the regular expression commands should all be UTF8 aware except strtok, which is C-compatible
 
 rand(foo) : number between 0 and foo, returns number
 roll(foo, bar) : roll <foo>d<bar>, returns sum of sides
 deal(foo, bar) : deal bar sequential elements from array or linked list field pointer array foo, returns array
 choose(foo) : choose 1 random element from array or linked list field pointer array foo and return it
-shuffle(foo) : randomize array foo, return array.
 
 RETURN foo : make the containing function return foo. If you need return to evaluate something, put it in () like FOR, such as RETURN (foo + bar)
 
@@ -226,7 +221,6 @@ movew(foo, bar) : move 2 bytes from address bar to address foo and return the va
 movel(foo, bar) : move 4 bytes from address bar to address foo and return the value moved. foo and bar can be an interger or an & adress
 zerofill(foo) : double the width of int foo by buffering it with zeros. return result. fails if sizeof(foo) is not a power of 2 greater than 8 and less than 33
 signfill(foo) : double the width of int foo by buffering it with signed fill. return result. fails if sizeof(foo) is not a power of 2 greater than 8 and less than 33
-swap(foo, bar) : swap foo with bar
 xswap(foo, bar) : xor algorithem swap
 assembly functions included for writing memory management functions that can be implementation independent.
 Intended to be used with variable pointers. SEE BELOW WARNING ABOUT ABSOLUTE MEMORY ADDRESSING IN PRE-EXISTING ENVIROMENTS.
@@ -342,10 +336,6 @@ adressing and inquiring
 &foo : the adress of foo
 *foo : pointer to foo
 ?foo : indicates the type of foo, same as typeof(foo)
-<<<<<<< HEAD
-⸮foo : indicates the type of foo, same as parentof(foo)
-=======
->>>>>>> a7ccc6671cd647737aa89f831e28cabc2d37b77b
 ¿foo : indicates the recursive type of foo, same as classof(foo)
 №foo : indicates whether foo is a number, same as isnumber(foo)
 ±foo : the sign of foo, same as signof(foo)
@@ -434,12 +424,6 @@ It is recommended to have things defined before you use them, however. The compi
 
 Example 1:
 printf("Hello, World!\n")
-
-Example 2:
-cout :< "Hello, World!" ¢ "\n"
-
-Example 3:
-writeln(cout, "Hello, World!")
 
 Note that all examples are only 1 line of code.
 
@@ -703,7 +687,6 @@ NULL : C, void* [0]
 № : *C, <see type tree>
 ± : *C, IF (foo ≠ 0) {IF (foo > 0) {return 1} ELSEIF (foo < 0) {return -1} ELSE {RETURN �;fprintf(stderr, "innnnnteresting...\n")}} ELSE {return 0}
 ℓ : *C, sizeof(foo)
-£ : Prototype tree
 
 a garbage collector is a HIGH PRIORETY to-do, see bug#1.
 
