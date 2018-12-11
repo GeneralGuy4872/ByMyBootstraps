@@ -1,4 +1,4 @@
-My Language V0.2.a11b 0000000 00-00-0000
+My Language V0.2.a12 0000000 00-00-0000
 ======================================
 
 Caution: early versions will probably be about as stable as a house of cards built atop of jenga towers sitting on a card table.
@@ -293,7 +293,8 @@ cin : the C++ input file
 cerr : the C++ error file
 clog : the C++ log file
 NULL : a null file or bitbucket, implemented as a null pointer.
-ⅈ : √-1, for complex numbers. (the variable "i" is antireserved as too generic)
+∅ , ε , EmptySet : an empty set, distinct from null.
+ⅈ , imaginary_unit_i : √-1, for complex numbers. (the variable "i" is antireserved as too generic)
 ℯ : eulars number, double. (the variable "euler" is antireserved for i.e. user defined approximations) 
 π : pi, double. (The variable "pi" is antireserved for i.e. user defined approximations)
 φ : (1+√5)/2, double. (the variable "phi" is antireserved for i.e. user defined approximations. ϕ is antireserved for i.e. the second angle in a spherical coordinate system)
@@ -414,7 +415,6 @@ SIZTYP : the result of sizeof. an unsigned int.
 TYPTYP : a structure for use in the type tree.
 PATTRN : a compiled regex
 VOID : a nothing 0 bits wide
-NULL : the type of NULL. Technicaly assignable, but will cause most functions to catch the variable with null handling before the value is read.
 
 "detonation" in this document refers to a fatal crash
 int in this document refers to a byte, word, long, or quad (either signed or unsigned), c_int, or clktyp
@@ -752,7 +752,8 @@ stdout : C , stdout
 stdin : C , stdin
 stderr : C , stderr
 NULL : C , NULL
-ⅈ : C , _IMAGINARY_I
+∅ , ε , emptyset : void* [0]
+ⅈ , imaginary_unit_i : C , _IMAGINARY_I
 ℯ : C , M_E
 π : C , M_PI
 φ : *C , (double) ((1 + sqrt(5)) / 2)
@@ -795,7 +796,6 @@ SIZTYP : C, size_t
 TYPTYP : C, struct {*typtyp, *typtyp, char[6]}
 PATTRN : C++, basic_regex
 VOID : C, void
-NULL : C, void* [0]
 
 * : C, *foo
 & : C, &foo
@@ -823,7 +823,7 @@ a name may not contain a number as the first character
 0 1 2 3 4 5 6 7 8 9
 
 a name may not overlap exactly with a special variable.
-stdin stdout stderr cin cout cerr clog NULL ⅈ ℯ π φ ∞ infinity � notanumber true false ternary
+stdin stdout stderr cin cout cerr clog NULL ∅ ε emptyset ⅈ imaginary_unit_i ℯ π φ ∞ infinity � notanumber true false ternary
 
 a name may not overlap exactly with a builtin function
 [set of all functions]
