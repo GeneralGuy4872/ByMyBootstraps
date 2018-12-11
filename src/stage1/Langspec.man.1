@@ -1,4 +1,4 @@
-My Language V0.2.b10 0000000 00-00-0000
+My Language V0.2.b11 0000000 00-00-0000
 Prealpha *ALPHA DEADLINE NEWYEARS*
 ======================================
 
@@ -31,7 +31,7 @@ WHILE (foo) {...} : loop the function enclosed in {} until foo is false.
 UNTIL (foo) {...} : loop the function enclosed in {} until foo is true.
 BREAK : immediately exit the current loop
 GOTO (foo) : go to label foo. NOTE: there is no return function. putting a goto inside a function declaration can screw up your control flow.
-DOTIMES (foo) ❬x❭ {...} : do whatever is in {} foo times. if foo is a float, rounds down. if foo is infinity, you're trying too hard to break things. the loop counter is stored in the variable noted by x.
+DOTIMES (foo) ‹x› {...} : do whatever is in {} foo times. if foo is a float, rounds down. if foo is infinity, you're trying too hard to break things. the loop counter is stored in the variable noted by x.
 ¶foo : a label called foo. Please don't put these INSIDE loops unless you know what you're doing.
 NOP, NOOP, NOPR, CONTINUE, SWYM: reserved commands that do nothing. The parser eats these.
 If you GOTO out of a WHILE or DOTIMES, the parser will think you are still in that loop! This does not apply to IF, ELSEIF, or ELSE.
@@ -55,7 +55,7 @@ fread(...) : read raw data from a file, as in C. returns as in C.
 fwrite(...) : write raw data to a file, as in C. returns as in C.
 
 FUNCTION foo(...) {...} : define a function foo. () contains an exaustive list of the internal names of arguments, {} contains the function itself.
-VARIADIC foo(bar, baz) ❬x❭ {...} : define a function foo. bar and baz are fixed arguments, {} contains the function itself, and x are iterated arguments beyond those listed.
+VARIADIC foo(bar, baz) ‹x› {...} : define a function foo. bar and baz are fixed arguments, {} contains the function itself, and x are iterated arguments beyond those listed.
 EXTERN FOO bar(...) : define an external function that takes standard linkage. FOO is the type the function returns, using this language's names. If types are the same width, this can be used to reformat the raw data of the returned function.
 TYPE FOO bar : define a basic datatype bar, from parent datatype FOO.
 FOO bar, baz, quux : where FOO is a valid datatype, make variables bar, baz, and quux of that type
@@ -285,10 +285,8 @@ Variable names should only consist of letters to prevent unexpected behavior.
 using high adress characters may cause an increse in application size
 
 The assignment operator is :=, as in algol or pascal
-An insertion operator, :<, and extraction operator, :>, are also avalible
 
 a Unicode alternitive for assignment is ≝
-Unicode alternitives for insertion and extraction are ⤆ and ⤇
 
 "this is a string"
 'this is also a string'
@@ -493,7 +491,7 @@ rewind(...) : C , native calling object
 fread(...) : C , native calling object
 fwrite(...) : C , native calling object
 FUNCTION foo(...) {...} : C , native parser calling native and C
-VARIADIC foo(bar, baz) ❬x❭ {...} : C , native parser calling native and C
+VARIADIC foo(bar, baz) ‹x› {...} : C , native parser calling native and C
 EXTERN FOO bar(...) : C , native calling object
 TYPE FOO bar : C , native calling object
 FOO bar, baz, quux : C , native calling object
@@ -515,10 +513,10 @@ foo - bar : C , native calling object
 -foo : C , native calling object
 foo * bar , foo × bar : C , native calling object
 foo / bar , foo ÷ bar : C , native calling object
-foo ^ bar , foo ** bar , foo ⋆ bar : *C , native calling object
+foo ^ bar , foo ** bar , foo ⋆ bar , foo ★ bar : *C , native calling object
 foo ^^ bar : *C , native calling object
 foo % bar : C , native calling object
-foo LOG bar , foo ⍟ bar : *C , native calling object
+foo LOG bar , foo ⍟ bar , foo ✪ bar : *C , native calling object
 foo ROOT bar , foo √ bar : *C , native calling object
 !foo : C , native calling object
 ¡foo : C , native calling object
@@ -554,8 +552,8 @@ foo-- : *C , native calling object
 `foo : C , native calling object
 foo ∧ bar , foo AND bar , foo & bar : C , Native calling object
 foo ∨ bar , foo OR bar , foo | bar : C , Native calling object
-foo ⍲ bar , foo NAND bar : C , Native calling object
-foo ⍱ bar , foo NOR bar : C , Native calling object
+foo ⍲ bar , foo NAND bar , foo `& bar : C , Native calling object
+foo ⍱ bar , foo ¥ bar , foo NOR bar , foo `| bar : C , Native calling object
 foo ⊕ bar , foo XOR bar : C , Native calling object
 foo ↔ bar , foo XNOR bar : C , Native calling object
 foo >> bar , foo » bar : C , Native calling object
@@ -592,8 +590,8 @@ roll(foo, bar) : Parser , Native
 deal(foo, bar) : *C , native calling object
 shuffle(foo) : ~ , native
 RETURN foo : parser and C , native parser calling native and C
-lambda(foo, bar, baz) ❬x, y, z❭ {...} : ~ , native
-λ(foo, bar, baz) ❬x, y, z❭ {...} : ~ , native
+lambda(foo, bar, baz) ‹x, y, z› {...} : ~ , native
+λ(foo, bar, baz) ‹x, y, z› {...} : ~ , native
 sizeof(foo) : C , native calling object
 typeof(foo) : C , native calling object
 parentof(foo) : C , native calling object
@@ -697,8 +695,9 @@ a variable name and function name may not overlap
 
 a name may not contain any technical symbol. these include:
 ' " ; : [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + =
-❬ ❭ ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ↯ ¶ ➤ … × ÷ ⋆ ⍟ √ ¡ ∧ ∨ ⍲ ⍱ ⊕ ↔ ≡ » « → ← ¬ ⇔
-∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ≝ £ ⸮ ¿ № ± ℓ ⏎ ↵ ↹ ⇥ ␣ ⍽ ⌛ ⎋ ⚠ 💣 ☠
+‹ › ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ↯ ¶ ➤ … × ÷ ⋆ ⍟ ★ ✪ √ ¡ ∧ ∨ ⍲ ¥ ⍱ ⊕ ↔ ≡ » « →
+← ¬ ⇔ ∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ≝ ⸮ ¿ № ± ℓ ⏎ ↵ ↹ ⇥ ␣ ⍽ ⎋ ⚠ ☠
+⌛ 💣
 
 a name may not contain a number as the first character
 0 1 2 3 4 5 6 7 8 9
