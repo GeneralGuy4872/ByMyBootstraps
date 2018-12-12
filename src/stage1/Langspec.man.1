@@ -533,8 +533,6 @@ cbrt(foo) : *C , native calling object
 max(foo, bar...) : *C , native calling object
 min(foo, bar...) : *C , native calling object
 mean(foo, bar...) : *C , native calling object
-median(foo, bar...) : ~ , native
-mode(foo, bar) : ~ , native
 sin(foo) : C , native calling object
 cos(foo) : C , native calling object
 tan(foo) : C , native calling object
@@ -590,8 +588,6 @@ roll(foo, bar) : Parser , Native
 deal(foo, bar) : *C , native calling object
 shuffle(foo) : ~ , native
 RETURN foo : parser and C , native parser calling native and C
-lambda(foo, bar, baz) ‹x, y, z› {...} : ~ , native
-λ(foo, bar, baz) ‹x, y, z› {...} : ~ , native
 sizeof(foo) : C , native calling object
 typeof(foo) : C , native calling object
 parentof(foo) : C , native calling object
