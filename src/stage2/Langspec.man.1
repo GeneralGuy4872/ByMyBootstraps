@@ -1,4 +1,4 @@
-My Language V0.2.a12b 0000000 00-00-0000
+My Language V0.2.a12c 0000000 00-00-0000
 ======================================
 
 Caution: early versions will probably be about as stable as a house of cards built atop of jenga towers sitting on a card table.
@@ -199,7 +199,6 @@ lambda(foo, bar, baz) ‹x, y, z› {...} : do anonamous function in {} to anyth
 
 sizeof(foo) : returns the number of bits in anything foo. sizeof(&[any variable]) should return the CPU address register size.
 typeof(foo) : uses the type tree to determin the type of foo
-parentof(foo) : uses the type tree to determin the parent type of foo
 classof(foo) : uses the type tree to determin the generalized type of foo
 isnumber(foo) : uses the type tree to determin if foo is a number type. returns 1 for numbers, 0 for non numbers, -1 for number structs, and NaN for possible numbers.
 signof(foo) : determins the sign of foo. returns -1 for negitives, 1 for positives, 0 for 0, and NaN on error.
@@ -375,7 +374,6 @@ adressing and inquiring
 &foo : the adress of foo
 *foo : pointer to foo
 ?foo : indicates the type of foo, same as typeof(foo)
-⸮foo : indicates the type of foo, same as typeof(foo)
 ¿foo : indicates the recursive type of foo, same as classof(foo)
 №foo : indicates whether foo is a number, same as isnumber(foo)
 ±foo : the sign of foo, same as signof(foo)
@@ -816,7 +814,7 @@ a variable name and function name may not overlap
 a name may not contain any technical symbol. these include:
 ' " ; : [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + =
 ‹ › ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ↯ ¶ ➤ … × ÷ ⋆ ⍟ ★ ✪ √ ¡ ∧ ∨ ⍲ ¥ ⍱ ⊕ ↔ ≡ » « →
-← ↑ ¬ ⇔ ∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ≝ £ ⸮ ¿ № ± ℓ ⏎ ↵ ↹ ⇥ ␣ ⍽ ⎋ ⚠ ☠
+← ↑ ¬ ⇔ ∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ≝ £ ¿ № ± ℓ ⏎ ↵ ↹ ⇥ ␣ ⍽ ⎋ ⚠ ☠
 ⌛ ⤆ ⤇ 💣
 
 a name may not contain a number as the first character
