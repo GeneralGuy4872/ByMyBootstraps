@@ -1,4 +1,4 @@
-My Language V0.2.a12c 0000000 00-00-0000
+My Language V0.2.a12d 0000000 00-00-0000
 ======================================
 
 Caution: early versions will probably be about as stable as a house of cards built atop of jenga towers sitting on a card table.
@@ -31,6 +31,7 @@ UNTIL (foo) {...} : loop the function enclosed in {} until foo is true.
 BREAK : immediately exit the current loop
 GOTO (foo) : go to label foo. NOTE: there is no return function. putting a goto inside a function declaration can screw up your control flow.
 DOTIMES (foo) ‹x› {...} : do whatever is in {} foo times. if foo is a float, rounds down. if foo is infinity, you're trying too hard to break things. the loop counter is stored in the variable noted by x.
+↓ , ||| : Do the previous line again
 ¶foo : a label called foo. Please don't put these INSIDE loops unless you know what you're doing.
 NOP, NOOP, NOPR, CONTINUE, SWYM: reserved commands that do nothing. The parser eats these.
 If you GOTO out of a WHILE or DOTIMES, the parser will think you are still in that loop! This does not apply to IF, ELSEIF, or ELSE.
@@ -142,8 +143,8 @@ foo-- : foo - 1
 `foo : bitwise inverse of foo, returns result
 foo ∧ bar , foo AND bar , foo & bar : bitwise foo AND bar, returns result
 foo ∨ bar , foo OR bar , foo | bar : bitwise foo OR bar, returns result
-foo ⍲ bar , foo ¥ bar , foo NAND bar , foo `& bar : bitwise foo NAND bar, returns result
-foo ⍱ bar , foo NOR bar , foo `| bar : bitwise foo NOR bar, returns result
+foo ⍲ bar , foo ¥ bar , foo NAND bar , foo `& bar , foo `∧ bar : bitwise foo NAND bar, returns result
+foo ⍱ bar , foo NOR bar , foo `| bar , foo `∨ bar : bitwise foo NOR bar, returns result
 foo ⊕ bar , foo XOR bar : bitwise foo XOR bar, returns result
 foo ↔ bar , foo XNOR bar : bitwise foo XNOR bar, returns result
 foo >> bar , foo » bar : barrel shift foo to the right by bar (left on big endian systems), returns result
@@ -566,6 +567,7 @@ ELSEIF (foo) {...} : C , native calling object
 WHILE (foo) {...} : C , native calling object
 UNTIL (foo) {...} : parser , native
 DOTIMES (foo) {...} : parser , native
+↓ , ||| : parser , native
 ↯ , BREAK : C , native calling object
 GOTO (foo) : C , native calling object
 ¶foo : C , native calling object
@@ -814,7 +816,7 @@ a variable name and function name may not overlap
 a name may not contain any technical symbol. these include:
 ' " ; : [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + =
 ‹ › ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ↯ ¶ ➤ … × ÷ ⋆ ⍟ ★ ✪ √ ¡ ∧ ∨ ⍲ ¥ ⍱ ⊕ ↔ ≡ » « →
-← ↑ ¬ ⇔ ∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ≝ £ ¿ № ± ℓ ⏎ ↵ ↹ ⇥ ␣ ⍽ ⎋ ⚠ ☠
+← ↑ ↓ ¬ ⇔ ∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ≝ £ ¿ № ± ℓ ⏎ ↵ ↹ ⇥ ␣ ⍽ ⎋ ⚠ ☠
 ⌛ ⤆ ⤇ 💣
 
 a name may not contain a number as the first character
