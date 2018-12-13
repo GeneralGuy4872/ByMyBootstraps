@@ -134,9 +134,11 @@ foo-- : foo - 1
 `foo : bitwise inverse of foo, returns result
 foo ∧ bar , foo AND bar , foo & bar : bitwise foo AND bar, returns result
 foo ∨ bar , foo OR bar , foo | bar : bitwise foo OR bar, returns result
-foo ⍲ bar , foo NAND bar , foo `& bar , foo `∨ bar : bitwise foo NAND bar, returns result
-foo ⍱ bar , foo ¥ bar , foo NOR bar , foo `| bar , foo `∨ bar : bitwise foo NOR bar, returns result
-foo ⊕ bar , foo XOR bar : bitwise foo XOR bar, returns result
+foo ⍲ bar , foo NAND bar , foo `& bar : bitwise foo NAND bar, returns result
+foo ⊼ bar , foo `∧ bar : same as above
+foo ⍱ bar , foo NOR bar , foo `| bar : bitwise foo NOR bar, returns result
+foo ⊽ bar , foo `∨ bar , foo ¥ bar : same as above 
+foo ⊕ bar , foo XOR bar , foo ⊻ bar : bitwise foo XOR bar, returns result
 foo ↔ bar , foo XNOR bar : bitwise foo XNOR bar, returns result
 foo >> bar , foo » bar : barrel shift foo to the right by bar (left on big endian systems), returns result
 foo << bar , foo « bar : barrel shift foo to the left by bar (right on big endian systems), returns result
@@ -691,8 +693,8 @@ a variable name and function name may not overlap
 
 a name may not contain any technical symbol. these include:
 ' " ; : [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + =
-‹ › ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ↯ ¶ ➤ … × ÷ ⋆ ⍟ ★ ✪ √ ¡ ∧ ∨ ⍲ ¥ ⍱ ⊕ ↔ ≡ » « →
-← ↑ ¬ ⇔ ∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ≝ ¿ № ± ℓ ⏎ ↵ ↹ ⇥ ␣ ⍽ ⎋ ⚠ ☠
+‹ › ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ↯ ¶ ➤ … × ÷ ⋆ ⍟ ★ ✪ √ ¡ ∧ ∨ ⍲ ⍱ ⊻ ⊽ ⊼ ⊕ ↔ ≡ »
+« → ← ↑ ¬ ⇔ ∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ¥ ≝ ¿ № ± ℓ ⏎ ↵ ↹ ⇥ ␣ ⍽ ⎋ ⚠ ☠
 ⌛ 💣
 
 a name may not contain a number as the first character
