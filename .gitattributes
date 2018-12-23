@@ -5,6 +5,8 @@
 *.hh = linguist-language=C++
 *.c++ = linguist-language=C++
 *.h++ = linguist-language=C++
+*.C = linguist-language=C++
+*.H = linguist-language=C++
 *.rs = linguist-language=Rust
 *.go = linguist-language=Go
 *.rb = linguist-language=Ruby
@@ -63,6 +65,9 @@ CMakeLists.txt = linguist-language=CMake
 *.lua = linguist-language=Lua
 *.objc = linguist-language=Objective-C
 *.objc++ = linguist-language=Objective-C++
+*.m = linguist-language=Objective-C
+*.mm = linguist-language=Objective-C++
+*.M = linguist-language=Objective-C++
 *.csharp = linguist-language=C#
 *.m4 = linguist-language=M4
 *.html = linguist-language=HTML
