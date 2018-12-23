@@ -1,5 +1,6 @@
 #my master list of file extentions. Everything I might ever need to work with ever, and how _I_ keep it streight.
 *.c = linguist-language=C
+*.oldc = linguist-language=C
 *.h = linguist-language=C
 *.cc = linguist-language=C++
 *.hh = linguist-language=C++
