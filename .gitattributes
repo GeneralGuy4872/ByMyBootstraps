@@ -108,3 +108,6 @@ CMakeLists.txt = linguist-language=CMake
 *.srec = linguist-language=SRecord
 *.ihex = linguist-language=IntelHex
 *.man.* = linguist-documentation=true
+*.txt = linguist-documentation=true
+*.rtf = linguist-documentation=true
+*.md = linguist-documentation=true
