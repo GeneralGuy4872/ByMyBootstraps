@@ -1,4 +1,4 @@
-My Language V0.2.b12h 0000000 00-00-0000
+My Language V0.2.b13 0000000 00-00-0000
 Prealpha *ALPHA DEADLINE MAY 2019*
 ======================================
 
@@ -140,7 +140,7 @@ foo ⍲ bar , foo NAND bar , foo `& bar : bitwise foo NAND bar, returns result
 foo ⊼ bar , foo `∧ bar : same as above
 foo ⍱ bar , foo NOR bar , foo `| bar : bitwise foo NOR bar, returns result
 foo ⊽ bar , foo `∨ bar , foo ¥ bar : same as above 
-foo ⊕ bar , foo XOR bar , foo ⊻ bar : bitwise foo XOR bar, returns result
+foo ⊕ bar , foo ⊗ bar , foo XOR bar , foo ⊻ bar : bitwise foo XOR bar, returns result
 foo ↔ bar , foo XNOR bar : bitwise foo XNOR bar, returns result
 foo >> bar , foo » bar : barrel shift foo to the right by bar (left on big endian systems), returns result
 foo << bar , foo « bar : barrel shift foo to the left by bar (right on big endian systems), returns result
@@ -558,7 +558,7 @@ foo ∧ bar , foo AND bar , foo & bar : C , Native calling object
 foo ∨ bar , foo OR bar , foo | bar : C , Native calling object
 foo ⍲ bar , foo NAND bar , foo `& bar , foo ⊼ bar , foo `∧ bar : C , Native calling object
 foo ⍱ bar , foo NOR bar , foo `| bar , foo ⊽ bar , foo `∨ bar , foo ¥ bar : C , Native calling object
-foo ⊕ bar , foo XOR bar , foo ⊻ bar : C , Native calling object
+foo ⊕ bar , foo ⊗ bar , foo XOR bar , foo ⊻ bar : C , Native calling object
 foo ↔ bar , foo XNOR bar : C , Native calling object
 foo >> bar , foo » bar : C , Native calling object
 foo << bar , foo « bar : C , Native calling object
@@ -697,9 +697,9 @@ a variable name and function name may not overlap
 
 a name may not contain any technical symbol. these include:
 ' " ; : [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + =
-‹ › ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ⦃ ⦄ ↯ ¶ ➤ … × ÷ ⋆ ⍟ ★ ✪ √ ¡ ∧ ∨ ⍲ ⍱ ⊻ ⊽ ⊼ ⊕ ↔
-≡ » « → ← ↑ ¬ ⇔ ∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ¥ ≝ ¿ № ± ℓ ⏎ ↵ ↹ ⇥ ␣ ⍽ ⎋
-⚠ ☠ ⌛ 💣
+‹ › ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ⦃ ⦄ ↯ ¶ ➤ … × ÷ ⋆ ⍟ ★ ✪ √ ¡ ∧ ∨ ⍲ ⍱ ⊻ ⊽ ⊼ ⊕ ⊗ 
+↔ ≡ » « → ← ↑ ¬ ⇔ ∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ¥ ≝ ¿ № ± ℓ ⏎ ↵ ↹ ⇥ ␣ ⍽
+⎋ ⚠ ☠ ⌛ 💣
 
 a name may not contain a number as the first character
 0 1 2 3 4 5 6 7 8 9
