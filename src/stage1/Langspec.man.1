@@ -106,6 +106,7 @@ abs(foo) , ⟦foo⟧ : absolute value of number foo. returns according to mathty
 cabs(foo) : the complex absolute value of foo.
 floor(foo) , ⌊foo⌋ : floor of number foo, returns shortest int format possible
 ceiling(foo) , ⌈foo⌉ : ceiling of number foo, returns shortest int format possible
+sawtooth(foo) , ⦃foo⦄ : fractional part of foo, returns same type as input
 div(foo, bar) : divide int over bar. returns divtyp.
 elog(foo) : natural logarithem of foo
 sqrt(foo) : the square root of foo
@@ -530,6 +531,7 @@ abs(foo) , ⟦foo⟧ : *C , native calling object
 cabs(foo) : C , native calling object
 floor(foo) , ⌊foo⌋ : *C , native calling object
 ceiling(foo) , ⌈foo⌉ : *C , native calling object
+sawtooth(foo) , ⦃foo⦄ : *C , native calling object
 div(foo, bar) : *C , native calling object
 sqrt(foo) : *C , native calling object
 cbrt(foo) : *C , native calling object
@@ -695,9 +697,9 @@ a variable name and function name may not overlap
 
 a name may not contain any technical symbol. these include:
 ' " ; : [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + =
-‹ › ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ↯ ¶ ➤ … × ÷ ⋆ ⍟ ★ ✪ √ ¡ ∧ ∨ ⍲ ⍱ ⊻ ⊽ ⊼ ⊕ ↔ ≡ »
-« → ← ↑ ¬ ⇔ ∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ¥ ≝ ¿ № ± ℓ ⏎ ↵ ↹ ⇥ ␣ ⍽ ⎋ ⚠ ☠
-⌛ 💣
+‹ › ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ⦃ ⦄ ↯ ¶ ➤ … × ÷ ⋆ ⍟ ★ ✪ √ ¡ ∧ ∨ ⍲ ⍱ ⊻ ⊽ ⊼ ⊕ ↔
+≡ » « → ← ↑ ¬ ⇔ ∈ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ¥ ≝ ¿ № ± ℓ ⏎ ↵ ↹ ⇥ ␣ ⍽ ⎋
+⚠ ☠ ⌛ 💣
 
 a name may not contain a number as the first character
 0 1 2 3 4 5 6 7 8 9
