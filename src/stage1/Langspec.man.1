@@ -1,4 +1,4 @@
-My Language V0.2.b20 0000000 00-00-0000
+My Language V0.2.b20a 0000000 00-00-0000
 Prealpha *ALPHA DEADLINE MAY 2019*
 ======================================
 
@@ -144,7 +144,7 @@ foo ⊼ bar , foo `∧ bar : same as above
 foo ⍱ bar , foo NOR bar , foo `| bar : bitwise foo NOR bar, returns result
 foo ⊽ bar , foo `∨ bar , foo ¥ bar : same as above 
 foo ⊕ bar , foo ⊗ bar , foo XOR bar , foo ⊻ bar : bitwise foo XOR bar, returns result
-foo ↔ bar , foo XNOR bar : bitwise foo XNOR bar, returns result
+foo ⊙ bar , foo XNOR bar : bitwise foo XNOR bar, returns result
 foo >> bar , foo » bar : barrel shift foo to the right by bar (left on big endian systems), returns result
 foo << bar , foo « bar : barrel shift foo to the left by bar (right on big endian systems), returns result
 foo -> bar , foo → bar : shift foo to the right by bar, drop excess (left on big endian systems), returns result
@@ -157,7 +157,7 @@ foo || bar : logical foo OR bar
 foo ~&& bar , foo ¬&& bar , foo !&& bar : logical foo NAND bar
 foo ~|| bar , foo ¬|| bar , foo !|| bar : logical foo NOR bar
 foo ~= bar , foo ¬= bar , foo != bar : logical foo XOR bar
-foo ⇔ bar , foo <> bar , foo IFF bar : logical foo XNOR bar
+foo ↔ bar , foo <> bar , foo IFF bar : logical foo XNOR bar
 
 foo ∊ bar , foo ELEMENT bar : test if array or linked list field pointer array bar contains element foo, returns bool result
 foo ∪ bar , foo UNION bar : 1-dimensional union of arrays or linked list field pointer array foo and bar, returns array
@@ -564,7 +564,7 @@ foo ∨ bar , foo OR bar , foo | bar : C , Native calling object
 foo ⍲ bar , foo NAND bar , foo `& bar , foo ⊼ bar , foo `∧ bar : C , Native calling object
 foo ⍱ bar , foo NOR bar , foo `| bar , foo ⊽ bar , foo `∨ bar , foo ¥ bar : C , Native calling object
 foo ⊕ bar , foo ⊗ bar , foo XOR bar , foo ⊻ bar : C , Native calling object
-foo ↔ bar , foo XNOR bar : C , Native calling object
+foo ⊙ bar , foo XNOR bar : C , Native calling object
 foo >> bar , foo » bar : C , Native calling object
 foo << bar , foo « bar : C , Native calling object
 foo -> bar , foo → bar : C , Native calling object
@@ -576,7 +576,7 @@ foo || bar : C , Native calling object
 foo ~&& bar , foo ¬&& bar , foo !&& bar : *C , Native calling object
 foo ~|| bar , foo ¬|| bar , foo !&& bar : *C , Native calling object
 foo ~= bar , foo ¬= bar , foo != bar : C , Native calling object
-foo ⇔ bar , foo <> bar , foo IFF bar : C , Native calling object
+foo ↔ bar , foo <> bar , foo IFF bar : C , Native calling object
 foo ∊ bar , foo ELEMENT bar : C , Native calling object
 foo ∪ bar , foo UNION bar : C , Native calling object
 foo ∩ bar , foo INTRSECT bar : C , Native calling object
@@ -702,8 +702,8 @@ a variable name and function name may not overlap
 
 a name may not contain any technical symbol. these include:
 ' " ; : [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + =
-‹ › ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ⦃ ⦄ ↯ ¶ ➤ … × ÷ ⋆ ⍟ ★ ✪ √ ¡ ∧ ∨ ⍲ ⍱ ⊻ ⊽ ⊼ ⊕ ⊗ 
-↔ ≡ » « → ← ↑ ¬ ⇔ ∊ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ¥ ≝ ¿ № ± ℓ ⏎ ↵ ↹ ⇥ ␣ ⍽
+‹ › ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ⦃ ⦄ ¶ ➤ … × ÷ ⋆ ⍟ ★ ✪ √ ¡ ∧ ∨ ⍲ ⍱ ⊻ ⊽ ⊼ ⊕ ⊗ ⊙
+≡ » « ↯ ↔ → ← ↑ ¬ ∊ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ¥ ≝ ¿ № ± ℓ ⏎ ↵ ↹ ⇥ ␣ ⍽
 ⎋ ⚠ ☠ ⌛ 💣
 
 a name may not contain a number as the first character
