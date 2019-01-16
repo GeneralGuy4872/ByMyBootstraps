@@ -1,4 +1,4 @@
-My Language V0.2.a21a 0000000 00-00-0000
+My Language V0.2.a22 0000000 00-00-0000
 Depricated; updates deffered until Alpha
 ======================================
 
@@ -113,7 +113,8 @@ abs(foo) , ⟦foo⟧ : absolute value of number foo. returns according to mathty
 cabs(foo) : the complex absolute value of foo.
 floor(foo) , ⌊foo⌋ : floor of number foo, returns shortest int format possible
 ceiling(foo) , ⌈foo⌉ : ceiling of number foo, returns shortest int format possible
-sawtooth(foo) , ⦃foo⦄ : fractional part of foo, returns same type as input
+int(foo) , ｢foo｣ : round foo to the nearest interger
+sawtooth(foo) , ❴foo❵ : fractional part of foo, returns same type as input
 div(foo, bar) : divide int over bar. returns divtyp.
 
 sqrt(foo) : the square root of foo
@@ -219,14 +220,16 @@ lambda(foo, bar, baz) ‹x, y, z› {...} : do anonamous function in {} to anyth
 sizeof(foo) : returns the number of bits in anything foo. sizeof(&[any variable]) should return the CPU address register size.
 typeof(foo) : uses the type tree to determin the type of foo
 classof(foo) : uses the type tree to determin the generalized type of foo
-isnumber(foo) : uses the type tree to determin if foo is a number type. returns 1 for numbers, 0 for non numbers, -1 for number structs, and NaN for possible numbers.
-signof(foo) : determins the sign of foo. returns -1 for negitives, 1 for positives, 0 for 0, and NaN on error.
+signof(foo) : determins the sign of foo. returns ternary for negitives, true for positives, false for 0, and NaN on error.
+
+isnumber(foo) : uses the type tree to determin if foo is a number type. returns true for numbers, false for non numbers, ternary for number structs, and NaN for possible numbers.
+isint(foo) : uses the type tree to determine if foo is an integer type. returns true or false
+isnat(foo) : uses the type tree to determine if foo is an unsigned integer type. returns true or false.
 
 sfloat(foo) : convert int foo to a float
 dfloat(foo) : convert int or float foo to a double
 complex(foo) : convert int, float, or double to complex
 minisize(foo) : squeeze foo into the smallest type possible
-NOTE if you want a floating point number to be converted to an int type, you want the function floor(). remember this by the silly image of the float literaly floating, and you need it to be pulled down to the floor.
 
 tostring(foo) : convert number foo to a string
 string_data(foo) , c_str(foo) : convert string foo to a char array, return pointer
@@ -398,6 +401,8 @@ adressing and inquiring
 ±foo : the sign of foo, same as signof(foo)
 ℓfoo : the size of foo, same as sizeof(foo)
 £foo(bar) : splat an array foo here. same as foo[0], foo[1], foo[2]...
+ℕfoo : test if foo is an unsigned integer type. same as isnat(foo)
+ℤfoo : test if foo is an interger type. same as isint(foo)
 
 WARNING! using & or * on a decimal, hexidecimal, binary, or octal interger will read the ABSOLUTE ADDRESS.
 This is an INTENDED RESPONSE, not a bug. IF YOU USE THIS ON A PRE-EXISTING OPERATING SYSTEM, ON YOUR HEAD BE IT.
@@ -555,280 +560,12 @@ The source for the first alpha version is projected to need:
 future rewrites may also require
 - an M4 macro processor
 
-
 Yes, this first alpha version is expected to be huge in size and have dozens of intermidiate object files. I expect it to get bigger, not smaller, as there is a 1:1 corraspondance between primary functions and object files.
 This is because the alpha version will be only the first and second step in a bootstrapping process, and the first revision of them at that.
 I do expect the final version of the bootstrapping process to gradually get smaller after the third iteration as external object files are rolled into a single file and optimized. I'm probably wrong.
 The use of the C preprocessor may change in a future version.
 I don't forsee needing any other languages for the commands I've included, but I can forsee complications which may arise that could call for the ones in the second list. the two lists taken together covers most of my useful programming skills. amoungst the languages that I will definately NOT be including is Cobol.
 This language is designed for POSIX-compliant enviroments. Barring a signifigant change in policy by Microsoft, Windows support is unlikely to be feasible, but may be possible by extra-ordinary mesures (like compleatly reimplimenting everything about how unicode is implemented internaly).
-
-Primary functions
------------------
-A primary function is a function that is included in the first step of the bootstrapping process. CPP Macros don't count.
-Any built-in function that is a function that is not a primary function is called a "secondary function", and can be implemented with primary functions.
-Some primary functions that could be implemented as secondary functions are meant to be different on the backend from such an implementation, are required in the second iteration, or are absolutely trivial.
-
-This language standard does not mandate that the functions are implemented in the languages specified; Ideally, they could all be reduced to a single language.
-Starting at iteration 3, I plan to implement both a Static Compiler and an APL transpiler. Iteration 3 is also the first iteration to have all the built-ins.
-Here is a list of how I implement built-ins in the first 2 iterations:
-
-function : 1st iteration , 2nd iteration (* indicates that a function could be implemented in the next round, but is trivial in the formal sense)
-
-wait(foo) , ⌛foo : *C , native calling object
-time() : C  , native calling object
-clock() : C , native calling object
-beep() : *C , native calling object
-IF (foo) {...} : C , native calling object
-ELSE {...} : C , native calling object
-ELSEIF (foo) {...} : C , native calling object
-WHILE (foo) {...} : C , native calling object
-UNTIL (foo) {...} : parser , native
-DOTIMES (foo) {...} : parser , native
-↓ , ||| : parser , native
-↯ , BREAK : C , native calling object
-GOTO (foo) : C , native calling object
-¶foo : C , native calling object
-NOP, NOOP, NOPR, CONTINUE, SWYM: Eaten by parser
-printf(...) : C , native calling object
-sprintf(...) : C , native calling object
-fprintf(...) : C , native calling object
-scanf(...) : C , native calling object
-sscanf(...) : C , native calling object
-fscanf(...) : C , native calling object
-fgets(...) : C , native calling object
-fputs(...) : C , native calling object
-fflush(...) : C , native calling object
-fopen(...) : C , native calling object
-fclose(...) : C , native calling object
-fseek(...) : C , native calling object
-ftell(...) : C , native calling object
-getline(foo, bar[, baz]) : ~ , native
-rewind(...) : C , native calling object
-pwrite(...) : ~ , native
-pwriteln(...) : ~ , native
-pread(...) : ~ , native
-preadln(...) : ~ , native
-fread(...) : C , native calling object
-fwrite(...) : C , native calling object
-FUNCTION foo(...) {...} : C , native parser calling native and C
-VARIADIC foo(bar, baz) ‹x› {...} : C , native parser calling native and C
-EXTERN FOO bar(...) : C , native calling object
-TYPE FOO bar : C , native calling object
-FOO bar, baz, quux : C , native calling object
-FOO bar[quux] {...} : C , native calling object
-STATIC FOO bar, baz, quux : C , native calling object
-foo[bar][quux] : C , native calling object
-STRUCT FOO {...} : C , native calling object
-foo.bar : C , native calling object
-foo>>>bar , foo➤bar : C , native calling object
-foo...bar , foo…bar : C , native calling object
-LLIST foo {...} : C , native calling object
-⎋foo , Exit(foo) : C , native calling object
-⚠foo , Error(foo) : C , native calling object
-💣 , ABORT : C , native calling object
-ASSERT (foo) : C , native calling object
-☠ , POKE5945862 : Implementation dependent
-foo + bar : C , native calling object
-foo - bar : C , native calling object
--foo : C , native calling object
-foo * bar , foo × bar : C , native calling object
-foo / bar , foo ÷ bar : C , native calling object
-foo ^ bar , foo ** bar , foo ⋆ bar , foo ★ bar : *C , native calling object
-foo ^^ bar : *C , native calling object
-foo % bar : C , native calling object
-foo LOG bar , foo ⍟ bar , foo ✪ bar : *C , native calling object
-foo ROOT bar , foo √ bar : *C , native calling object
-!foo : C , native calling object
-¡foo : C , native calling object
-foo nCr bar : C , native calling object
-foo nPr bar : C , native calling object
-abs(foo) , ⟦foo⟧ : *C , native calling object
-cabs(foo) : C , native calling object
-floor(foo) , ⌊foo⌋ : *C , native calling object
-ceiling(foo) , ⌈foo⌉ : *C , native calling object
-sawtooth(foo) , ⦃foo⦄ : *C , native calling object
-div(foo, bar) : *C , native calling object
-sqrt(foo) : *C , native calling object
-cbrt(foo) : *C , native calling object
-ln(foo) : *C , native calling object
-lb(foo) : *C , native calling object
-lg(foo) : *C , native calling object
-max(foo, bar...) : *C , native calling object
-min(foo, bar...) : *C , native calling object
-mean(foo, bar...) : *C , native calling object
-median(foo, bar...) : ~ , native
-mode(foo, bar) : ~ , native
-sin(foo) : C , native calling object
-cos(foo) : C , native calling object
-tan(foo) : C , native calling object
-cot(foo) : *C , native calling object
-sec(foo) : *C , native calling object
-csc(foo) : *C , native calling object
-arcsin(foo) : C , native calling object
-arccos(foo) : C , native calling object
-arctan(foo) : C , native calling object
-arccot(foo) : *C , native calling object
-arcsec(foo) : *C , native calling object
-arccsc(foo) : *C , native calling object
-atan2(foo, bar) : *C , native calling object
-foo++ : *C , native calling object
-foo-- : *C , native calling object
-`foo : C , native calling object
-foo ∧ bar , foo AND bar , foo & bar : C , Native calling object
-foo ∨ bar , foo OR bar , foo | bar : C , Native calling object
-foo ⍲ bar , foo NAND bar , foo `& bar , foo ⊼ bar , foo `∧ bar : C , Native calling object
-foo ⍱ bar , foo NOR bar , foo `| bar , foo ⊽ bar , foo `∨ bar , foo ¥ bar : C , Native calling object
-foo ⊕ bar , foo ⊗ bar , foo XOR bar , foo ⊻ bar : C , Native calling object
-foo ⊙ bar , foo XNOR bar : C , Native calling object
-foo >> bar , foo » bar : C , Native calling object
-foo << bar , foo « bar : C , Native calling object
-foo -> bar , foo → bar : C , Native calling object
-foo <- bar , foo ← bar : C , Native calling object
-¬foo , ~foo : C , Native calling object
-=foo : C , Native calling object
-foo && bar : C , Native calling object
-foo || bar : C , Native calling object
-foo ~&& bar , foo ¬&& bar , foo !&& bar : *C , Native calling object
-foo ~|| bar , foo ¬|| bar , foo !&& bar : *C , Native calling object
-foo ~= bar , foo ¬= bar , foo != bar : C , Native calling object
-foo ↔ bar , foo <> bar , foo IFF bar : C , Native calling object
-foo ∊ bar , foo ELEMENT bar : C , Native calling object
-foo ∪ bar , foo UNION bar : C , Native calling object
-foo ∩ bar , foo INTRSECT bar : C , Native calling object
-foo ⊂ bar , foo SUBSET bar : C , Native calling object
-foo ⊖ bar , foo DIFF bar : C , Native calling object
-foo < bar , foo LT bar : C , Native calling object
-foo > bar , foo GT bar : C , Native calling object
-foo ≤ bar , foo LE bar : C , Native calling object
-foo ≥ bar , foo GE bar : C , Native calling object
-foo ≠ bar , foo NE bar : C , Native calling object
-foo = bar , foo EQ bar : C , Native calling object
-foo ≈ bar , foo APROX bar : Parser , Native
-foo ≡ bar , foo == bar : C , Native calling object
-foo ¢ bar , foo CON bar : *C , Native calling object
-strtok(foo, bar) : C , native calling object
-regex(foo) : C++ , Native calling object
-sedex(foo) : C++ , Native calling object
-awkex(foo) : C++ , Native calling object
-match(foo, bar) : C++ , Native calling object
-substitute(foo, bar, quux) : C++ , Native calling object
-rand(foo) : C , Native calling object
-roll(foo, bar) : Parser , Native
-deal(foo, bar) : *C , native calling object
-shuffle(foo) : ~ , native
-RETURN foo : parser and C , native parser calling native and C
-lambda(foo, bar, baz) ‹x, y, z› {...} : ~ , native
-λ(foo, bar, baz) ‹x, y, z› {...} : ~ , native
-sizeof(foo) : C , native calling object
-typeof(foo) : C , native calling object
-parentof(foo) : C , native calling object
-classof(foo) : C , native calling object
-isnumber(foo) : C , native calling object
-signof(foo) : C , native calling object
-sfloat(foo) : C , native calling object
-dfloat(foo) : C , native calling object
-complex(foo) : C , native calling object
-minisize(foo) : ~ , native
-tostring(foo) : C++ , 
-stoi(*foo, **bar, baz)
-stol(*foo, **bar, baz)
-stoul(*foo, **bar, baz)
-stoll(*foo, **bar, baz)
-stoull(*foo, **bar, baz)
-stof(*foo, **bar)
-stod(*foo, **bar)
-strtol(*foo, **bar, baz) : C , native calling object
-strtoll(*foo, **bar, baz) : C , native calling object
-strtoul(*foo, **bar, baz) : C , native calling object
-strtoull(*foo, **bar, baz) : C , native calling object
-strtof(*foo, **bar) : C , native calling object
-strtod(*foo, **bar) : C , native calling object
-atof(foo) : C , native calling object
-atoi(foo) : C , native calling object
-atol(foo) : C , native calling object
-atoll(foo) : C , native calling object
-toupper(foo) : ~ , native using UnicodeData.txt
-tolower(foo) : ~ , native using UnicodeData.txt
-confuseables(foo) : ~ , native using Confuseables.txt
-add(foo, bar, quux) : *C , native calling object
-remove(foo, bar) : *C , native calling object
-system(...) : C , native calling object
-FORK {...} : C , native calling object
-malloc(foo) : C , native calling object
-calloc(foo, bar) : C , native calling object
-free(foo) : C , native calling object
-realloc(foo, bar) : C , native calling object
-moveb(foo, bar) : Asm , native calling object
-movew(foo, bar) : Asm , native calling object
-movel(foo, bar) : Asm , native calling object
-zerofill(foo) : C calling Asm , native calling object
-signfill(foo) : C calling Asm , native calling object
-swap(foo, bar) : *C++ , Native calling object
-xswap(foo, bar) : *C , Native calling object
-:= , ≝ : C++ , native calling object
-:< , ⇦ : C++ , native calling object
-:> , ⇨ : C++ , native calling object
-
-stdout : C , stdout
-stdin : C , stdin
-stderr : C , stderr
-NULL : C , NULL
-∅ , ε , emptyset : void* [0]
-ⅈ , imaginary_unit_i : C , _IMAGINARY_I
-ℯ : C , M_E
-π : C , M_PI
-φ : *C , (double) ((1 + sqrt(5)) / 2)
-∞ , infinity : *C , INFINITY
-� , notanumber : *C , NAN
-⊤ , true : *C , signed char 1
-⊥ , false : *C , signed char 0
-ternary : *C , signed char -1
-
-BOOL : C, signed char
-BYTE : C, unsigned char * [1]
-WORD : C, unsigned short * [1]
-LONG : C, unsigned long * [1]
-QUAD : C, unsigned long long * [1]
-S_BYTE : C, signed char
-S_WORD : C, short
-S_LONG : C, long
-S_QUAD : C, long long
-U_BYTE : C, unsigned char
-U_WORD : C, unsigned short
-U_LONG : C, unsigned long
-U_QUAD : C, unsigned long long
-C_INT : C, int
-STRING : C++, std::string
-FIXSTR : C, char * [up to MAXBUFFER]
-FLOAT : C, float
-DOUBLE : C, double
-ARRAY : C, <type> [][]...
-FILE : C, FILE
-INPUT : C++, std::istream
-OUTPUT : C++, std::ostream
-LLIST : C, struct node*
-NODE : C, struct {*node, *node}; aditional anything field added
-TREERT : C, struct leaf*
-LEAF : C, struct {*leaf}; aditional anything field added
-TIMTYP : C, time_t
-CLKTYP : C, clock_t
-DIVTYP : C, div_t
-SIZTYP : C, size_t
-TYPTYP : C, struct {*typtyp, *typtyp, char[6]}
-PATTRN : C++, basic_regex
-VOID : C, void
-
-* : C, *foo
-& : C, &foo
-? : *C, <see type tree>
-¿ : *C, <see type tree>
-№ : *C, <see type tree>
-± : *C, IF (foo ≠ 0) {IF (foo > 0) {return 1} ELSEIF (foo < 0) {return -1} ELSE {RETURN �;fprintf(stderr, "innnnnteresting...\n")}} ELSE {return 0}
-ℓ : *C, sizeof(foo)
-£ : Prototype tree
-
-a garbage collector is a HIGH PRIORETY to-do, see bug#1.
 
 PARSING (CONTINUED)
 -------------------
@@ -837,10 +574,9 @@ a variable name and function name may not overlap
 
 a name may not contain any technical symbol. these include:
 ' " ; : [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + =
-‹ › ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ⦃ ⦄ ¶ ➤ … × ÷ ⋆ ⍟ ★ ✪ √ ¡ ∧ ∨ ⍲ ⍱ ⊻ ⊽ ⊼ ⊕ ⊗ ⊙
-≡ » « ↔ → ← ↑ ↓ ¬ ∊ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ¥ ≝ £ ¿ № ± ℓ ↯ ⏎ ↵ ↹ ⇥
-␣ ⍽ ⇦ ⇨
-⎋ ⚠ ☠ ⌛ 💣
+‹ › ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ｢ ｣ ❴ ❵ ¶ ➤ … × ÷ ⋆ ⍟ ★ ✪ √ ¡ ¿ ∧ ∨ ⍲ ⍱ ⊻ ⊽ ⊼
+⊕ ⊗ ⊙ ≡ » « ↔ → ← ↑ ↓ ↵ ¬ ∊ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ¥ ≝ £ № ± ℓ ↹ ⇥
+⇦ ⇨ ↯ ⏎ ␣ ⍽ ℕ ℤ ⎋ ⚠ ☠ ⌛ 💣
 
 a name may not contain a number as the first character
 0 1 2 3 4 5 6 7 8 9
