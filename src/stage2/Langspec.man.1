@@ -29,7 +29,7 @@ ELSE {...} : if the function if fails, do the function enclosed in {}.
 ELSEIF (foo) {...} : single-tier version of ELSE {IF (foo) {}}
 WHILE (foo) {...} : loop the function enclosed in {} until foo is false.
 UNTIL (foo) {...} : loop the function enclosed in {} until foo is true.
-BREAK : immediately exit the current loop
+⯃ , BREAK : immediately exit the current loop
 GOTO (foo) : go to label foo. NOTE: there is no return function. putting a goto inside a function declaration can screw up your control flow.
 DOTIMES (foo) ‹x› {...} : do whatever is in {} foo times. if foo is a float, rounds down. if foo is infinity, you're trying too hard to break things. the loop counter is stored in the variable noted by x.
 ↓ , ||| : Do the previous line again
@@ -321,14 +321,14 @@ cout : the C++ output file
 cin : the C++ input file
 cerr : the C++ error file
 clog : the C++ log file
-NULL : a null file or bitbucket, implemented as a null pointer.
-∅ , ε , EmptySet : an empty set, distinct from null.
+� , NULL : a null file or bitbucket, implemented as a null pointer.
+∅ , EMPTY : the empty set. distinct from NULL.
 ⅈ , imaginary_unit_i : √-1, for complex numbers. (the variable "i" is antireserved as too generic)
 ℯ : eulars number, double. (the variable "euler" is antireserved for i.e. user defined approximations) 
 π : pi, double. (The variable "pi" is antireserved for i.e. user defined approximations)
 φ : (1+√5)/2, double. (the variable "phi" is antireserved for i.e. user defined approximations. ϕ is antireserved for i.e. the second angle in a spherical coordinate system)
 ∞ , infinity : infinity. Currently a double, may be changed to a special, more compact type for special numbers.
-� , notanumber : quiet Not a Number. Currently a double, may be changed to a special, more compact type for special numbers. (symbol is literal U+FFFD)
+↯ , notanumber : quiet Not a Number. Currently a double, may be changed to a special, more compact type for special numbers. (symbol is literal U+FFFD)
 ⊤ , true : bool of 1
 ⊥ , false : bool of 0
 Ⅱ , ternary : bool of -1
@@ -584,13 +584,13 @@ a name may not contain any technical symbol. these include:
 ' " ; : [ ] { } | \ < > , . ? / ~ ` ! @ # $ % ^ & * ( ) - + =
 ‹ › ⟦ ⟧ ⌊ ⌋ ⌈ ⌉ ｢ ｣ ❴ ❵ ¶ ➤ … × ÷ ⋆ ⍟ ★ ✪ √ ¡ ¿ ∧ ∨ ⍲ ⍱ ⊻ ⊽ ⊼
 ⊕ ⊗ ⊙ ≡ » « ↔ → ← ↑ ↓ ↵ ¬ ∊ ∪ ∩ ⊂ ⊖ ≤ ≥ ≠ ≈ ¢ ¥ ≝ £ № ± ℓ ↹ ⇥
-⇦ ⇨ ↯ ⏎ ␣ ⍽ ℕ ℤ ⎋ ⚠ ☠ ⌛ 💣
+⇦ ⇨ ↯ ⏎ ␣ ⍽ ℕ ℤ ⎋ ⚠ ☠ ⯃ ⌛ 💣
 
 a name may not contain a number as the first character
 0 1 2 3 4 5 6 7 8 9
 
 a name may not overlap exactly with a special variable.
-stdin stdout stderr cin cout cerr clog NULL ∅ ε emptyset ⅈ imaginary_unit_i ℯ π φ ∞ infinity � notanumber ⊤ true ⊥ false Ⅱ ternary
+stdin stdout stderr cin cout cerr clog NULL ∅ EMPTY ⅈ imaginary_unit_i ℯ π φ ∞ infinity � notanumber ⊤ true ⊥ false Ⅱ ternary
 
 a name may not overlap exactly with a builtin function
 [set of all functions]
