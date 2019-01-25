@@ -1,4 +1,4 @@
-My Language V0.2.b21c 0000000 00-00-0000
+My Language V0.2.b21d 0000000 00-00-0000
 Prealpha *ALPHA DEADLINE MAY 2019*
 ======================================
 
@@ -31,7 +31,7 @@ WHILE (foo) {...} : loop the function enclosed in {} until foo is false.
 UNTIL (foo) {...} : loop the function enclosed in {} until foo is true.
 ⯃ , BREAK : immediately exit the current loop
 GOTO (foo) : go to label foo. NOTE: there is no return function. putting a goto inside a function declaration can screw up your control flow.
-DOTIMES (foo) ‹x› {...} : do whatever is in {} foo times. if foo is a float, rounds down. if foo is infinity, you're trying too hard to break things. the loop counter is stored in the variable noted by x.
+DOTIMES (foo) ‹x› {...} : do whatever is in {} foo times. if foo is a float, rounds down. if foo is infinity, you're trying too hard to break things. x is the local variable name of a loop counter.
 ¶foo : a label called foo. Please don't put these INSIDE loops unless you know what you're doing.
 NOP, NOOP, NOPR, CONTINUE, SWYM: reserved commands that do nothing. The parser eats these.
 If you GOTO out of a WHILE or DOTIMES, the parser will think you are still in that loop! This does not apply to IF, ELSEIF, or ELSE.
@@ -55,7 +55,7 @@ fread(...) : read raw data from a file, as in C. returns as in C.
 fwrite(...) : write raw data to a file, as in C. returns as in C.
 
 FUNCTION foo(...) {...} : define a function foo. () contains an exaustive list of the internal names of arguments, {} contains the function itself.
-VARIADIC foo(bar, baz) ‹x› {...} : define a function foo. bar and baz are fixed arguments, {} contains the function itself, and x are iterated arguments beyond those listed.
+VARIADIC foo(bar, baz) ‹x› {...} : define a function foo. bar and baz are fixed arguments, {} contains the function itself, and x is the index for extra arguments.
 EXTERN FOO bar(...) : define an external function that takes standard linkage. FOO is the type the function returns, using this language's names. If types are the same width, this can be used to reformat the raw data of the returned function.
 TYPE FOO bar : define a basic datatype bar, from parent datatype FOO.
 FOO bar, baz, quux : where FOO is a valid datatype, make variables bar, baz, and quux of that type
