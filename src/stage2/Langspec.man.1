@@ -1,4 +1,4 @@
-My Language V0.2.a24a 0000000 00-00-0000
+My Language V0.2.a25 0000000 00-00-0000
 Depricated; updates deffered until Alpha
 ======================================
 
@@ -31,7 +31,7 @@ WHILE (foo) {...} : loop the function enclosed in {} until foo is false.
 UNTIL (foo) {...} : loop the function enclosed in {} until foo is true.
 ⯃ , BREAK : immediately exit the current loop
 GOTO (foo) : go to label foo. NOTE: there is no return function. putting a goto inside a function declaration can screw up your control flow.
-DOTIMES (foo) ‹x› {...} : do whatever is in {} foo times. if foo is a float, rounds down. if foo is infinity, you're trying too hard to break things. the loop counter is stored in the variable noted by x.
+DOTIMES (foo) ‹x› {...} : do whatever is in {} foo times, with a loop counter x that contains the iteration. if foo is a float, rounds down. if foo is infinity, you're trying too hard to break things.
 ↓ , ||| : Do the previous line again
 ¶foo : a label called foo. Please don't put these INSIDE loops unless you know what you're doing.
 NOP, NOOP, NOPR, CONTINUE, SWYM: reserved commands that do nothing. The parser eats these.
@@ -63,7 +63,7 @@ fread(...) : read raw data from a file, as in C. returns as in C.
 fwrite(...) : write raw data to a file, as in C. returns as in C.
 
 FUNCTION foo(...) {...} : define a function foo. () contains an exaustive list of the internal names of arguments, {} contains the function itself.
-VARIADIC foo(bar, baz) ‹x› {...} : define a function foo. bar and baz are fixed arguments, {} contains the function itself, and x are iterated arguments beyond those listed.
+VARIADIC foo(bar, baz) ‹x› {...} : define a function foo. bar and baz are fixed arguments, {} contains the function itself, and x is the index of the extra arguments.
 EXTERN FOO bar(...) : define an external function that takes standard linkage. FOO is the type the function returns, using this language's names. If types are the same width, this can be used to reformat the raw data of the returned function.
 TYPE FOO bar : define a basic datatype bar, from parent datatype FOO.
 FOO bar, baz, quux : where FOO is a valid datatype, make variables bar, baz, and quux of that type
@@ -162,6 +162,9 @@ atan2(foo, bar) : the polar angle θ of a ray to cartesean coordinates bar,foo
 erf(foo) : error function of foo, returns float.
 gd(foo) : gudermannian function of foo, returns float.
 
+sigma(foo, bar) ‹n› {...} : Summation. n is the local variable that contains the index, foo is the lower bound and bar is the upper bound. the function is in {}.
+Σ(foo, bar) ‹n› {...} : same as above
+
 foo++ : foo + 1
 foo-- : foo - 1
 
@@ -222,8 +225,8 @@ shuffle(foo) : randomize array foo, return array.
 
 RETURN foo : make the containing function return foo. If you need return to evaluate something, put it in () like FOR, such as RETURN (foo + bar)
 
-lambda(foo, bar, baz) ‹x, y, z› {...} : do anonamous function in {} to anythings foo, bar, and baz, reffered to by local variabls quux, garply, and waldo. will iterate arrays or linked lists. multiple such items will be combined in all possible ways, eg (foo * bar * quux) times
-λ(foo, bar, baz) ‹x, y, z› {...} : same as above, adding a comma would just be unnecisarily confusing and it wouldn't fit on same line.
+lambda(foo, bar, baz) ‹x, y, z› {...} : do anonamous function in {} to anythings foo, bar, and baz, reffered to by local variabls x, y, and z. will iterate arrays or linked lists. multiple such items will be combined in all possible ways, eg (foo * bar * quux) times
+λ(foo, bar, baz) ‹x, y, z› {...} : same as above
 
 sizeof(foo) : returns the number of bits in anything foo. sizeof(&[any variable]) should return the CPU address register size.
 typeof(foo) : uses the type tree to determin the type of foo
