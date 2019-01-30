@@ -63,6 +63,7 @@ CMakeLists.txt = linguist-language=CMake
 *.bash = linguist-language=Shell
 *.tcsh = linguist-language=Shell
 *.sixel = linguist-language=Shell
+*.cgi = linguist-language=Shell
 *.bat = linguist-language=Batchfile
 *.lua = linguist-language=Lua
 *.objc = linguist-language=Objective-C
